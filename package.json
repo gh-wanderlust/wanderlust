@@ -9,7 +9,7 @@
     "jest": "jest",
     "build": "next build",
     "start": "next start",
-    "tsc": "tsc"
+    "tsc": "tsc",
     "seed": "node seed.js"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.8.3",
     "@babel/preset-typescript": "^7.8.3",
     "@types/enzyme": "^3.10.4",
     "@types/jest": "^25.1.1",
@@ -48,9 +49,9 @@
     "eslint-plugin-react": "^7.18.0",
     "jest": "24.9.0",
     "react-test-renderer": "16.12.0",
+    "sequelize": "^5.21.3",
     "ts-jest": "^25.1.0",
     "typescript": "^3.7.5",
     "typescript-eslint": "0.0.1-alpha.0"
-    "sequelize": "^5.21.3"
   }
 }

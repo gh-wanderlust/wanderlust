@@ -1,12 +1,9 @@
-import React from "react";
+import React from 'react';
 
-type IndexProps = {
-  name: string;
-};
-const Index = ({ name }: IndexProps) => {
+const Index = () => {
   return (
     <div>
-      <p>Hello {name}!</p>
+      <p>Hello!</p>
     </div>
   );
 };

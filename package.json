@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "seed": "node seed.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,10 @@
   "homepage": "https://github.com/gh-wanderlust/wanderlust#readme",
   "dependencies": {
     "next": "^9.2.1",
+    "pg": "^7.18.1",
+    "pg-hstore": "^2.3.3",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "sequelize": "^5.21.3"
   }
 }

@@ -3,7 +3,7 @@ import React from 'react'
 interface User {
     firstName: string,
     lastName: string,
-    imageUrl: string
+    imageUrl: string,
 }
 
 interface Listing {
@@ -20,30 +20,34 @@ interface TravelDate {
 }
 
 const dummyUsers: Array<User> = [
-    {
-        firstName: "Furby",
-        lastName: "McPherbison",
-        imageUrl: "https://placekitten.com/600/400"
-    },
-    {
-        firstName: "Furbina",
-        lastName: "McPherbison",
-        imageUrl: "https://placekitten.com/600/400"
-    },
-    {
-        firstName: "Dave",
-        lastName: "Jones",
-        imageUrl: "https://placekitten.com/600/400"
-    }
-]
+	{
+		firstName: 'Puggo',
+		lastName: 'Johnson',
+		imageUrl:
+			'https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=687&q=80'
+	},
+	{
+		firstName: 'Pugginton',
+		lastName: 'Ramirez',
+		imageUrl:
+			'https://images.unsplash.com/photo-1517849845537-4d257902454a?ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80'
+	},
+	{
+		firstName: 'Pugga',
+		lastName: 'Chang',
+		imageUrl:
+			'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=660&q=80'
+	}
+];
 
 const dummyListing: Listing = {
-    name: "The Furb Mansion",
-    description: "The coziest retreat for Furby lovers everywhere :)",
-    address: "123 Furby Lane",
-    city: "Furbtrocity",
-    country: "Furbtopia"
-}
+	name: 'Peaceful Log Cabin in the Woods',
+	description:
+		'This log cabin is set in the woods in a rural part of northeastern Vermont. Escape the hustle and bustle, clear your mind, and enjoy nature. A great place to get some fresh air or to stay in and take a nap. Beautiful summers for easy hikes and refreshing swims in the lakes of our local Groton State Forest, unbelievable foliage to view from small dirt roads, and tons of outdoor winter activities. Great for a couples getaway, friends weekend, or some quality time with the kids. Pets welcome, too!',
+	address: '123 Furby Lane',
+	city: 'Furbtrocity',
+	country: 'Furbtopia'
+};
 
 const dummyDate: TravelDate = {
     dateFrom: new Date(2020, 2, 14),

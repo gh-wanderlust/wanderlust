@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/gh-wanderlust/wanderlust#readme",
   "dependencies": {
+    "@types/styled-components": "^4.4.2",
     "babel-plugin-styled-components": "^1.10.7",
     "next": "^9.2.1",
     "pg": "^7.18.1",

@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import Link from "next/link";
+import styled from "styled-components";
 
 const Listing = () => {
+  const [me, setMe] = useState({
+    id: 222,
+    profileImage:
+      "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=660&q=80"
+  });
+
+  const [interested, setInterested] = useState([
+    "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=687&q=80",
+    "https://images.unsplash.com/photo-1517849845537-4d257902454a?ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80"
+  ]);
+
+  const [isBookingActive, setIsBookingActive] = useState(false);
+
+  const handleInterested = () => {
+    if (interested.length === 1) {
+      setInterested([...interested, me.profileImage]);
+    }
+
+    if (interested.length === 2) {
+      setInterested([...interested, me.profileImage]);
+      setIsBookingActive(true);
+    }
+  };
+
   return (
-    <div>
-      <img
+    <Wrapper>
+      <HouseImg
         src="https://a0.muscache.com/im/pictures/effe9703-69e5-469e-a280-3acdc5332d8d.jpg?aki_policy=xx_large"
         alt=""
       />
@@ -42,35 +68,55 @@ const Listing = () => {
       </ul>
 
       <div>
-        <img
-          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-          alt="person 1 interested"
-        />
-        <img
-          src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-          alt="person 2 interested"
-        />
+        {interested.map(imgLink => (
+          <ProfilePic src={imgLink} alt="person  interested" />
+        ))}
       </div>
 
       <div>
-        <img
-          src="https://a0.muscache.com/im/pictures/4dcae065-71cf-4a51-b3bb-dd3ed50c082e.jpg?aki_policy=xx_large"
-          alt="guest photo"
-        />
-        <img
-          src="https://a0.muscache.com/im/pictures/d4118ddd-677a-4dec-ae97-407c012405b1.jpg?aki_policy=xx_large"
-          alt="guest photo"
-        />
-        <img
-          src="https://a0.muscache.com/im/pictures/f350b2e2-08b4-418c-873d-cdec2fa1ac2e.jpg?aki_policy=xx_large"
-          alt="guest photo"
-        />
+        <h3>Guest Photos</h3>
+        <GuestPhotos>
+          <HouseImg
+            src="https://a0.muscache.com/im/pictures/4dcae065-71cf-4a51-b3bb-dd3ed50c082e.jpg?aki_policy=xx_large"
+            alt="guest photo"
+          />
+          <HouseImg
+            src="https://a0.muscache.com/im/pictures/d4118ddd-677a-4dec-ae97-407c012405b1.jpg?aki_policy=xx_large"
+            alt="guest photo"
+          />
+          <HouseImg
+            src="https://a0.muscache.com/im/pictures/f350b2e2-08b4-418c-873d-cdec2fa1ac2e.jpg?aki_policy=xx_large"
+            alt="guest photo"
+          />
+        </GuestPhotos>
       </div>
 
-      <button>I'm interested</button>
-      <button>Book now</button>
-    </div>
+      <button onClick={() => handleInterested()}>I'm interested</button>
+      {isBookingActive ? (
+        <Link href="/booking">
+          <button>Book now</button>
+        </Link>
+      ) : (
+        <button disabled>Book now</button>
+      )}
+    </Wrapper>
   );
 };
 
 export default Listing;
+
+const Wrapper = styled.div``;
+
+const HouseImg = styled.img`
+  max-width: 97vw;
+`;
+
+const GuestPhotos = styled.div`
+  display: flex;
+`;
+const ProfilePic = styled.img`
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+`;

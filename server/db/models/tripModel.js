@@ -3,10 +3,10 @@ const db = require('../database');
 
 const Trip = db.define('trip', {
     dateFrom: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DATEONLY,
     },
     dateTo: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DATEONLY,
     }
 })
 

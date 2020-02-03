@@ -8,8 +8,14 @@ interface Action {
   payload?: object;
 }
 
-const reducer = (state: any, action: Action) => {
+const GET_TEST = "GET_TEST";
+
+export const getTest = () => ({ type: GET_TEST, payload: "test" });
+
+const reducer = (state: any = [], action: Action) => {
   switch (action.type) {
+    case GET_TEST:
+      return [...state, action.payload];
     default:
       return state;
   }

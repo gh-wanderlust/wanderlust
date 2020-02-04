@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import User from "../../server/db/models/userModel"
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
@@ -8,7 +9,17 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === "POST") {
-    console.log(req.body);
-    res.end(JSON.stringify({ name: "POST MALONE" }));
+    //Laura & Mika wrote this 
+    User.create({
+        firstName: "Pablo",
+        lastName: "Barrientos",
+        email: "pablobarrientos@email.com",
+        password: "password",
+        imageUrl: "pablo.png"
+      }).then(user => {
+        console.log(user)
+        res.end(JSON.stringify(user));
+      })
   }
+  //^^^ Feel free to delete when merging ^^^
 };

@@ -31,14 +31,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.setHeader("Allow", ['GET', 'POST', "DELETE"])
       res.status(405).end(`Method ${method} Not Allowed`)
   }
-
-
-  // GET some by trip ID
-
-  // GET listing by User ID
-
-  // POST new user
-  // if (req.method === "POST") {
-
-  // }
 };

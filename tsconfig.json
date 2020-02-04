@@ -16,6 +16,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "exclude": ["node_modules", "__tests__"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "./server"]
+
+  "exclude": [
+    "node_modules",
+    "__tests__"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx", "pages/api/users", "./server"
+  ]
+
 }

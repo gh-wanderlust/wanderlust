@@ -17,11 +17,5 @@
     "isolatedModules": true
   },
   "exclude": ["node_modules", "__tests__"],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-
-    // "pages/api/listings/index.js"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

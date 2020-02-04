@@ -1,5 +1,4 @@
 const { Listing } = require("../../../server/db/models");
-const { NextApiRequest, NextApiResponse } = require("next");
 
 export default async (req: any, res: any) => {
   if (req.method === "GET") {

@@ -7,7 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       query: { id },
     } = req;
     const trip = await Trip.findByPk(id, {
-      include: [{ model: User, attributes: ['id'] }],
+      include: [{ model: User }],
     });
     res.json(trip);
   }

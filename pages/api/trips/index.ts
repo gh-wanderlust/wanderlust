@@ -1,3 +1,4 @@
+
 const { Trip } = require("../../../server/db/models");
 
 export default async (req: any, res: any) => {

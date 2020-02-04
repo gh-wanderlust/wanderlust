@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../database');
 
 const Trip = db.define('trip', {
+
     dateFrom: {
         type: Sequelize.DATEONLY,
       },
@@ -12,5 +13,6 @@ const Trip = db.define('trip', {
         type: Sequelize.ENUM('pending', 'booked'),
       },
 })
+
 
 module.exports = Trip;

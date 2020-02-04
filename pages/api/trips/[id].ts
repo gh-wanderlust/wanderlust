@@ -1,3 +1,4 @@
+
 const { Trip, User } = require("../../../server/db/models");
 
 export default async (req: any, res: any) => {
@@ -7,9 +8,11 @@ export default async (req: any, res: any) => {
     } = req;
     const trip = await Trip.findByPk(id, {
       include: [{ model: User }]
+
     });
     res.json(trip);
   }
+
 
   if (req.method === "DELETE") {
     const {
@@ -19,6 +22,7 @@ export default async (req: any, res: any) => {
     await Trip.destroy({ where: { id } });
     res.status(204).end();
   }
+
 
   if (req.method === "PUT") {
     const {

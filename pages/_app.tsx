@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import { AppProps } from "next/app";
-import { Provider } from "react-redux";
-import withRedux from "next-redux-wrapper";
-import initStore from "../store/store";
+import { AppProps } from 'next/app';
+import { Provider } from 'react-redux';
+import withRedux from 'next-redux-wrapper';
+import initStore from '../store/store';
 
 interface OurProps extends AppProps {
   store: any;

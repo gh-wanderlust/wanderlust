@@ -115,7 +115,7 @@ const Listing = (props: any) => {
 			</div>
 			<div>
 				{interested.map((user: any) => (
-					<ProfilePic src={user.imageUrl} alt="person  interested" />
+					<ProfilePic key={user.id} src={user.imageUrl} alt="person  interested" />
 				))}
 			</div>
 			<button onClick={() => handleInterested()}>I'm interested</button>

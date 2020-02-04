@@ -9,19 +9,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === "POST") {
-    // const createUser = async () => {
-    //   const newUser = await User.create({
-    //     firstName: "Pablo",
-    //     lastName: "Barrientos",
-    //     email: "pablobarrientos@email.com",
-    //     password: "password",
-    //     imageUrl: "pablo.png"
-    //   })
-    //   return newUser
-    // }
-    // let user = createUser()
-    // res.send(user)
-
+    //Laura & Mika wrote this 
     User.create({
         firstName: "Pablo",
         lastName: "Barrientos",
@@ -30,8 +18,8 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         imageUrl: "pablo.png"
       }).then(user => {
         console.log(user)
+        res.end(JSON.stringify(user));
       })
-
-    res.end(JSON.stringify({ "hello": "hey" }));
   }
+  //^^^ Feel free to delete when merging ^^^
 };

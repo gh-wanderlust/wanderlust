@@ -1,18 +1,18 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { Listing } from '../../../server/db/models';
+// import { NextApiRequest, NextApiResponse } from 'next';
+const { Listing } = require("../../../server/db/models");
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'GET') {
+export default async (req: any, res: any) => {
+  if (req.method === "GET") {
     const {
-      query: { id },
+      query: { id }
     } = req;
     const listing = await Listing.findByPk(id);
     res.json(listing);
   }
 
-  if (req.method === 'DELETE') {
+  if (req.method === "DELETE") {
     const {
-      query: { id },
+      query: { id }
     } = req;
 
     await Listing.destroy({ where: { id } });

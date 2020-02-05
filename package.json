@@ -53,6 +53,7 @@
     "styled-components": "^5.0.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
     "@babel/preset-typescript": "^7.8.3",
     "@types/enzyme": "^3.10.4",
@@ -77,5 +78,26 @@
     "ts-jest": "^25.1.0",
     "typescript": "^3.7.5",
     "typescript-eslint": "0.0.1-alpha.0"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.(js|jsx)$": "babel-jest",
+      "^.+\\.(css|scss|less)$": "jest-css-modules"
+    },
+    "globals": {
+      "NODE_ENV": "test"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src/frontend",
+      "src/shared"
+    ]
   }
 }

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 require('dotenv').config()
 
-
+console.log('USERNAME' , process.env.SQL_GHP_WANDERLUST_USERNAME)
 
 const db = new Sequelize(
         'postgres',

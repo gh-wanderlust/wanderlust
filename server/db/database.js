@@ -1,18 +1,8 @@
 const Sequelize = require('sequelize')
-require('dotenv').config()
 
+// if deploying via heroku, add "process.env.DATABASE_URL" to the Sequelize instance
+const db = new Sequelize('postgres://localhost:5432/wanderlust', {
+    logging: true
+})
 
-
-const db = new Sequelize(
-        'postgres',
-        process.env.SQL_GHP_WANDERLUST_USERNAME,
-        process.env.SQL_GHP_WANDERLUST_PASSWORD,
-        {
-
-            // this is the IP address
-          host: process.env.SQL_GHP_WANDERLUST_IP,
-          dialect: 'postgres',
-
-        },
-      );
 module.exports = db;

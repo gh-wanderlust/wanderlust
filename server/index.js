@@ -12,7 +12,10 @@ app.prepare().then(() => {
   const server = express()
   const movieRoutes = require('./routes/index')
 
-  server.use('/api', movieRoutes)
+  // server.use('/api', movieRoutes)
+  server.get('/api/users', (req, res) => {
+    res.send('hello from /api/users!!')
+  })
 
 
   server.get('*', (req, res) => {

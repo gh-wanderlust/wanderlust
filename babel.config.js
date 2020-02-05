@@ -4,7 +4,6 @@ module.exports = {
     '@babel/preset-typescript',
     '@babel/preset-react',
     '@babel/env',
-    ['@babel/preset-env', { targets: { node: 'current' } }],
   ],
   plugins: [
     'babel-plugin-styled-components',

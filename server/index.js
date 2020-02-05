@@ -10,10 +10,10 @@ const handle = app.getRequestHandler()
 
 app.prepare().then(() => {
   const server = express()
+  const movieRoutes = require('./routes/index')
 
-  server.get('/api/tests', (req, res) => {
-    return res.end('we made it ')
-  })
+  server.use('/api', movieRoutes)
+
 
   server.get('*', (req, res) => {
     return handle(req, res)

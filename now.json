@@ -1,0 +1,7 @@
+{
+  "env": {
+    "SQL_GHP_WANDERLUST_IP": "@sql-wanderlust-production-ip-079ca214ba",
+    "SQL_GHP_WANDERLUST_USERNAME": "sql-wanderlust-production-username-6e3e083f91",
+    "SQL_GHP_WANDERLUST_PASSWORD": "sql-wanderlust-production-password-612eaed1b9"
+  }
+}

@@ -1,4 +1,4 @@
-const { Listing } = require("../db/models");
+const { Listing } = require("../../../server/db/models");
 
 export default async (req: any, res: any) => {
   if (req.method === "GET") {

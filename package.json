@@ -8,7 +8,8 @@
     "test": "jest --watch",
     "jest": "jest",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
+    "heroku-postbuild": "npm run build",
     "tsc": "tsc",
     "seed": "node seed.js"
   },

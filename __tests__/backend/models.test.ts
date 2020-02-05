@@ -1,5 +1,5 @@
-import db from '../../server/db/database';
-import { User, Listing, Trip } from '../../server/db/models';
+const db = require('../../server/db/database');
+const { User, Listing, Trip } = require('../../server/db/models');
 
 interface User {
   firstName: string;

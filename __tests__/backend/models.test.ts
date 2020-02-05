@@ -140,7 +140,6 @@ describe('Models', () => {
         return `${year}-${month}-${day}`;
       };
 
-      console.log(trip.dateFrom, dateFrom);
       expect(trip.dateFrom).toEqual(dateOnly(dateFrom));
       expect(trip.dateTo).toEqual(dateOnly(dateTo));
       expect(trip.status).toEqual('pending');
@@ -156,3 +155,5 @@ describe('Models', () => {
     });
   });
 });
+
+export {};

@@ -27,6 +27,9 @@ const Listing = db.define('listing', {
     },
     maxOccupants: {
         type: Sequelize.INTEGER,
+    },
+    ownerPhotos: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
     }
 })
 

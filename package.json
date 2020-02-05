@@ -90,7 +90,7 @@
       "NODE_ENV": "test"
     },
     "moduleFileExtensions": [
-      "ts",
+      ".ts",
       "tsx",
       "js",
       "jsx"

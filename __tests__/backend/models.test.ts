@@ -1,31 +1,7 @@
 const db = require('../../server/db/database');
 const { User, Listing, Trip } = require('../../server/db/models');
 
-interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  correctPassword?: (str: string) => boolean;
-  imageUrl?: string;
-}
-
-interface Listing {
-  name: string;
-  description: string;
-  address: string;
-  city: string;
-  country: string;
-  minOccupants: number;
-  maxOccupants: number;
-  ownerPhotos?: Array<string>;
-}
-
-interface Trip {
-  dateFrom: Date;
-  dateTo: Date;
-  status: string;
-}
+import * as I from '../../server/db/models/interfaces';
 
 describe('Models', () => {
   beforeAll(async () => {
@@ -33,7 +9,7 @@ describe('Models', () => {
   });
 
   describe('User Model', () => {
-    const userSkeleton: User = {
+    const userSkeleton: I.User = {
       firstName: 'Furb',
       lastName: 'McPhurbeson',
       email: 'watching@furby.com',
@@ -41,7 +17,7 @@ describe('Models', () => {
     };
 
     it('should have correct firstName, lastName, email, imageUrl', async () => {
-      const user: User = await User.create({
+      const user: I.User = await User.create({
         ...userSkeleton,
         imageUrl:
           'https://images-na.ssl-images-amazon.com/images/I/61vI30cJerL._AC_SX425_.jpg',
@@ -55,7 +31,7 @@ describe('Models', () => {
     });
 
     it('should set a default value for imageUrl if not provided', async () => {
-      let noImageUrl: User = await User.create(userSkeleton);
+      let noImageUrl: I.User = await User.create(userSkeleton);
 
       expect(noImageUrl.imageUrl).toEqual('http://placekitten.com/600/400');
     });
@@ -73,7 +49,7 @@ describe('Models', () => {
     });
 
     it('should not store plaintext passwords, but should be able to verify them', async () => {
-      const user: User = await User.create(userSkeleton);
+      const user: I.User = await User.create(userSkeleton);
       expect(user.password).not.toEqual('hello');
       if (user.correctPassword)
         expect(user.correctPassword('hello')).toEqual(true);
@@ -82,7 +58,7 @@ describe('Models', () => {
   });
 
   describe('Listing Model', () => {
-    const listingSkeleton: Listing = {
+    const listingSkeleton: I.Listing = {
       name: 'Name',
       description: 'Desc',
       address: 'Address',
@@ -93,7 +69,7 @@ describe('Models', () => {
     };
 
     it('should have correct name, description, address, city, country, occupants, photos', async () => {
-      const listing: Listing = await Listing.create({
+      const listing: I.Listing = await Listing.create({
         ...listingSkeleton,
         ownerPhotos: ['link1', 'link2'],
       });
@@ -109,7 +85,7 @@ describe('Models', () => {
     });
 
     it('should set a default value for ownerPhotos if not provided', async () => {
-      const listing: Listing = await Listing.create(listingSkeleton);
+      const listing: I.Listing = await Listing.create(listingSkeleton);
 
       expect(listing.ownerPhotos).toEqual([]);
     });
@@ -125,7 +101,7 @@ describe('Models', () => {
     });
 
     it('should have correct dateFrom, dateTo, status', async () => {
-      const trip: Trip = await Trip.create({
+      const trip: I.Trip = await Trip.create({
         dateFrom,
         dateTo,
         status: 'pending',

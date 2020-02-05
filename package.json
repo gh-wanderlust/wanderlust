@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
-    "test": "jest --watch",
+    "test": "jest --watch --runInBand",
     "jest": "jest",
     "build": "next build",
     "start": "next start",

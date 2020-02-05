@@ -1,6 +1,6 @@
-import axios from 'axios'
-import db from "../../server/db"
-import { Trip } from "../../server/db/models";
+const axios = require('axios'); 
+const db = require("../../server/db"); 
+const {Trip} = require("../../server/db/models");
 
 const URL = (slug: string) => {
     return 'http://localhost:3000/api' + slug
@@ -86,3 +86,5 @@ describe("Trip routes", () => {
     // })
 
 });
+
+export {}

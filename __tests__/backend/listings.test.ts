@@ -1,6 +1,6 @@
-import axios from 'axios'
-import db from "../../server/db"
-import { Listing } from "../../server/db/models";
+const axios = require('axios'); 
+const db = require("../../server/db"); 
+const {Listing} = require("../../server/db/models");
 
 const URL = (slug: string) => {
     return 'http://localhost:3000/api' + slug
@@ -25,7 +25,7 @@ describe("Listing routes", () => {
     afterAll( async() => {
         await db.close();
     });
-    
+
     describe("GET /api/listings", () => {
         beforeEach(async () => {
             await Listing.create(
@@ -121,3 +121,5 @@ describe("Listing routes", () => {
     // })
 
 });
+
+export {}

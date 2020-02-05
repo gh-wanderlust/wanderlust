@@ -1,4 +1,4 @@
-const { User, Listing, Trip } = require("../../../server/db/models");
+const { User, Listing, Trip } = require("../db/models");
 
 export default async (req: any, res: any) => {
   const { method } = req;

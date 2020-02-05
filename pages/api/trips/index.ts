@@ -1,4 +1,4 @@
-const { Trip } = require("../../../server/db/models");
+const { Trip } = require("../db/models");
 
 export default async (req: any, res: any) => {
   if (req.method === "GET") {

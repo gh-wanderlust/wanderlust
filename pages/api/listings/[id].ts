@@ -1,4 +1,3 @@
-// import { NextApiRequest, NextApiResponse } from 'next';
 const { Listing } = require("../../../server/db/models");
 
 export default async (req: any, res: any) => {

@@ -20,10 +20,10 @@ export default async (req: any, res: any) => {
       break;
     case "DELETE":
       try {
-        const id = req.query.id;
-        const userToBeDeleted = await User.findByPk(id);
-        await userToBeDeleted.destroy();
-        res.status(201);
+        const {query: {id}} = req;
+
+        await User.destroy({where: {id}});
+        res.status(204).end();
       } catch (error) {
         console.error(error);
       }

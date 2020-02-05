@@ -8,6 +8,10 @@ describe('Models', () => {
     await db.sync({ force: true });
   });
 
+  afterAll(async () => {
+    await db.close();
+  });
+
   describe('User Model', () => {
     const userSkeleton: I.User = {
       firstName: 'Furb',
@@ -132,4 +136,4 @@ describe('Models', () => {
   });
 });
 
-export {};
+export { };

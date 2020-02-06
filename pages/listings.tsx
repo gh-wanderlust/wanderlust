@@ -19,7 +19,10 @@ const Listings = (props: any) => {
 // };
 
 Listings.getInitialProps = async function() {
-  const res = await axios.get("https://api.tvmaze.com/search/shows?q=batman");
+  //   const res = await axios.get("https://api.tvmaze.com/search/shows?q=batman");
+  const res = await axios.get(
+    "https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings"
+  );
 
   return { res: res.data };
   //   await store.dispatch(getListings());

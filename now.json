@@ -2,7 +2,6 @@
   "name": "wanderlust",
   "version": 2,
   "builds": [
-    { "src": "*.js", "use": "@now/node", "config": { "bundle": false } },
-    { "src": "*.ts", "use": "@now/node", "config": { "bundle": false } }
+    { "src": "*.js", "use": "@now/node", "config": { "bundle": false } }
   ]
 }

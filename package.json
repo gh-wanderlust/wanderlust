@@ -7,7 +7,7 @@
     "dev": "next",
     "test": "jest --watch --runInBand",
     "jest": "jest",
-    "build": "next build",
+    "build": "tsc && next build",
     "start": "next start",
     "tsc": "tsc",
     "seed": "node seed.js"

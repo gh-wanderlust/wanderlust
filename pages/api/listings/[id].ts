@@ -1,11 +1,9 @@
-const { Listing } = require('../../../server/db/models');
+const { Listing, Trip } = require('../../../server/db/models');
 
 export default async (req: any, res: any) => {
   if (req.method === 'GET') {
     try {
-      const {
-        query: { id },
-      } = req;
+      const { query: { id } } = req;
       const listing = await Listing.findByPk(id);
       res.json(listing);
     } catch (err) {

@@ -11,7 +11,8 @@ interface OurProps extends AppProps {
 
 const MyApp = (props: OurProps) => {
   const { Component, pageProps, store } = props;
-
+  console.log("THIS IS PAGE PROPS!!:", pageProps);
+  
   return (
     <Provider store={store}>
       <Component {...pageProps} />

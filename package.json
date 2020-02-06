@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
-    "test": "jest --watch --runInBand",
-    "jest": "jest",
     "build": "tsc && next build",
+    "dev": "next",
+    "jest": "jest",
+    "prod": "next build && next start",
+    "seed": "node seed.js",
     "start": "next start",
-    "tsc": "tsc",
-    "seed": "node seed.js"
+    "test": "jest --watch --runInBand",
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",

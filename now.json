@@ -1,5 +1,7 @@
 {
   "name": "wanderlust",
   "version": 2,
-  "builds": [{ "config": { "bundle": false } }]
+  "builds": [
+    { "src": "*.js", "use": "@now/node", "config": { "bundle": false } }
+  ]
 }

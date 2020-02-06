@@ -9,6 +9,7 @@ const db = new Sequelize(
     // this is the IP address
     host: process.env.SQL_GHP_WANDERLUST_IP,
     dialect: 'postgres',
+    dialectModule: require('pg'),
     logging: false,
   }
 );

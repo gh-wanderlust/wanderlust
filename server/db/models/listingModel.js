@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
+const User = require('./userModel')
 
 const Listing = db.define('listing', {
   name: {
@@ -35,5 +36,10 @@ const Listing = db.define('listing', {
     defaultValue: [],
   },
 });
+
+// Listing.prototype.getInterested = async (id) => {
+//   const interestedUsers = await User.findAll()
+//   return interestedUsers.length
+// }
 
 module.exports = Listing;

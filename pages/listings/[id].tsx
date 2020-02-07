@@ -1,98 +1,58 @@
 import React from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 // import { withRouter } from "next/router"
 
-interface ListingData {
-  name: string;
-  description: string;
-  address: string;
-  city: string;
-  country: string;
-}
+// interface ListingData {
+//   name: string;
+//   description: string;
+//   address: string;
+//   city: string;
+//   country: string;
+// }
 
-interface ListingProps {
-  listing: object;
-}
+// interface ListingProps {
+//   listing: object;
+// }
 
-class SingleListing extends React.Component {
-  static async getInitialProps() {
-    const router = useRouter();
-    const { id } = router.query;
-    const res = await axios.get(`https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings/${id}?users=true`);
-    console.log('RES: ', res);
-    const listing = res.data;
-
-    return { listing };
-  }
-
-  render() {
-    return (
+const SingleListing = (props: any) => {
+  const { listing } = props
+  // console.log("LISTING IN COMPONENT: ", listing)
+  return (
+    <div>
       <div>
-        {/* <div>
-          {listing.ownerPhotos.map((imgUrl) => {
-            return <img src={imgUrl} />;
-          })}
-        </div>
-        <div>
-          <h2>{listing.name}</h2>
-          <p>{listing.description}</p>
-        </div>
-        <div>
-          <ul>
-            {listing.trips.map((trip) => {
-              if (trip.status === 'pending') {
-                return trip.users.map((user) => {
-                  return <li>{`${user.firstName} ${user.lastName}`}</li>;
-                });
-              }
-            })}
-          </ul>
-          <button>I'm interested!</button>
-        </div> */}
+        {listing.ownerPhotos.map((imgUrl: string) => {
+          return <img src={imgUrl} />;
+        })}
       </div>
-    )
-  }
-}
+      <div>
+        <h2>{listing.name}</h2>
+        <p>{listing.description}</p>
+      </div>
+      <div>
+        <ul>
+          {console.log("TRIPS? ", listing.trips)}
+          {/* {listing.trips.map((trip: object) => {
+            console.log("WHAT IS TRIP: ", trip)
+            // if (trip.status === 'pending') {
+            //   return trip.users.map((user) => {
+            //     return <li>{`${user.firstName} ${user.lastName}`}</li>;
+            //   });
+            // }
+          })} */}
+        </ul>
+        <button>I'm interested!</button>
+      </div>
+    </div>
+  );
+};
 
-// const SingleListing = (props: ListingProps) => {
-//   const { listing } = props
-//   console.log(listing)
-//   return (
-//     <div>
-//       <div>
-//         {listing.ownerPhotos.map((imgUrl) => {
-//           return <img src={imgUrl} />;
-//         })}
-//       </div>
-//       <div>
-//         <h2>{listing.name}</h2>
-//         <p>{listing.description}</p>
-//       </div>
-//       <div>
-//         <ul>
-//           {listing.trips.map((trip) => {
-//             if (trip.status === 'pending') {
-//               return trip.users.map((user) => {
-//                 return <li>{`${user.firstName} ${user.lastName}`}</li>;
-//               });
-//             }
-//           })}
-//         </ul>
-//         <button>I'm interested!</button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// SingleListing.getInitialProps = async (ctx: any) => {
-//   const router = useRouter();
-//   const { id } = router.query;
-//   const res = await axios.get(`https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings/${id}?users=true`);
-//   console.log('RES: ', res);
-//   const listing = res.data;
-
-//   return { listing };
-// };
+SingleListing.getInitialProps = async function(context: any) {
+  const listingId = context.query.id
+  const bool = context.query.users
+  const res = await axios.get(`https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings/${listingId}?users=${bool}`);
+  const listing = res.data;
+  return { listing };
+};
 
 export default SingleListing;

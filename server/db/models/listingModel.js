@@ -34,6 +34,10 @@ const Listing = db.define('listing', {
     type: Sequelize.ARRAY(Sequelize.STRING),
     defaultValue: [],
   },
+  price: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  }
 });
 
 module.exports = Listing;

@@ -23,6 +23,10 @@ const Listing = db.define('listing', {
     type: Sequelize.TEXT,
     allowNull: false,
   },
+  zipCode: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   minOccupants: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -35,6 +39,10 @@ const Listing = db.define('listing', {
     type: Sequelize.ARRAY(Sequelize.STRING),
     defaultValue: [],
   },
+  price: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  }
 });
 
 // Listing.prototype.getInterested = async (id) => {

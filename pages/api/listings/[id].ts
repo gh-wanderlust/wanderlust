@@ -4,11 +4,11 @@ export default async (req: any, res: any) => {
   if (req.method === 'GET') {
     try {
       const {
-        query: { id, users },
+        query: { id, include },
       } = req;
 
       let options: object = {};
-      if (users) {
+      if ( include ) {
         options = { include: [{ model: Trip, include: { model: User } }] };
       }
       const listing = await Listing.findByPk(id, options);

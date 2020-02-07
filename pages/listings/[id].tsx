@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from "react-redux"
+import loginUser from '../../store/store'
+import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
 // import { useRouter } from 'next/router';
 // import { withRouter } from "next/router"
 
@@ -12,12 +15,22 @@ import axios from 'axios';
 // }
 
 // interface ListingProps {
-//   listing: object;
+//   name: string;
+//   description: string;
+//   address: string;
+//   city: string;
+//   country: string;
+//   ownerPhotos
 // }
 
 const SingleListing = (props: any) => {
   const { listing } = props
   // console.log("LISTING IN COMPONENT: ", listing)
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+  }
+
   return (
     <div>
       <div>
@@ -30,29 +43,36 @@ const SingleListing = (props: any) => {
         <p>{listing.description}</p>
       </div>
       <div>
+        <h2>Interested Users</h2>
         <ul>
-          {console.log("TRIPS? ", listing.trips)}
-          {/* {listing.trips.map((trip: object) => {
-            console.log("WHAT IS TRIP: ", trip)
-            // if (trip.status === 'pending') {
-            //   return trip.users.map((user) => {
-            //     return <li>{`${user.firstName} ${user.lastName}`}</li>;
-            //   });
-            // }
-          })} */}
+          {listing.trips.map((trip: any) => {
+            if (trip.status === 'pending') {
+              return trip.users.map((user: any) => {
+                return <li>{`${user.firstName} ${user.lastName}`}</li>;
+              });
+            }
+          })}
         </ul>
-        <button>I'm interested!</button>
+        <button onClick={handleClick}>I'm interested!</button>
       </div>
     </div>
   );
 };
 
 SingleListing.getInitialProps = async function(context: any) {
+  const user = {
+      id: 10,
+      firstName: "Moanna",
+      lastName: "Mo",
+      email: "moanna@ocean.com",
+      password: "ocean"
+    }
+  // const getUser = () => store.dispatch(loginUser(user as any))
+  context.store.dispatch(loginUser( user as any))
   const listingId = context.query.id
-  const bool = context.query.users
-  const res = await axios.get(`https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings/${listingId}?users=${bool}`);
+  const res = await axios.get(`https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings/${listingId}?include=users`);
   const listing = res.data;
   return { listing };
 };
 
-export default SingleListing;
+export default connect(loadGetInitialProps)(SingleListing);

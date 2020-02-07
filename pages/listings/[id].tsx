@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { connect } from "react-redux"
-import { loginUser } from '../../store/store'
+import { connect } from 'react-redux';
+import Link from 'next/link';
+import { loginUser, addTripUser, removeTripUser } from '../../store/store';
+import { bindActionCreators } from 'redux';
 import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
 
 // import { useRouter } from 'next/router';
@@ -25,16 +27,18 @@ import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
 // }
 
 const SingleListing = (props: any) => {
-  const { listing, dummyUser } = props
-  const [userInterested, setInterested] = useState(false)
+  const { listing, dummyUser, interestedUsers, addUser } = props;
+
+  const [userInterested, setInterested] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (userInterested) {
-      setInterested(false)
+      setInterested(false);
     } else {
-      setInterested(true)
+      addUser(dummyUser);
+      setInterested(true);
     }
-  }
+  };
 
   return (
     <div>
@@ -50,16 +54,21 @@ const SingleListing = (props: any) => {
       <div>
         <h2>Interested Users</h2>
         <ul>
-          {listing.trips.map((trip: any) => {
-            if (trip.status === 'pending') {
-              return trip.users.map((user: any) => {
-                return <li>{`${user.firstName} ${user.lastName}`}</li>;
-              });
-            }
+          {interestedUsers.map((user: any) => {
+            return <li>{`${user.firstName} ${user.lastName}`}</li>;
           })}
-          {userInterested ? <li>{`${dummyUser.firstName} ${dummyUser.lastName}`}</li>: ""}
+          {userInterested ? (
+            <li>{`${dummyUser.firstName} ${dummyUser.lastName}`}</li>
+          ) : (
+            ''
+          )}
         </ul>
-        <button onClick={handleClick}>{userInterested ? ":/ No longer interested": "I'm interested!"}</button>
+        <button onClick={handleClick}>
+          {userInterested ? ':/ No longer interested' : "I'm interested!"}
+        </button>
+        <Link href='/book'>
+          <button>Book now!</button>
+        </Link>
       </div>
     </div>
   );
@@ -67,18 +76,41 @@ const SingleListing = (props: any) => {
 
 SingleListing.getInitialProps = async function(context: any) {
   const user = {
-      id: 10,
-      firstName: "Moanna",
-      lastName: "Mo",
-      email: "moanna@ocean.com",
-      password: "ocean"
-    }
-  context.store.dispatch(loginUser( user as any))
-  const dummyUser = context.store.getState().user
-  const listingId = context.query.id
-  const res = await axios.get(`https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings/${listingId}?include=users`);
+    id: 10,
+    firstName: 'Moanna',
+    lastName: 'Mo',
+    email: 'moanna@ocean.com',
+    password: 'ocean',
+  };
+  context.store.dispatch(loginUser(user as any));
+  const dummyUser = context.store.getState().user;
+  const listingId = context.query.id;
+  const res = await axios.get(
+    `https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings/${listingId}?include=users`
+  );
   const listing = res.data;
-  return { listing, dummyUser };
+
+  listing.trips.map((trip: any) => {
+    if (trip.status === 'pending') {
+      return trip.users.map((user: any) => {
+        context.store.dispatch(addTripUser(user));
+
+        return <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>;
+      });
+    }
+  });
+
+  return {
+    listing,
+    dummyUser,
+    interestedUsers: context.store.getState().users,
+  };
 };
 
-export default connect(loadGetInitialProps)(SingleListing);
+const mapDispatchtoProps = (dispatch: any) => {
+  return {
+    addUser: bindActionCreators(addTripUser, dispatch),
+  };
+};
+
+export default connect(null, mapDispatchtoProps)(SingleListing);

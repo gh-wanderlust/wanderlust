@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import { connect } from "react-redux"
-import loginUser from '../../store/store'
+import { loginUser } from '../../store/store'
 import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
+
 // import { useRouter } from 'next/router';
 // import { withRouter } from "next/router"
 
@@ -24,11 +25,15 @@ import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
 // }
 
 const SingleListing = (props: any) => {
-  const { listing } = props
-  // console.log("LISTING IN COMPONENT: ", listing)
+  const { listing, dummyUser } = props
+  const [userInterested, setInterested] = useState(false)
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-
+    if (userInterested) {
+      setInterested(false)
+    } else {
+      setInterested(true)
+    }
   }
 
   return (
@@ -52,8 +57,9 @@ const SingleListing = (props: any) => {
               });
             }
           })}
+          {userInterested ? <li>{`${dummyUser.firstName} ${dummyUser.lastName}`}</li>: ""}
         </ul>
-        <button onClick={handleClick}>I'm interested!</button>
+        <button onClick={handleClick}>{userInterested ? ":/ No longer interested": "I'm interested!"}</button>
       </div>
     </div>
   );
@@ -67,12 +73,12 @@ SingleListing.getInitialProps = async function(context: any) {
       email: "moanna@ocean.com",
       password: "ocean"
     }
-  // const getUser = () => store.dispatch(loginUser(user as any))
   context.store.dispatch(loginUser( user as any))
+  const dummyUser = context.store.getState().user
   const listingId = context.query.id
   const res = await axios.get(`https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings/${listingId}?include=users`);
   const listing = res.data;
-  return { listing };
+  return { listing, dummyUser };
 };
 
 export default connect(loadGetInitialProps)(SingleListing);

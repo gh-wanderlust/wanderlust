@@ -23,7 +23,7 @@ const Listing = db.define('listing', {
     allowNull: false,
   },
   zipCode: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   minOccupants: {

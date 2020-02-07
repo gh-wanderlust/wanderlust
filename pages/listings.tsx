@@ -1,13 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
 import axios from "axios";
-import { getListings } from "../store/store";
+
+interface ListingInterface {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  ownerPhotos: Array<string>;
+  city: string;
+}
 
 const Listings = (props: any) => {
-  console.log("PROPS:", props);
   return (
     <div>
       <p>Listings</p>
+      {props.listings.map((listing: ListingInterface) => {
+        return (
+          <div key={listing.id}>
+            <p>{listing.name}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -19,14 +33,15 @@ const Listings = (props: any) => {
 // };
 
 Listings.getInitialProps = async function() {
-  //   const res = await axios.get("https://api.tvmaze.com/search/shows?q=batman");
+  // const res = await axios.get("https://api.tvmaze.com/search/shows?q=batman");
+  // const instance = axios.create({ baseURL: "http://localhost:3000" });
+
+  // const res = await instance.get("/api/listings");
   const res = await axios.get(
     "https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings"
   );
 
-  return { res: res.data };
-  //   await store.dispatch(getListings());
-  //   console.log("HELLO");
+  return { listings: res.data };
 };
 
 export default connect()(Listings);

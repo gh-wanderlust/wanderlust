@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import styled from 'styled-components'
 import zipcodes from 'zipcodes'
@@ -7,9 +7,13 @@ import zipcodes from 'zipcodes'
 const AnyReactComponent = ({ text }) => <Marker>{''}</Marker>;
 
 const SimpleMap = (props) => {
-  console.log(props.zipcode)
+  const [zip, setZip] = useState(props.zipcode)
 
-  const coords = zipcodes.lookup(props.zipcode)
+  if (zip !== props.zipcode) {
+    setZip(props.zipcode)
+  }
+
+  const coords = zipcodes.lookup(zip)
   console.log('coords:', coords)
 
 
@@ -18,7 +22,7 @@ const SimpleMap = (props) => {
       <div style={{ height: '400px', width: '400px' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY }}
-          defaultCenter={{
+          center={{
             lat: coords.latitude,
             lng: coords.longitude
           }}
@@ -31,6 +35,8 @@ const SimpleMap = (props) => {
             text="BETA MARKER"
           />
         </GoogleMapReact>
+
+
       </div>
     );
 

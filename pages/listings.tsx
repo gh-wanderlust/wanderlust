@@ -23,15 +23,15 @@ const Listings = (props: any) => {
 
   const handleChange = (e: any) => {
     setDropDownVal(e.target.value);
-    setZipCode("10704");
 
     if (e.target.value.toLowerCase() === "anywhere") {
       setFiltered(listings);
+      setZipCode("10704");
     } else {
       const filteredListings = listings.filter((listing: ListingInterface) => {
         return listing.city.toLowerCase() === e.target.value.toLowerCase();
       });
-
+      console.log(filtered);
       setFiltered(filteredListings);
     }
   };

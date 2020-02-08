@@ -6,12 +6,11 @@ const seed = async () => {
   await db.sync({ force: true });
   console.log('DB synced!');
 
-
-  const addListings = []
-  listingSeed.forEach(listing => {
-    addListings.push(Listing.create(listing))
-  })
-  const listings = await Promise.all(addListings)
+  const addListings = [];
+  listingSeed.forEach((listing) => {
+    addListings.push(Listing.create(listing));
+  });
+  const listings = await Promise.all(addListings);
 
   const users = await Promise.all([
     User.create({
@@ -47,6 +46,11 @@ const seed = async () => {
       status: 'booked',
     }),
     Trip.create({
+      dateFrom: new Date(2020, 3, 24),
+      dateTo: new Date(2020, 3, 27),
+      status: 'pending',
+    }),
+    Trip.create({
       dateFrom: new Date(2021, 3, 25),
       dateTo: new Date(2021, 4, 5),
       status: 'pending',
@@ -57,10 +61,12 @@ const seed = async () => {
     users[0].addListing([listings[0], listings[1]]),
     users[1].addListing(listings[0]),
     users[2].addListing([listings[0], listings[1], listings[2]]),
-    trips[1].addUser([users[0], users[2]]),
-    trips[1].setListing(listings[1]),
     trips[0].addUser([users[0], users[1], users[2]]),
     trips[0].setListing(listings[0]),
+    trips[1].addUser([users[0], users[1], users[2]]),
+    trips[1].setListing(listings[0]),
+    trips[2].addUser([users[0], users[2]]),
+    trips[2].setListing(listings[1]),
   ]);
 
   console.log('DB seeded!');

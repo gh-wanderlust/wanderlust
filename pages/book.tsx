@@ -6,12 +6,15 @@ const Book = (props: any) => {
   const { users } = props;
   return (
     <div>
+      <h2>You've booked a trip!</h2>
       <ul>
         {users.map((user: any) => {
           return <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>;
         })}
       </ul>
-      <Link href='/listings'>Back to listings</Link>
+      {/* <Link href='/listings'>
+        <button>Back to listings</button>
+      </Link> */}
     </div>
   );
 };

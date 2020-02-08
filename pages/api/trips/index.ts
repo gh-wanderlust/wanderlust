@@ -12,7 +12,10 @@ export default async (req: any, res: any) => {
 
   if (req.method === 'POST') {
     try {
-      const trip = await Trip.create(req.body);
+      const [trip] = await Trip.findOrCreate({ where: req.body });
+      if (req.query.userId) {
+        trip.addUser(req.query.userId);
+      }
       res.status(201).json(trip);
     } catch (error) {
       console.error(error);

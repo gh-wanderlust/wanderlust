@@ -50,7 +50,7 @@ const Listings = (props: any) => {
       </select>
       <h2>Listings</h2>
       {filtered.map((listing: ListingInterface) => {
-        const pageUrl = `/listing/${listing.id}`;
+        const pageUrl = `/listings/${listing.id}`;
 
         return (
           <Link href={pageUrl} key={listing.id}>

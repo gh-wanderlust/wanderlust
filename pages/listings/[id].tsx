@@ -27,12 +27,13 @@ import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
 // }
 
 const SingleListing = (props: any) => {
-  const { listing, dummyUser, interestedUsers, addUser } = props;
+  const { listing, dummyUser, interestedUsers, addUser, removeUser } = props;
 
   const [userInterested, setInterested] = useState(false);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const setInterest = (e: React.FormEvent<HTMLFormElement>) => {
     if (userInterested) {
+      removeUser(dummyUser);
       setInterested(false);
     } else {
       addUser(dummyUser);
@@ -63,9 +64,16 @@ const SingleListing = (props: any) => {
             ''
           )}
         </ul>
-        <button onClick={handleClick}>
-          {userInterested ? ':/ No longer interested' : "I'm interested!"}
-        </button>
+        <form name='set-user-interest' onSubmit={setInterest}>
+          <label htmlFor='date-from'>Checkin: </label>
+          <input name='date-from' type='date'></input>
+          <label htmlFor='date-to'>Checkout: </label>
+          <input name='date-to' type='date'></input>
+
+          <button type='submit'>
+            {userInterested ? ':/ No longer interested' : "I'm interested!"}
+          </button>
+        </form>
         <Link href='/book'>
           <button>Book now!</button>
         </Link>
@@ -77,10 +85,10 @@ const SingleListing = (props: any) => {
 SingleListing.getInitialProps = async function(context: any) {
   const user = {
     id: 10,
-    firstName: 'Moanna',
-    lastName: 'Mo',
-    email: 'moanna@ocean.com',
-    password: 'ocean',
+    firstName: 'Grace',
+    lastName: 'Hopper',
+    email: 'alwaysbe@coding.com',
+    password: 'coding',
   };
   context.store.dispatch(loginUser(user as any));
   const dummyUser = context.store.getState().user;
@@ -110,6 +118,7 @@ SingleListing.getInitialProps = async function(context: any) {
 const mapDispatchtoProps = (dispatch: any) => {
   return {
     addUser: bindActionCreators(addTripUser, dispatch),
+    removeUser: bindActionCreators(removeTripUser, dispatch),
   };
 };
 

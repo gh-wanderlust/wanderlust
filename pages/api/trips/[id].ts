@@ -4,14 +4,20 @@ export default async (req: any, res: any) => {
   if (req.method === 'GET') {
     try {
       const {
-        query: { id },
+        query: { id, include },
       } = req;
-      const trip = await Trip.findByPk(id, {
-        include: [{ model: User }],
-      });
+
+      const options =
+        include === 'users'
+          ? {
+              include: [{ model: User }],
+            }
+          : {};
+      const trip = await Trip.findByPk(id, options);
       res.json(trip);
     } catch (error) {
       console.error(error);
+      res.status(500).end();
     }
   }
 

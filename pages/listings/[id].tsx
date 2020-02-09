@@ -57,6 +57,29 @@ const SingleListing = (props: any) => {
     }
   };
 
+  const interestForm = userInterested ? (
+    ''
+  ) : (
+    <>
+      <label htmlFor='date-from'>Checkin: </label>
+      <input
+        name='date-from'
+        type='date'
+        value={dateFrom}
+        onChange={(e) => setDateFrom(e.target.value)}
+        required
+      ></input>
+      <label htmlFor='date-to'>Checkout: </label>
+      <input
+        name='date-to'
+        type='date'
+        value={dateTo}
+        onChange={(e) => setDateTo(e.target.value)}
+        required
+      ></input>
+    </>
+  );
+
   return (
     <div>
       <div>
@@ -76,23 +99,7 @@ const SingleListing = (props: any) => {
           })}
         </ul>
         <form name='set-user-interest' onSubmit={handleInterest}>
-          <label htmlFor='date-from'>Checkin: </label>
-          <input
-            name='date-from'
-            type='date'
-            value={dateFrom}
-            onChange={(e) => setDateFrom(e.target.value)}
-            required
-          ></input>
-          <label htmlFor='date-to'>Checkout: </label>
-          <input
-            name='date-to'
-            type='date'
-            value={dateTo}
-            onChange={(e) => setDateTo(e.target.value)}
-            required
-          ></input>
-
+          {interestForm}
           <button type='submit'>
             {userInterested ? ':/ No longer interested' : "I'm interested!"}
           </button>

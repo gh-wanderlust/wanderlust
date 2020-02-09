@@ -1,11 +1,21 @@
-const { Trip } = require('../../../server/db/models');
+const { Trip, User } = require('../../../server/db/models');
 // import { Trip, User } from '../../../server/db/models/interfaces';
 
 export default async (req: any, res: any) => {
   if (req.method === 'GET') {
+    const { userId, listingId } = req.query;
+
     try {
-      const trips = await Trip.findAll();
-      res.json(trips);
+      if (userId) {
+        const trip = await findTrip(parseInt(userId), listingId);
+        res.json(trip);
+      } else {
+        const { include } = req.query;
+        const options = include === 'users' ? { include: { model: User } } : {};
+
+        const trips = await Trip.findAll(options);
+        res.json(trips);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -30,7 +40,6 @@ export default async (req: any, res: any) => {
         where: { listingId, status: 'pending' },
       });
 
-      console.log(trips);
       trips.forEach(async (trip: any) => {
         if (trip.hasUser(userId)) {
           await trip.removeUser(userId);
@@ -43,4 +52,22 @@ export default async (req: any, res: any) => {
       console.error(error);
     }
   }
+};
+
+/** HELPERS **/
+
+const findTrip = async (userId: number, listingId: number) => {
+  const trips = await Trip.findAll({
+    where: { listingId, status: 'pending' },
+  });
+
+  for (const trip of trips) {
+    const hasUser = await trip.hasUser(userId);
+    console.log('hasUser:', hasUser);
+    if (hasUser) {
+      return trip;
+    }
+  }
+
+  return {};
 };

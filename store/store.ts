@@ -1,51 +1,105 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { Dispatch } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
+import axios from 'axios';
+
+import { Listing, User, Trip } from '../server/db/models/interfaces';
 
 interface Action {
   type: string;
-  payload?: object;
+  [key: string]: any;
 }
 
-// const GET_LISTINGS = "GET_LISTINGS"
-const GET_SINGLE_LISTING = 'GET_SINGLE_LISTING';
-const LOGIN_USER = 'LOGIN_USER';
-const ADD_TRIP_USER = 'ADD_TRIP_USER';
-const REMOVE_TRIP_USER = 'REMOVE_TRIP_USER';
+/** INITIAL STATE **/
+const initState = {
+  listing: {
+    ownerPhotos: [],
+  },
+  user: {},
+  interestedUsers: [],
+};
 
-// export const getListings = () => ({ type: GET_LISTINGS, payload: "listings" })
-export const getSingleListing = () => ({
-  type: GET_SINGLE_LISTING,
-  payload: 'singleListing',
+/** ACTIONS  **/
+const GOT_SINGLE_LISTING = 'GOT_SINGLE_LISTING';
+const LOGIN_USER = 'LOGIN_USER';
+const CLEAR_INTERESTED_USERS = 'CLEAR_INTERESTED_USERS';
+const ADD_INTERESTED_USER = 'ADD_INTERESTED_USER';
+const REMOVE_INTERESTED_USER = 'REMOVE_INTERESTED_USER';
+
+/** ACTION CREATORS **/
+
+export const gotSingleListing = (listing: Listing) => ({
+  type: GOT_SINGLE_LISTING,
+  listing,
 });
-export const loginUser = (user: any) => ({ type: LOGIN_USER, payload: user });
-export const addTripUser = (user: any) => ({
-  type: ADD_TRIP_USER,
-  payload: user,
+
+export const loginUser = (user: User) => ({ type: LOGIN_USER, user });
+
+export const clearInterestedUsers = () => ({
+  type: CLEAR_INTERESTED_USERS,
 });
-export const removeTripUser = (userId: number) => ({
-  type: REMOVE_TRIP_USER,
-  payload: userId,
+export const addInterestedUser = (user: User) => ({
+  type: ADD_INTERESTED_USER,
+  user,
 });
+export const removeInterestedUser = (userId: number) => ({
+  type: REMOVE_INTERESTED_USER,
+  userId,
+});
+
+/** THUNKS **/
+
+export const getSingleListing = (id: number) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(clearInterestedUsers());
+
+    const res = await axios.get(`/api/listings/${id}?include=users`);
+    const listing = res.data;
+
+    dispatch(gotSingleListing(listing));
+
+    let users: User[] = [];
+    listing.trips.map((trip: Trip) => {
+      if (trip.status === 'pending' && trip.users) {
+        trip.users.map((user: User) => {
+          dispatch(addInterestedUser(user));
+        });
+      }
+    });
+  };
+};
+
+/** REDUCER **/
 
 const reducer = (state: any = {}, action: Action) => {
   switch (action.type) {
     // case GET_LISTINGS:
     //   return [...state, action.payload];
-    case GET_SINGLE_LISTING:
-      return { ...state, user: action.payload };
+    case GOT_SINGLE_LISTING:
+      return { ...state, listing: action.listing };
     case LOGIN_USER:
-      return { ...state, user: action.payload };
-    case ADD_TRIP_USER:
-      return { ...state, users: [...state.users, action.payload] };
-    case REMOVE_TRIP_USER:
+      return { ...state, user: action.user };
+    case CLEAR_INTERESTED_USERS:
       return {
         ...state,
-        users: state.users.filter((user: any) => {
-          return user.id !== action.payload;
+        interestedUsers: [],
+      };
+    case ADD_INTERESTED_USER:
+      return {
+        ...state,
+        interestedUsers: [...state.interestedUsers, action.user],
+      };
+    case REMOVE_INTERESTED_USER:
+      return {
+        ...state,
+        interestedUsers: state.interestedUsers.filter((user: any) => {
+          console.log(user.id, action.userId);
+          return user.id !== action.userId;
         }),
       };
+
     default:
       return state;
   }
@@ -55,7 +109,7 @@ const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
 );
 
-const initStore = (initialState = { user: {}, users: [] }) =>
+const initStore = (initialState = initState) =>
   createStore(reducer, initialState, middleware);
 
 export default initStore;

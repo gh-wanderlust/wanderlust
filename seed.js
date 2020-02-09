@@ -37,6 +37,12 @@ const seed = async () => {
       imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/f/f1/Dwayne_Johnson_2%2C_2013.jpg',
     }),
+    User.create({
+      firstName: 'Grace',
+      lastName: 'Hopper',
+      email: 'alwaysbe@coding.com',
+      password: 'coding',
+    }),
   ]);
 
   const trips = await Promise.all([

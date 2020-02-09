@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
+// import Link from 'next/link';
 import { User } from '../../server/db/models/interfaces';
 import {
   loginUser,
   addInterestedUser,
   removeInterestedUser,
   getSingleListing,
+  loadTrip,
 } from '../../store/store';
 
 const SingleListing = (props: any) => {
@@ -20,7 +22,10 @@ const SingleListing = (props: any) => {
     getListing,
     addUser,
     removeUser,
+    loadTrip,
   } = props;
+
+  const router = useRouter();
 
   /** STATE **/
   const [userInterested, setInterested] = useState(false);
@@ -44,19 +49,37 @@ const SingleListing = (props: any) => {
     const userId = dummyUser.id;
 
     if (userInterested) {
-      await axios.delete(`/api/trips?userId=${userId}&listingId=${listing.id}`);
+      await axios.delete(`/api/trips`, {
+        data: { userId, listingId: listing.id },
+      });
       removeUser(dummyUser.id);
     } else {
-      await axios.post(`/api/trips?userId=${userId}`, {
-        dateFrom,
-        dateTo,
-        status: 'pending',
-        listingId: listing.id,
+      await axios.post(`/api/trips`, {
+        userIds: [userId],
+        trip: {
+          dateFrom,
+          dateTo,
+          status: 'pending',
+          listingId: listing.id,
+        },
       });
       addUser(dummyUser);
     }
   };
 
+  const handleBook = async (e: React.MouseEvent) => {
+    const userId = dummyUser.id;
+    const res = await axios.get(
+      `/api/trips?userId=${userId}&listingId=${listing.id}`
+    );
+    const trip = res.data;
+
+    await loadTrip(trip);
+
+    router.push('/book');
+  };
+
+  /** CONDITIONAL RENDERING **/
   const interestForm = userInterested ? (
     ''
   ) : (
@@ -80,6 +103,16 @@ const SingleListing = (props: any) => {
     </>
   );
 
+  const submitButtonText = userInterested
+    ? ':/ No longer interested'
+    : "I'm interested!";
+
+  const bookButton = userInterested ? (
+    <button onClick={handleBook}>Book now!</button>
+  ) : (
+    ''
+  );
+
   return (
     <div>
       <div>
@@ -95,18 +128,16 @@ const SingleListing = (props: any) => {
         <h2>Interested Users</h2>
         <ul>
           {users.map((user: any) => {
-            return <li>{`${user.firstName} ${user.lastName}`}</li>;
+            return (
+              <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
+            );
           })}
         </ul>
         <form name='set-user-interest' onSubmit={handleInterest}>
           {interestForm}
-          <button type='submit'>
-            {userInterested ? ':/ No longer interested' : "I'm interested!"}
-          </button>
+          <button type='submit'>{submitButtonText}</button>
         </form>
-        <Link href='/book'>
-          <button>Book now!</button>
-        </Link>
+        {bookButton}
       </div>
     </div>
   );
@@ -129,6 +160,7 @@ const mapState = (state: any) => {
     listing: state.listing,
     user: state.user,
     users: state.interestedUsers,
+    tripToBook: state.tripToBook,
   };
 };
 
@@ -137,6 +169,7 @@ const mapDispatch = (dispatch: any) => {
     getListing: bindActionCreators(getSingleListing, dispatch),
     addUser: bindActionCreators(addInterestedUser, dispatch),
     removeUser: bindActionCreators(removeInterestedUser, dispatch),
+    loadTrip: bindActionCreators(loadTrip, dispatch),
   };
 };
 

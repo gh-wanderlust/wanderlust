@@ -85,9 +85,7 @@ const Listings = (props: any) => {
 
 Listings.getInitialProps = async function() {
   // const res = await instance.get("/api/listings");
-  const res = await axios.get(
-    'https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings'
-  );
+  const res = await axios.get('http://localhost:3000/api/listings');
 
   return { listings: res.data };
 };

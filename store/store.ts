@@ -19,6 +19,8 @@ const initState = {
   },
   user: {},
   interestedUsers: [],
+  tripToBook: {},
+  bookedTrip: {},
 };
 
 /** ACTIONS  **/
@@ -27,6 +29,8 @@ const LOGIN_USER = 'LOGIN_USER';
 const CLEAR_INTERESTED_USERS = 'CLEAR_INTERESTED_USERS';
 const ADD_INTERESTED_USER = 'ADD_INTERESTED_USER';
 const REMOVE_INTERESTED_USER = 'REMOVE_INTERESTED_USER';
+const LOAD_TRIP = 'LOAD_TRIP';
+const BOOK_TRIP = 'BOOK_TRIP';
 
 /** ACTION CREATORS **/
 
@@ -47,6 +51,16 @@ export const addInterestedUser = (user: User) => ({
 export const removeInterestedUser = (userId: number) => ({
   type: REMOVE_INTERESTED_USER,
   userId,
+});
+
+export const loadTrip = (trip: Trip) => ({
+  type: LOAD_TRIP,
+  trip,
+});
+
+export const bookTrip = (trip: Trip) => ({
+  type: BOOK_TRIP,
+  trip,
 });
 
 /** THUNKS **/
@@ -95,11 +109,19 @@ const reducer = (state: any = {}, action: Action) => {
       return {
         ...state,
         interestedUsers: state.interestedUsers.filter((user: any) => {
-          console.log(user.id, action.userId);
           return user.id !== action.userId;
         }),
       };
-
+    case LOAD_TRIP:
+      return {
+        ...state,
+        tripToBook: action.trip,
+      };
+    case BOOK_TRIP:
+      return {
+        ...state,
+        bookedTrip: action.trip,
+      };
     default:
       return state;
   }

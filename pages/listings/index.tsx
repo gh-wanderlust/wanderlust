@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useState } from 'react';
+import Link from 'next/link';
 // @ts-ignore
-import LinesEllipsis from "react-lines-ellipsis";
-import { connect } from "react-redux";
-import axios from "axios";
-import styled from "styled-components";
+import LinesEllipsis from 'react-lines-ellipsis';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import styled from 'styled-components';
 
 interface ListingInterface {
   id: number;
@@ -18,12 +18,12 @@ interface ListingInterface {
 const Listings = (props: any) => {
   const [listings, setListings] = useState(props.listings);
   const [filtered, setFiltered] = useState(listings);
-  const [dropDownVal, setDropDownVal] = useState("Anywhere");
+  const [dropDownVal, setDropDownVal] = useState('Anywhere');
 
   const handleChange = (e: any) => {
     setDropDownVal(e.target.value);
 
-    if (e.target.value.toLowerCase() === "anywhere") {
+    if (e.target.value.toLowerCase() === 'anywhere') {
       setFiltered(listings);
     } else {
       const filteredListings = listings.filter((listing: ListingInterface) => {
@@ -37,38 +37,38 @@ const Listings = (props: any) => {
   return (
     <div>
       <select
-        name="cities"
-        id="cities"
+        name='cities'
+        id='cities'
         onChange={handleChange}
         value={dropDownVal}
       >
-        <option value="anywhere">Anywhere</option>
-        <option value="osaka">Osaka</option>
-        <option value="bora bora">Bora Bora</option>
-        <option value="inverness">Inverness</option>
-        <option value="test">TEST</option>
+        <option value='anywhere'>Anywhere</option>
+        <option value='osaka'>Osaka</option>
+        <option value='bora bora'>Bora Bora</option>
+        <option value='inverness'>Inverness</option>
+        <option value='test'>TEST</option>
       </select>
       <h2>Listings</h2>
       {filtered.map((listing: ListingInterface) => {
-        const pageUrl = `/listing/${listing.id}`;
+        const pageUrl = `/listings/${listing.id}`;
 
         return (
           <Link href={pageUrl} key={listing.id}>
             <ListingBox>
-              <div className="text">
+              <div className='text'>
                 <h3>{listing.name}</h3>
                 {/* <p id="desc">{listing.description}</p> */}
                 <TrimmedText
                   text={listing.description}
-                  maxLine="3"
-                  ellipsis="..."
-                  basedOn="letters"
+                  maxLine='3'
+                  ellipsis='...'
+                  basedOn='letters'
                 />
-                <p>{listing.price || "$0"}/night</p>
+                <p>{listing.price || '$0'}/night</p>
                 <p>X other people are interested</p>
               </div>
 
-              <img src={listing.ownerPhotos[0]} alt="" />
+              <img src={listing.ownerPhotos[0]} alt='' />
             </ListingBox>
           </Link>
         );
@@ -85,9 +85,7 @@ const Listings = (props: any) => {
 
 Listings.getInitialProps = async function() {
   // const res = await instance.get("/api/listings");
-  const res = await axios.get(
-    "https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings"
-  );
+  const res = await axios.get('http://localhost:3000/api/listings');
 
   return { listings: res.data };
 };

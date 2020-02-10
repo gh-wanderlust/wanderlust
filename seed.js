@@ -6,12 +6,11 @@ const seed = async () => {
   await db.sync({ force: true });
   console.log('DB synced!');
 
-
-  const addListings = []
-  listingSeed.forEach(listing => {
-    addListings.push(Listing.create(listing))
-  })
-  const listings = await Promise.all(addListings)
+  const addListings = [];
+  listingSeed.forEach((listing) => {
+    addListings.push(Listing.create(listing));
+  });
+  const listings = await Promise.all(addListings);
 
   const users = await Promise.all([
     User.create({
@@ -38,6 +37,12 @@ const seed = async () => {
       imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/f/f1/Dwayne_Johnson_2%2C_2013.jpg',
     }),
+    User.create({
+      firstName: 'Grace',
+      lastName: 'Hopper',
+      email: 'alwaysbe@coding.com',
+      password: 'coding',
+    }),
   ]);
 
   const trips = await Promise.all([
@@ -45,6 +50,11 @@ const seed = async () => {
       dateFrom: new Date(2020, 2, 24),
       dateTo: new Date(2020, 2, 27),
       status: 'booked',
+    }),
+    Trip.create({
+      dateFrom: new Date(2020, 3, 24),
+      dateTo: new Date(2020, 3, 27),
+      status: 'pending',
     }),
     Trip.create({
       dateFrom: new Date(2021, 3, 25),
@@ -57,10 +67,12 @@ const seed = async () => {
     users[0].addListing([listings[0], listings[1]]),
     users[1].addListing(listings[0]),
     users[2].addListing([listings[0], listings[1], listings[2]]),
-    trips[1].addUser([users[0], users[2]]),
-    trips[1].setListing(listings[1]),
     trips[0].addUser([users[0], users[1], users[2]]),
     trips[0].setListing(listings[0]),
+    trips[1].addUser([users[0], users[1], users[2]]),
+    trips[1].setListing(listings[0]),
+    trips[2].addUser([users[0], users[2]]),
+    trips[2].setListing(listings[1]),
   ]);
 
   console.log('DB seeded!');

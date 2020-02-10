@@ -1,6 +1,5 @@
-import React from "react";
-import { connect } from "react-redux";
-import { getTest } from "../store/store";
+import React from 'react';
+import { connect } from 'react-redux';
 
 interface LinkStateProps {
   state: Array<string>;
@@ -24,10 +23,10 @@ class Index extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: Array<string>) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  testDispatch: () => dispatch(getTest())
+  testDispatch: () => {},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Index);

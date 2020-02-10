@@ -1,4 +1,5 @@
 export interface User {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -8,6 +9,7 @@ export interface User {
 }
 
 export interface Listing {
+  id: number;
   name: string;
   description: string;
   address: string;
@@ -16,10 +18,14 @@ export interface Listing {
   minOccupants: number;
   maxOccupants: number;
   ownerPhotos?: Array<string>;
+  price: number;
+  trips?: Trip[];
 }
 
 export interface Trip {
+  id: number;
   dateFrom: Date;
   dateTo: Date;
   status: string;
+  users?: User[];
 }

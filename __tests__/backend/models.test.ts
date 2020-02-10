@@ -14,6 +14,7 @@ describe('Models', () => {
 
   describe('User Model', () => {
     const userSkeleton: I.User = {
+      id: 1,
       firstName: 'Furb',
       lastName: 'McPhurbeson',
       email: 'watching@furby.com',
@@ -63,6 +64,7 @@ describe('Models', () => {
 
   describe('Listing Model', () => {
     const listingSkeleton: I.Listing = {
+      id: 2,
       name: 'Name',
       description: 'Desc',
       address: 'Address',
@@ -70,6 +72,7 @@ describe('Models', () => {
       country: 'Country',
       minOccupants: 1,
       maxOccupants: 2,
+      price: 0,
     };
 
     it('should have correct name, description, address, city, country, occupants, photos', async () => {
@@ -86,6 +89,7 @@ describe('Models', () => {
       expect(listing.minOccupants).toEqual(1);
       expect(listing.maxOccupants).toEqual(2);
       expect(listing.ownerPhotos).toEqual(['link1', 'link2']);
+      expect(listing.price).toEqual('0');
     });
 
     it('should set a default value for ownerPhotos if not provided', async () => {
@@ -136,4 +140,4 @@ describe('Models', () => {
   });
 });
 
-export { };
+export {};

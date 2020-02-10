@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 // import Link from 'next/link';
 import { User } from "../../server/db/models/interfaces";
+import Review from "../../components/Review";
 import {
   loginUser,
   addInterestedUser,
@@ -123,18 +124,19 @@ const SingleListing = (props: any) => {
         })}
       </ImageGrid>
 
-      <Info>
-        <Left>
-          <SectionHeader className="title">{listing.name}</SectionHeader>
-          <p>4.9 ★ (407)</p>
-          <p>$200 a night</p>
-          <p>4 beds</p>
-          <p>2 baths</p>
-        </Left>
-        <p className="content">{listing.description}</p>
-      </Info>
+      <Content>
+        <Info>
+          <Left>
+            <SectionHeader className="title">{listing.name}</SectionHeader>
+            <p>4.9 ★ (407)</p>
+            <p>$200 a night</p>
+            <p>4 beds</p>
+            <p>2 baths</p>
+          </Left>
+          <Desc className="content">{listing.description}</Desc>
+        </Info>
 
-      <div>
+        {/* <div>
         <SectionHeader className="title">Interested Users</SectionHeader>
         <ul className="content">
           {users.map((user: any) => {
@@ -148,16 +150,31 @@ const SingleListing = (props: any) => {
           <button type="submit">{submitButtonText}</button>
         </form>
         {bookButton}
-      </div>
+      </div> */}
 
-      <GuestPhotos>
-        <Left>
-          <SectionHeader>Guest Photos</SectionHeader>
-        </Left>
-        <div>
-          <img src="https://via.placeholder.com/150" alt="" />
-        </div>
-      </GuestPhotos>
+        <GuestPhotos>
+          <Left>
+            <SectionHeader>Guest Photos</SectionHeader>
+          </Left>
+          <GuestPhotoGrid>
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+          </GuestPhotoGrid>
+        </GuestPhotos>
+
+        <Reviews>
+          <Left>
+            <SectionHeader>Reviews</SectionHeader>
+          </Left>
+          <div>
+            <Review />
+          </div>
+        </Reviews>
+      </Content>
     </Wrapper>
   );
 };
@@ -210,8 +227,6 @@ const todayString = () => {
 
 const Wrapper = styled.div`
   margin: 0 1vw;
-  display: grid;
-  grid-gap: 2vh;
 `;
 
 const ImageGrid = styled.div`
@@ -248,19 +263,47 @@ const ImageGrid = styled.div`
   }
 `;
 
+const Content = styled.div`
+  margin-top: 6vh;
+  display: grid;
+  grid-gap: 8vh;
+`;
+
 const SectionHeader = styled.h2`
   max-width: 15ch;
   text-align: right;
+  margin: 0;
 `;
 
 const Section = styled.div`
   display: grid;
   grid-template-columns: 2fr 3fr;
+
+  p {
+    margin: 0;
+  }
 `;
 
 const Info = styled(Section)``;
 
+const Desc = styled.p`
+  width: 85%;
+`;
+
 const GuestPhotos = styled(Section)``;
+const Reviews = styled(Section)``;
+
+const GuestPhotoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 8px;
+  width: 85%;
+
+  img {
+    width: 100%;
+  }
+`;
 
 const Left = styled.div`
   display: flex;
@@ -273,5 +316,3 @@ const Left = styled.div`
     margin: 0;
   }
 `;
-
-const Details = styled.div``;

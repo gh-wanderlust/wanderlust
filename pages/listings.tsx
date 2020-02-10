@@ -26,12 +26,19 @@ const Listings = (props: any) => {
 
     if (e.target.value.toLowerCase() === "anywhere") {
       setFiltered(listings);
-      setZipCode("10704");
     } else {
       const filteredListings = listings.filter((listing: ListingInterface) => {
         return listing.city.toLowerCase() === e.target.value.toLowerCase();
       });
-      console.log(filtered);
+
+      switch (filteredListings[0].city) {
+        case "Chicago":
+          setZipCode("60657");
+          break;
+        default:
+          setZipCode("10004");
+      }
+
       setFiltered(filteredListings);
     }
   };

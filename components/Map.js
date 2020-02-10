@@ -8,13 +8,14 @@ const AnyReactComponent = ({ text }) => <Marker>{''}</Marker>;
 
 const SimpleMap = (props) => {
   const [zip, setZip] = useState(props.zipcode)
+  // console.log('ZIP',zip)
 
   if (zip !== props.zipcode) {
     setZip(props.zipcode)
   }
 
   const coords = zipcodes.lookup(zip)
-  console.log('coords:', coords)
+  // console.log('coords:', coords)
 
 
     return (

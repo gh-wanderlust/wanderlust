@@ -53,7 +53,8 @@ const Listings = (props: any) => {
       <h2>Listings</h2>
       {filtered.map((listing: ListingInterface) => {
         const pageUrl = `/listings/${listing.id}`;
-
+        const trips = listing.trips.filter((e) => e.status === 'pending');  
+        
         return (
           <Link href={pageUrl} key={listing.id}>
             <ListingBox>
@@ -67,7 +68,7 @@ const Listings = (props: any) => {
                   basedOn="letters"
                 />
                 <p>{listing.price || '$0'}/night</p>
-                <p>{listing.trips.length ? listing.trips.length + " other traveler(s) interested!" : ""}</p>
+                <p>{trips.length ? trips.length + " other traveler(s) interested!" : ""}</p>
               </div>
 
               <img src={listing.ownerPhotos[0]} alt="" />

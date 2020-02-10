@@ -122,38 +122,42 @@ const SingleListing = (props: any) => {
           return <img key={idx} src={imgUrl} />;
         })}
       </ImageGrid>
-      <div>
-        <Info>
-          <div>
-            <SectionHeader className="title">{listing.name}</SectionHeader>
-            <p>4.9 ★ (407)</p>
-            <p>$200 a night</p>
-            <p>4 beds</p>
-            <p>2 baths</p>
-          </div>
-          <p className="content">{listing.description}</p>
-        </Info>
-        <div>
-          <SectionHeader className="title">Interested Users</SectionHeader>
-          <ul className="content">
-            {users.map((user: any) => {
-              return (
-                <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
-              );
-            })}
-          </ul>
-          <form name="set-user-interest" onSubmit={handleInterest}>
-            {interestForm}
-            <button type="submit">{submitButtonText}</button>
-          </form>
-          {bookButton}
-        </div>
 
-        <GuestPhotos>
-          <SectionHeader>Guest Photos</SectionHeader>
-          <img src="https://via.placeholder.com/150" alt="" />
-        </GuestPhotos>
+      <Info>
+        <Left>
+          <SectionHeader className="title">{listing.name}</SectionHeader>
+          <p>4.9 ★ (407)</p>
+          <p>$200 a night</p>
+          <p>4 beds</p>
+          <p>2 baths</p>
+        </Left>
+        <p className="content">{listing.description}</p>
+      </Info>
+
+      <div>
+        <SectionHeader className="title">Interested Users</SectionHeader>
+        <ul className="content">
+          {users.map((user: any) => {
+            return (
+              <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
+            );
+          })}
+        </ul>
+        <form name="set-user-interest" onSubmit={handleInterest}>
+          {interestForm}
+          <button type="submit">{submitButtonText}</button>
+        </form>
+        {bookButton}
       </div>
+
+      <GuestPhotos>
+        <Left>
+          <SectionHeader>Guest Photos</SectionHeader>
+        </Left>
+        <div>
+          <img src="https://via.placeholder.com/150" alt="" />
+        </div>
+      </GuestPhotos>
     </Wrapper>
   );
 };
@@ -212,6 +216,7 @@ const Wrapper = styled.div`
 
 const ImageGrid = styled.div`
   display: grid;
+  max-height: 50vh;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-gap: 8px;
@@ -244,15 +249,29 @@ const ImageGrid = styled.div`
 `;
 
 const SectionHeader = styled.h2`
+  max-width: 15ch;
   text-align: right;
 `;
 
-const Info = styled.div`
+const Section = styled.div`
   display: grid;
   grid-template-columns: 2fr 3fr;
 `;
 
-const GuestPhotos = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 3fr;
+const Info = styled(Section)``;
+
+const GuestPhotos = styled(Section)``;
+
+const Left = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 5vw;
+
+  p {
+    padding: 0;
+    margin: 0;
+  }
 `;
+
+const Details = styled.div``;

@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const ListingBox = (props: any) => {
   const { listing } = props;
-  const pageUrl = `/listing/${listing.id}`;
+  const pageUrl = `/listings/${listing.id}`;
 
   return (
     <Link href={pageUrl} key={listing.id}>

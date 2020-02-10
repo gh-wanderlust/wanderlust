@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { useRouter } from 'next/router';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { useRouter } from "next/router";
 // import Link from 'next/link';
-import { User } from '../../server/db/models/interfaces';
+import { User } from "../../server/db/models/interfaces";
 import {
   loginUser,
   addInterestedUser,
   removeInterestedUser,
   getSingleListing,
-  loadTrip,
-} from '../../store/store';
+  loadTrip
+} from "../../store/store";
 
 const SingleListing = (props: any) => {
   const {
@@ -22,7 +22,7 @@ const SingleListing = (props: any) => {
     getListing,
     addUser,
     removeUser,
-    loadTrip,
+    loadTrip
   } = props;
 
   const router = useRouter();
@@ -45,12 +45,13 @@ const SingleListing = (props: any) => {
   /** FORM HANDLING**/
   const handleInterest = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(props);
 
     const userId = dummyUser.id;
 
     if (userInterested) {
       await axios.delete(`/api/trips`, {
-        data: { userId, listingId: listing.id },
+        data: { userId, listingId: listing.id }
       });
       removeUser(dummyUser.id);
     } else {
@@ -59,9 +60,9 @@ const SingleListing = (props: any) => {
         trip: {
           dateFrom,
           dateTo,
-          status: 'pending',
-          listingId: listing.id,
-        },
+          status: "pending",
+          listingId: listing.id
+        }
       });
       addUser(dummyUser);
     }
@@ -76,41 +77,41 @@ const SingleListing = (props: any) => {
 
     await loadTrip(trip);
 
-    router.push('/book');
+    router.push("/book");
   };
 
   /** CONDITIONAL RENDERING **/
   const interestForm = userInterested ? (
-    ''
+    ""
   ) : (
     <>
-      <label htmlFor='date-from'>Checkin: </label>
+      <label htmlFor="date-from">Checkin: </label>
       <input
-        name='date-from'
-        type='date'
+        name="date-from"
+        type="date"
         value={dateFrom}
-        onChange={(e) => setDateFrom(e.target.value)}
+        onChange={e => setDateFrom(e.target.value)}
         required
       ></input>
-      <label htmlFor='date-to'>Checkout: </label>
+      <label htmlFor="date-to">Checkout: </label>
       <input
-        name='date-to'
-        type='date'
+        name="date-to"
+        type="date"
         value={dateTo}
-        onChange={(e) => setDateTo(e.target.value)}
+        onChange={e => setDateTo(e.target.value)}
         required
       ></input>
     </>
   );
 
   const submitButtonText = userInterested
-    ? ':/ No longer interested'
+    ? ":/ No longer interested"
     : "I'm interested!";
 
   const bookButton = userInterested ? (
     <button onClick={handleBook}>Book now!</button>
   ) : (
-    ''
+    ""
   );
 
   return (
@@ -133,9 +134,9 @@ const SingleListing = (props: any) => {
             );
           })}
         </ul>
-        <form name='set-user-interest' onSubmit={handleInterest}>
+        <form name="set-user-interest" onSubmit={handleInterest}>
           {interestForm}
-          <button type='submit'>{submitButtonText}</button>
+          <button type="submit">{submitButtonText}</button>
         </form>
         {bookButton}
       </div>
@@ -144,14 +145,14 @@ const SingleListing = (props: any) => {
 };
 
 SingleListing.getInitialProps = async function(context: any) {
-  const users = await axios.get('http://localhost:3000/api/users');
-  const user = users.data.find((u: any) => u.firstName === 'Grace');
+  const users = await axios.get("http://localhost:3000/api/users");
+  const user = users.data.find((u: any) => u.firstName === "Grace");
   context.store.dispatch(loginUser(user));
   const dummyUser = context.store.getState().user;
 
   return {
     dummyUser,
-    id: context.query.id,
+    id: context.query.id
   };
 };
 
@@ -160,7 +161,7 @@ const mapState = (state: any) => {
     listing: state.listing,
     user: state.user,
     users: state.interestedUsers,
-    tripToBook: state.tripToBook,
+    tripToBook: state.tripToBook
   };
 };
 
@@ -169,7 +170,7 @@ const mapDispatch = (dispatch: any) => {
     getListing: bindActionCreators(getSingleListing, dispatch),
     addUser: bindActionCreators(addInterestedUser, dispatch),
     removeUser: bindActionCreators(removeInterestedUser, dispatch),
-    loadTrip: bindActionCreators(loadTrip, dispatch),
+    loadTrip: bindActionCreators(loadTrip, dispatch)
   };
 };
 
@@ -183,8 +184,8 @@ const todayString = () => {
   let mm: string | number = today.getMonth() + 1;
   let dd: string | number = today.getDate();
 
-  if (mm < 10) mm = '0' + mm;
-  if (dd < 10) dd = '0' + dd;
+  if (mm < 10) mm = "0" + mm;
+  if (dd < 10) dd = "0" + dd;
 
   return `${yyyy}-${mm}-${dd}`;
 };

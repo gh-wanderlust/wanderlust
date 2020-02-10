@@ -13,7 +13,7 @@ interface ListingInterface {
   price: number;
   ownerPhotos: Array<string>;
   city: string;
-  trips: Array<string>;
+  trips: Array<any>;
 }
 import { apiUrl } from '../../util';
 
@@ -54,7 +54,7 @@ const Listings = (props: any) => {
       {filtered.map((listing: ListingInterface) => {
         const pageUrl = `/listings/${listing.id}`;
         const trips = listing.trips.filter((e) => e.status === 'pending');  
-        
+
         return (
           <Link href={pageUrl} key={listing.id}>
             <ListingBox>
@@ -122,5 +122,3 @@ const ListingBox = styled.div`
 const TrimmedText = styled(LinesEllipsis)`
   padding: 0;
 `;
-
-/** HELPERS **/

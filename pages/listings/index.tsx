@@ -7,12 +7,13 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 interface ListingInterface {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  ownerPhotos: Array<string>;
-  city: string;
+	id: number;
+	name: string;
+	description: string;
+	price: number;
+	ownerPhotos: Array<string>;
+	city: string;
+	trips: Array<any>;
 }
 
 const Listings = (props: any) => {
@@ -51,27 +52,32 @@ const Listings = (props: any) => {
       <h2>Listings</h2>
       {filtered.map((listing: ListingInterface) => {
         const pageUrl = `/listings/${listing.id}`;
+        const trips = listing.trips.filter((e) => e.status === 'pending');
 
         return (
-          <Link href={pageUrl} key={listing.id}>
-            <ListingBox>
-              <div className='text'>
-                <h3>{listing.name}</h3>
-                {/* <p id="desc">{listing.description}</p> */}
-                <TrimmedText
-                  text={listing.description}
-                  maxLine='3'
-                  ellipsis='...'
-                  basedOn='letters'
-                />
-                <p>{listing.price || '$0'}/night</p>
-                <p>X other people are interested</p>
-              </div>
+					<Link href={pageUrl} key={listing.id}>
+						<ListingBox>
+							<div className="text">
+								<h3>{listing.name}</h3>
+								{/* <p id="desc">{listing.description}</p> */}
+								<TrimmedText
+									text={listing.description}
+									maxLine="3"
+									ellipsis="..."
+									basedOn="letters"
+								/>
+								<p>{listing.price || '$0'}/night</p>
+								<p>
+									{trips.length
+										? trips.length + ' other traveler(s) interested!'
+										: ''}
+								</p>
+							</div>
 
-              <img src={listing.ownerPhotos[0]} alt='' />
-            </ListingBox>
-          </Link>
-        );
+							<img src={listing.ownerPhotos[0]} alt="" />
+						</ListingBox>
+					</Link>
+				);
       })}
     </div>
   );

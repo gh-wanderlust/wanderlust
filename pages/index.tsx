@@ -15,14 +15,6 @@ interface LinkDispatchProps {
 type Props = LinkStateProps & LinkDispatchProps
 
 class Index extends React.Component<Props> {
-  // constructor(props: Props) {
-  //   super(props)
-  //   this.handleChange = this.handleChange.bind(this)
-  // }
-
-  // handleChange = (e: any) => {
-  //   console.log('EVENT TARGET: ', e.target.value)
-  // }
 
   render() {
     return (

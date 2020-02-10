@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { useRouter } from "next/router";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { useRouter } from 'next/router';
+import styled from 'styled-components';
 // import Link from 'next/link';
-import { User } from "../../server/db/models/interfaces";
-import Review from "../../components/Review";
+import { User } from '../../server/db/models/interfaces';
+import Review from '../../components/Review';
 import {
   loginUser,
   addInterestedUser,
@@ -25,7 +25,7 @@ const SingleListing = (props: any) => {
     getListing,
     addUser,
     removeUser,
-    loadTrip
+    loadTrip,
   } = props;
 
   const router = useRouter();
@@ -54,7 +54,7 @@ const SingleListing = (props: any) => {
 
     if (userInterested) {
       await axios.delete(`/api/trips`, {
-        data: { userId, listingId: listing.id }
+        data: { userId, listingId: listing.id },
       });
       removeUser(dummyUser.id);
     } else {
@@ -63,9 +63,9 @@ const SingleListing = (props: any) => {
         trip: {
           dateFrom,
           dateTo,
-          status: "pending",
-          listingId: listing.id
-        }
+          status: 'pending',
+          listingId: listing.id,
+        },
       });
       addUser(dummyUser);
     }
@@ -80,12 +80,12 @@ const SingleListing = (props: any) => {
 
     await loadTrip(trip);
 
-    router.push("/book");
+    router.push('/book');
   };
 
   /** CONDITIONAL RENDERING **/
   const interestForm = userInterested ? (
-    ""
+    ''
   ) : (
     <>
       <label htmlFor="date-from">Checkin: </label>
@@ -93,7 +93,7 @@ const SingleListing = (props: any) => {
         name="date-from"
         type="date"
         value={dateFrom}
-        onChange={e => setDateFrom(e.target.value)}
+        onChange={(e) => setDateFrom(e.target.value)}
         required
       ></input>
       <label htmlFor="date-to">Checkout: </label>
@@ -101,20 +101,20 @@ const SingleListing = (props: any) => {
         name="date-to"
         type="date"
         value={dateTo}
-        onChange={e => setDateTo(e.target.value)}
+        onChange={(e) => setDateTo(e.target.value)}
         required
       ></input>
     </>
   );
 
   const submitButtonText = userInterested
-    ? ":/ No longer interested"
+    ? ':/ No longer interested'
     : "I'm interested!";
 
   const bookButton = userInterested ? (
     <button onClick={handleBook}>Book now!</button>
   ) : (
-    ""
+    ''
   );
 
   return (
@@ -181,19 +181,14 @@ const SingleListing = (props: any) => {
 };
 
 SingleListing.getInitialProps = async function(context: any) {
-<<<<<<< HEAD
   const users = await axios.get(apiUrl('/api/users'));
   const user = users.data.find((u: any) => u.firstName === 'Grace');
-=======
-  const users = await axios.get("http://localhost:3000/api/users");
-  const user = users.data.find((u: any) => u.firstName === "Grace");
->>>>>>> origin/single-listing-view-#67
   context.store.dispatch(loginUser(user));
   const dummyUser = context.store.getState().user;
 
   return {
     dummyUser,
-    id: context.query.id
+    id: context.query.id,
   };
 };
 
@@ -202,7 +197,7 @@ const mapState = (state: any) => {
     listing: state.listing,
     user: state.user,
     users: state.interestedUsers,
-    tripToBook: state.tripToBook
+    tripToBook: state.tripToBook,
   };
 };
 
@@ -211,7 +206,7 @@ const mapDispatch = (dispatch: any) => {
     getListing: bindActionCreators(getSingleListing, dispatch),
     addUser: bindActionCreators(addInterestedUser, dispatch),
     removeUser: bindActionCreators(removeInterestedUser, dispatch),
-    loadTrip: bindActionCreators(loadTrip, dispatch)
+    loadTrip: bindActionCreators(loadTrip, dispatch),
   };
 };
 
@@ -225,8 +220,8 @@ const todayString = () => {
   let mm: string | number = today.getMonth() + 1;
   let dd: string | number = today.getDate();
 
-  if (mm < 10) mm = "0" + mm;
-  if (dd < 10) dd = "0" + dd;
+  if (mm < 10) mm = '0' + mm;
+  if (dd < 10) dd = '0' + dd;
 
   return `${yyyy}-${mm}-${dd}`;
 };
@@ -242,8 +237,8 @@ const ImageGrid = styled.div`
   grid-template-rows: 1fr 1fr;
   grid-gap: 8px;
   grid-template-areas:
-    "a b d"
-    "a c d";
+    'a b d'
+    'a c d';
   margin: 2vh 0;
 
   img {

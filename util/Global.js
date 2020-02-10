@@ -163,6 +163,11 @@ const Global = createGlobalStyle`
   width: calc(100% / 7);
 }
 
+.number {
+  ${'' /* this is the number */}
+
+}
+
 `;
 
 export default Global;

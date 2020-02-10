@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 import styled from "styled-components";
-import ListingBox from "../components/ListingBox";
-import SimpleMap from "../components/Map";
+import ListingBox from "../../components/ListingBox";
+import SimpleMap from "../../components/Map";
 
 interface ListingInterface {
   id: number;
@@ -76,9 +76,7 @@ const Listings = (props: any) => {
 
 Listings.getInitialProps = async function() {
   // const res = await instance.get("/api/listings");
-  const res = await axios.get(
-    "https://wanderlust-rwnchen.gh-wanderlust.now.sh/api/listings"
-  );
+  const res = await axios.get("http://localhost:3000/api/listings");
 
   return { listings: res.data };
 };

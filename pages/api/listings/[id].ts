@@ -1,27 +1,29 @@
-const { Listing, Trip, User } = require('../../../server/db/models');
+const { Listing, Trip, User } = require("../../../server/db/models");
 
 export default async (req: any, res: any) => {
-  if (req.method === 'GET') {
+  if (req.method === "GET") {
     try {
       const {
-        query: { id, include },
+        query: { id, include }
       } = req;
 
       let options: object = {};
-      if ( include ) {
+      if (include) {
         options = { include: [{ model: Trip, include: { model: User } }] };
       }
       const listing = await Listing.findByPk(id, options);
-      res.json(listing);
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(listing));
+      // res.json(listing);
     } catch (err) {
       console.error(err);
     }
   }
 
-  if (req.method === 'DELETE') {
+  if (req.method === "DELETE") {
     try {
       const {
-        query: { id },
+        query: { id }
       } = req;
 
       await Listing.destroy({ where: { id } });

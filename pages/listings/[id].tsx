@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { useRouter } from 'next/router';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { useRouter } from "next/router";
+import styled from "styled-components";
 // import Link from 'next/link';
-import { User } from '../../server/db/models/interfaces';
+import { User } from "../../server/db/models/interfaces";
+import Review from "../../components/Review";
 import {
   loginUser,
   addInterestedUser,
@@ -23,7 +25,7 @@ const SingleListing = (props: any) => {
     getListing,
     addUser,
     removeUser,
-    loadTrip,
+    loadTrip
   } = props;
 
   const router = useRouter();
@@ -46,12 +48,13 @@ const SingleListing = (props: any) => {
   /** FORM HANDLING**/
   const handleInterest = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(props);
 
     const userId = dummyUser.id;
 
     if (userInterested) {
       await axios.delete(`/api/trips`, {
-        data: { userId, listingId: listing.id },
+        data: { userId, listingId: listing.id }
       });
       removeUser(dummyUser.id);
     } else {
@@ -60,9 +63,9 @@ const SingleListing = (props: any) => {
         trip: {
           dateFrom,
           dateTo,
-          status: 'pending',
-          listingId: listing.id,
-        },
+          status: "pending",
+          listingId: listing.id
+        }
       });
       addUser(dummyUser);
     }
@@ -77,12 +80,12 @@ const SingleListing = (props: any) => {
 
     await loadTrip(trip);
 
-    router.push('/book');
+    router.push("/book");
   };
 
   /** CONDITIONAL RENDERING **/
   const interestForm = userInterested ? (
-    ''
+    ""
   ) : (
     <>
       <label htmlFor="date-from">Checkin: </label>
@@ -90,7 +93,7 @@ const SingleListing = (props: any) => {
         name="date-from"
         type="date"
         value={dateFrom}
-        onChange={(e) => setDateFrom(e.target.value)}
+        onChange={e => setDateFrom(e.target.value)}
         required
       ></input>
       <label htmlFor="date-to">Checkout: </label>
@@ -98,36 +101,45 @@ const SingleListing = (props: any) => {
         name="date-to"
         type="date"
         value={dateTo}
-        onChange={(e) => setDateTo(e.target.value)}
+        onChange={e => setDateTo(e.target.value)}
         required
       ></input>
     </>
   );
 
   const submitButtonText = userInterested
-    ? ':/ No longer interested'
+    ? ":/ No longer interested"
     : "I'm interested!";
 
   const bookButton = userInterested ? (
     <button onClick={handleBook}>Book now!</button>
   ) : (
-    ''
+    ""
   );
 
   return (
-    <div>
-      <div>
+    <Wrapper>
+      <ImageGrid>
         {listing.ownerPhotos.map((imgUrl: string, idx: number) => {
           return <img key={idx} src={imgUrl} />;
         })}
-      </div>
-      <div>
-        <h2>{listing.name}</h2>
-        <p>{listing.description}</p>
-      </div>
-      <div>
-        <h2>Interested Users</h2>
-        <ul>
+      </ImageGrid>
+
+      <Content>
+        <Info>
+          <Left>
+            <SectionHeader className="title">{listing.name}</SectionHeader>
+            <p>4.9 ★ (407)</p>
+            <p>$200 a night</p>
+            <p>4 beds</p>
+            <p>2 baths</p>
+          </Left>
+          <Desc className="content">{listing.description}</Desc>
+        </Info>
+
+        {/* <div>
+        <SectionHeader className="title">Interested Users</SectionHeader>
+        <ul className="content">
           {users.map((user: any) => {
             return (
               <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
@@ -139,20 +151,49 @@ const SingleListing = (props: any) => {
           <button type="submit">{submitButtonText}</button>
         </form>
         {bookButton}
-      </div>
-    </div>
+      </div> */}
+
+        <GuestPhotos>
+          <Left>
+            <SectionHeader>Guest Photos</SectionHeader>
+          </Left>
+          <GuestPhotoGrid>
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+            <img src="https://via.placeholder.com/150" alt="" />
+          </GuestPhotoGrid>
+        </GuestPhotos>
+
+        <Reviews>
+          <Left>
+            <SectionHeader>Reviews</SectionHeader>
+          </Left>
+          <div>
+            <Review />
+          </div>
+        </Reviews>
+      </Content>
+    </Wrapper>
   );
 };
 
 SingleListing.getInitialProps = async function(context: any) {
+<<<<<<< HEAD
   const users = await axios.get(apiUrl('/api/users'));
   const user = users.data.find((u: any) => u.firstName === 'Grace');
+=======
+  const users = await axios.get("http://localhost:3000/api/users");
+  const user = users.data.find((u: any) => u.firstName === "Grace");
+>>>>>>> origin/single-listing-view-#67
   context.store.dispatch(loginUser(user));
   const dummyUser = context.store.getState().user;
 
   return {
     dummyUser,
-    id: context.query.id,
+    id: context.query.id
   };
 };
 
@@ -161,7 +202,7 @@ const mapState = (state: any) => {
     listing: state.listing,
     user: state.user,
     users: state.interestedUsers,
-    tripToBook: state.tripToBook,
+    tripToBook: state.tripToBook
   };
 };
 
@@ -170,7 +211,7 @@ const mapDispatch = (dispatch: any) => {
     getListing: bindActionCreators(getSingleListing, dispatch),
     addUser: bindActionCreators(addInterestedUser, dispatch),
     removeUser: bindActionCreators(removeInterestedUser, dispatch),
-    loadTrip: bindActionCreators(loadTrip, dispatch),
+    loadTrip: bindActionCreators(loadTrip, dispatch)
   };
 };
 
@@ -184,8 +225,100 @@ const todayString = () => {
   let mm: string | number = today.getMonth() + 1;
   let dd: string | number = today.getDate();
 
-  if (mm < 10) mm = '0' + mm;
-  if (dd < 10) dd = '0' + dd;
+  if (mm < 10) mm = "0" + mm;
+  if (dd < 10) dd = "0" + dd;
 
   return `${yyyy}-${mm}-${dd}`;
 };
+
+const Wrapper = styled.div`
+  margin: 0 1vw;
+`;
+
+const ImageGrid = styled.div`
+  display: grid;
+  max-height: 50vh;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 8px;
+  grid-template-areas:
+    "a b d"
+    "a c d";
+  margin: 2vh 0;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+
+    :first-child {
+      grid-area: a;
+    }
+
+    :nth-child(2) {
+      grid-area: d;
+    }
+
+    :nth-child(3) {
+      grid-area: c;
+    }
+
+    :nth-child(4) {
+      grid-area: b;
+    }
+  }
+`;
+
+const Content = styled.div`
+  margin-top: 6vh;
+  display: grid;
+  grid-gap: 8vh;
+`;
+
+const SectionHeader = styled.h2`
+  max-width: 15ch;
+  text-align: right;
+  margin: 0;
+`;
+
+const Section = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+
+  p {
+    margin: 0;
+  }
+`;
+
+const Info = styled(Section)``;
+
+const Desc = styled.p`
+  width: 85%;
+`;
+
+const GuestPhotos = styled(Section)``;
+const Reviews = styled(Section)``;
+
+const GuestPhotoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 8px;
+  width: 85%;
+
+  img {
+    width: 100%;
+  }
+`;
+
+const Left = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 5vw;
+
+  p {
+    padding: 0;
+    margin: 0;
+  }
+`;

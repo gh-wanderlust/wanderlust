@@ -12,7 +12,8 @@ const listingSeed = [
 		ownerPhotos: [
 			'https://roadesque.com/assets/a-peaceful-cabin-in-the-canadian-woods-at-logden-lodge/logdenLodge-2.jpg',
 			'https://i.pinimg.com/originals/51/5e/8e/515e8e2f8de4ce6b42f6aaebbf923543.jpg',
-			'https://www.impressiveinteriordesign.com/wp-content/uploads/2012/10/Cabin-Design-Ideas-For-Inspiration-7.jpg'
+			'https://www.impressiveinteriordesign.com/wp-content/uploads/2012/10/Cabin-Design-Ideas-For-Inspiration-7.jpg',
+			'https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'
 		],
 		price: 20000
 	},

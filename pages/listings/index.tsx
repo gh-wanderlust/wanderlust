@@ -15,6 +15,7 @@ interface ListingInterface {
 	city: string;
 	trips: Array<any>;
 }
+import { apiUrl } from '../../util';
 
 const Listings = (props: any) => {
   const [listings, setListings] = useState(props.listings);
@@ -38,16 +39,16 @@ const Listings = (props: any) => {
   return (
     <div>
       <select
-        name='cities'
-        id='cities'
+        name="cities"
+        id="cities"
         onChange={handleChange}
         value={dropDownVal}
       >
-        <option value='anywhere'>Anywhere</option>
-        <option value='osaka'>Osaka</option>
-        <option value='bora bora'>Bora Bora</option>
-        <option value='inverness'>Inverness</option>
-        <option value='test'>TEST</option>
+        <option value="anywhere">Anywhere</option>
+        <option value="osaka">Osaka</option>
+        <option value="bora bora">Bora Bora</option>
+        <option value="inverness">Inverness</option>
+        <option value="test">TEST</option>
       </select>
       <h2>Listings</h2>
       {filtered.map((listing: ListingInterface) => {
@@ -91,7 +92,7 @@ const Listings = (props: any) => {
 
 Listings.getInitialProps = async function() {
   // const res = await instance.get("/api/listings");
-  const res = await axios.get('http://localhost:3000/api/listings');
+  const res = await axios.get(apiUrl('/api/listings'));
 
   return { listings: res.data };
 };

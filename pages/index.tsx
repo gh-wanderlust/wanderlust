@@ -85,8 +85,10 @@ const SearchWrapper = styled.div`
 
 const SearchForm = styled.form`
   display: grid;
+  grid-template-columns: 300px;
+  grid-template-rows: 25px 25px 25px auto;
   position: absolute;
-  top: 200px;
+  top: 190px;
   left: 50px;
 `
 

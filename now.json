@@ -1,7 +1,7 @@
 {
   "version": 2,
   "env": {
-    "DEPLOY": true,
+    "DEPLOY": "true",
     "SQL_GHP_WANDERLUST_IP": "@db-url",
     "SQL_GHP_WANDERLUST_USERNAME": "@db-username",
     "SQL_GHP_WANDERLUST_PASSWORD": "@db-password"

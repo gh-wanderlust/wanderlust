@@ -3,6 +3,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 // import Link from 'next/link';
 import { User } from "../../server/db/models/interfaces";
 import {
@@ -115,32 +116,45 @@ const SingleListing = (props: any) => {
   );
 
   return (
-    <div>
-      <div>
+    <Wrapper>
+      <ImageGrid>
         {listing.ownerPhotos.map((imgUrl: string, idx: number) => {
           return <img key={idx} src={imgUrl} />;
         })}
-      </div>
+      </ImageGrid>
       <div>
-        <h2>{listing.name}</h2>
-        <p>{listing.description}</p>
+        <Info>
+          <div>
+            <SectionHeader className="title">{listing.name}</SectionHeader>
+            <p>4.9 ★ (407)</p>
+            <p>$200 a night</p>
+            <p>4 beds</p>
+            <p>2 baths</p>
+          </div>
+          <p className="content">{listing.description}</p>
+        </Info>
+        <div>
+          <SectionHeader className="title">Interested Users</SectionHeader>
+          <ul className="content">
+            {users.map((user: any) => {
+              return (
+                <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
+              );
+            })}
+          </ul>
+          <form name="set-user-interest" onSubmit={handleInterest}>
+            {interestForm}
+            <button type="submit">{submitButtonText}</button>
+          </form>
+          {bookButton}
+        </div>
+
+        <GuestPhotos>
+          <SectionHeader>Guest Photos</SectionHeader>
+          <img src="https://via.placeholder.com/150" alt="" />
+        </GuestPhotos>
       </div>
-      <div>
-        <h2>Interested Users</h2>
-        <ul>
-          {users.map((user: any) => {
-            return (
-              <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
-            );
-          })}
-        </ul>
-        <form name="set-user-interest" onSubmit={handleInterest}>
-          {interestForm}
-          <button type="submit">{submitButtonText}</button>
-        </form>
-        {bookButton}
-      </div>
-    </div>
+    </Wrapper>
   );
 };
 
@@ -189,3 +203,56 @@ const todayString = () => {
 
   return `${yyyy}-${mm}-${dd}`;
 };
+
+const Wrapper = styled.div`
+  margin: 0 1vw;
+  display: grid;
+  grid-gap: 2vh;
+`;
+
+const ImageGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 8px;
+  grid-template-areas:
+    "a b d"
+    "a c d";
+  margin: 2vh 0;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+
+    :first-child {
+      grid-area: a;
+    }
+
+    :nth-child(2) {
+      grid-area: d;
+    }
+
+    :nth-child(3) {
+      grid-area: c;
+    }
+
+    :nth-child(4) {
+      grid-area: b;
+    }
+  }
+`;
+
+const SectionHeader = styled.h2`
+  text-align: right;
+`;
+
+const Info = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+`;
+
+const GuestPhotos = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+`;

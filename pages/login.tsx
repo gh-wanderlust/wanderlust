@@ -45,19 +45,22 @@ const Login = (props: any) => {
         ) : (
           ''
         )}
+
+        <label htmlFor="email">Email</label>
         <input
           type="text"
           name="email"
           placeholder="Email"
-          onChange={(e, type = 'email') => onChange(e, type)}
+          onChange={(e) => onChange(e, 'email')}
           value={email}
           required
         />
+        <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
           placeholder="Password"
-          onChange={(e, type = 'password') => onChange(e, type)}
+          onChange={(e) => onChange(e, 'password')}
           value={password}
           required
         />

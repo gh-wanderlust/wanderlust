@@ -12,6 +12,7 @@ import {
   getSingleListing,
   loadTrip,
 } from '../../store/store';
+import { apiUrl } from '../../util';
 
 const SingleListing = (props: any) => {
   const {
@@ -144,7 +145,7 @@ const SingleListing = (props: any) => {
 };
 
 SingleListing.getInitialProps = async function(context: any) {
-  const users = await axios.get('http://localhost:3000/api/users');
+  const users = await axios.get(apiUrl('/api/users'));
   const user = users.data.find((u: any) => u.firstName === 'Grace');
   context.store.dispatch(loginUser(user));
   const dummyUser = context.store.getState().user;

@@ -17,6 +17,7 @@ const seed = async () => {
       firstName: 'Sophie',
       lastName: 'Hatter',
       email: 'sophie@hatter.com',
+      username: 'sophiehatter',
       password: 'howl123',
       imageUrl:
         'https://i.pinimg.com/originals/a8/10/7a/a8107a0f1afa49f51f11566843830a55.jpg',
@@ -25,6 +26,7 @@ const seed = async () => {
       firstName: 'William',
       lastName: 'Wallace',
       email: 'toFreedom@scotland.com',
+      username: 'williamwallace',
       password: 'huzzah',
       imageUrl:
         'https://www.britain-magazine.com/wp-content/uploads/William-Wallace.jpg',
@@ -33,6 +35,7 @@ const seed = async () => {
       firstName: 'Dwayne The Rock',
       lastName: 'Johnson',
       email: 'yourWelcome@moana.com',
+      username: 'dwaynejohnson',
       password: 'doYouSmellWhatTheRockIsCooking',
       imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/f/f1/Dwayne_Johnson_2%2C_2013.jpg',
@@ -41,6 +44,7 @@ const seed = async () => {
       firstName: 'Grace',
       lastName: 'Hopper',
       email: 'alwaysbe@coding.com',
+      username: 'gracehopper',
       password: 'coding',
     }),
   ]);

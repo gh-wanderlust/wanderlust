@@ -1,9 +1,11 @@
-const { Listing } = require('../../../server/db/models');
+const { Listing, User, Trip } = require('../../../server/db/models');
 
 export default async (req: any, res: any) => {
   if (req.method === 'GET') {
     try {
-      const listings = await Listing.findAll();
+      const listings = await Listing.findAll({
+          include: [{model: User}, {model: Trip}]
+      });
       res.json(listings);
     } catch (err) {
       console.error(err);

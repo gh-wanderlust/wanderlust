@@ -65,7 +65,7 @@ const Listings = (props: any) => {
                   basedOn='letters'
                 />
                 <p>{listing.price || '$0'}/night</p>
-                <p>X other people are interested</p>
+                <p>{listing.trips.length ? listing.trips.length + " other traveler(s) interested!" : ""}</p>
               </div>
 
               <img src={listing.ownerPhotos[0]} alt='' />
@@ -86,8 +86,9 @@ const Listings = (props: any) => {
 Listings.getInitialProps = async function() {
   // const res = await instance.get("/api/listings");
   const res = await axios.get('http://localhost:3000/api/listings');
-
+ 
   return { listings: res.data };
+
 };
 
 export default connect()(Listings);
@@ -118,3 +119,5 @@ const ListingBox = styled.div`
 const TrimmedText = styled(LinesEllipsis)`
   padding: 0;
 `;
+
+/** HELPERS **/

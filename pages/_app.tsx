@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import App, { AppProps } from "next/app";
-import { Provider } from "react-redux";
-import withRedux from "next-redux-wrapper";
-import { ThemeProvider } from "styled-components";
-import Head from "next/head";
+import App, { AppProps } from 'next/app';
+import { Provider } from 'react-redux';
+import withRedux from 'next-redux-wrapper';
+import { ThemeProvider } from 'styled-components';
+import Head from 'next/head';
 
-import initStore from "../store/store";
-import Global from "../utils/Global";
+import initStore from '../store/store';
+import Global from '../util/Global';
 
 interface OurProps extends AppProps {
   store: any;

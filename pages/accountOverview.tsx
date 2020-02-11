@@ -15,12 +15,13 @@ const AccountOverview = function(props: any){
 				<h2>Upcoming Trips:</h2>
 				{user.trips.map((trip: any) => {
 					if (trip.status === 'booked') {
-						const interestedListing = user.listings.filter(
+						console.log("TRIP: ", trip)
+						const bookedListing = user.listings.filter(
 							(listing: any) => listing.id === trip.listingId
 						);
 						return (
-							<Link href={`/listings/${interestedListing[0].id}`}>
-								<div>{interestedListing[0].name}</div>
+							<Link href={`/itinerary/${trip.id}`}>
+								<div>{bookedListing[0].name}</div>
 							</Link>
 						);
 					}

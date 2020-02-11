@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
+import Link from 'next/link';
 
 import { login } from '../util/auth';
 
@@ -65,7 +66,7 @@ const Login = (props: any) => {
           required
         />
 
-        <button type="submit">Login</button>
+        <Link href={'/accountOverview'}><button type="submit">Login</button></Link>
       </form>
     </div>
   );

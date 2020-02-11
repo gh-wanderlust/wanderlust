@@ -41,6 +41,12 @@ const Listings = (props: any) => {
         case 'Chicago':
           setZipCode('60657');
           break;
+        case 'Montpelier':
+          setZipCode('05602');
+          break;
+        case 'Miami':
+          setZipCode('33131');
+          break;
         default:
           setZipCode('10004');
       }
@@ -77,7 +83,10 @@ const Listings = (props: any) => {
 
         <List>
           {filtered.map((listing: ListingInterface) => {
-            return <ListingBox listing={listing} key={listing.id} />;
+            const trips = listing.trips.filter((e) => e.status === 'pending');
+            return (
+              <ListingBox listing={listing} key={listing.id} trips={trips} />
+            );
           })}
         </List>
       </Content>

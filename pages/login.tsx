@@ -30,6 +30,7 @@ const Login = (props: any) => {
 
     if (data.token) {
       login(data.token);
+      window.location.href = '/accountOverview'
     } else {
       setError(res.data);
     }
@@ -66,7 +67,7 @@ const Login = (props: any) => {
           required
         />
 
-        <Link href={'/accountOverview'}><button type="submit">Login</button></Link>
+        <button type="submit">Login</button>
       </form>
     </div>
   );

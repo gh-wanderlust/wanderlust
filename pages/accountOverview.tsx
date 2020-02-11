@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import cookies from 'next-cookies'
 
 const AccountOverview = function(props: any){
     const { user } = props;
-
+   
     return (
 			<div>
 				<h1>{`${user.firstName} ${user.lastName}`}</h1>
@@ -41,7 +42,8 @@ const AccountOverview = function(props: any){
 }
 
 AccountOverview.getInitialProps = async (context: any) => {
-	const id = 1;
+    let {token} = cookies(context)
+    const id = token
 	const res = await axios.get(`http://localhost:3000/api/users/${id}`);
 	return { user: res.data };
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 
 import { login } from '../util/auth';
 import { loginUser } from '../store/store';
@@ -87,7 +87,7 @@ const mapState = (state: any) => {
   return { logState: () => console.log(state) };
 };
 
-const mapDispatch = (dispatch: any) => {
+const mapDispatch = (dispatch: Dispatch) => {
   return {
     dispatchLogin: bindActionCreators(loginUser, dispatch),
   };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import cookies from 'next-cookies';
@@ -91,29 +91,6 @@ const SingleListing = (props: any) => {
   };
 
   /** CONDITIONAL RENDERING **/
-  // const interestForm = userInterested ? (
-  //   ''
-  // ) : (
-  //   <>
-  //     <label htmlFor="date-from">Checkin: </label>
-  //     <input
-  //       name="date-from"
-  //       type="date"
-  //       value={dateFrom}
-  //       onChange={(e) => setDateFrom(e.target.value)}
-  //       required
-  //     ></input>
-  //     <label htmlFor="date-to">Checkout: </label>
-  //     <input
-  //       name="date-to"
-  //       type="date"
-  //       value={dateTo}
-  //       onChange={(e) => setDateTo(e.target.value)}
-  //       required
-  //     ></input>
-  //   </>
-  // );
-
   const submitButtonText = userInterested
     ? "I'm no longer interested"
     : "I'm interested in these dates";
@@ -224,13 +201,12 @@ SingleListing.getInitialProps = async function(context: any) {
 const mapState = (state: any) => {
   return {
     listing: state.listing,
-    // loggedUser: state.user,
     users: state.interestedUsers,
     tripToBook: state.tripToBook,
   };
 };
 
-const mapDispatch = (dispatch: any) => {
+const mapDispatch = (dispatch: Dispatch) => {
   return {
     getListing: bindActionCreators(getSingleListing, dispatch),
     addUser: bindActionCreators(addInterestedUser, dispatch),

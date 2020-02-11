@@ -7,8 +7,6 @@ const Calendar = (props: any) => {
   const { checkin, setCheckin, checkout, setCheckout } = props;
 
   const [current, setCurrent] = useState(today);
-  // const [checkin, setCheckin] = useState(dateFns.getDate(today));
-  // const [checkout, setCheckout] = useState(dateFns.getDate(today));
   const [chooseCheckin, setChooseCheckin] = useState(true);
 
   const renderHeader = () => {
@@ -142,14 +140,15 @@ const Calendar = (props: any) => {
     if (chooseCheckin) {
       setCheckin(day);
       if (checkout !== 0 && dateFns.isAfter(day, checkout)) setCheckout(0);
-      else setChooseCheckin(false);
+      setChooseCheckin(false);
     } else {
       setCheckout(day);
+      setChooseCheckin(true);
       if (checkin !== 0 && dateFns.isBefore(day, checkin)) {
         setCheckin(day);
         setCheckout(0);
+        setChooseCheckin(false);
       }
-      setChooseCheckin(true);
     }
   };
 

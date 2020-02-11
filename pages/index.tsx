@@ -21,7 +21,7 @@ class Index extends React.Component<Props> {
       <Wrapper>
         <SearchWrapper>
           <Headline>
-            <p>Logo</p>
+            <h1>W.</h1>
             <h1>Find your next adventure.</h1>
           </Headline>
           <SearchForm>

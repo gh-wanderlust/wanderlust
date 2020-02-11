@@ -5,8 +5,10 @@ import { bindActionCreators } from 'redux';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 // import Link from 'next/link';
+import cookies from 'next-cookies';
 import { User } from '../../server/db/models/interfaces';
 import Review from '../../components/Review';
+import Calendar from '../../components/Calendar';
 import {
   loginUser,
   addInterestedUser,
@@ -20,7 +22,7 @@ const SingleListing = (props: any) => {
   const {
     id,
     listing,
-    dummyUser,
+    loggedUser,
     users,
     getListing,
     addUser,
@@ -40,7 +42,7 @@ const SingleListing = (props: any) => {
   }, []);
 
   useEffect(() => {
-    users.find((user: User) => user.id === dummyUser.id)
+    users.find((user: User) => user.id === loggedUser.id)
       ? setInterested(true)
       : setInterested(false);
   }, [users]);
@@ -48,15 +50,14 @@ const SingleListing = (props: any) => {
   /** FORM HANDLING**/
   const handleInterest = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(props);
 
-    const userId = dummyUser.id;
+    const userId = loggedUser.id;
 
     if (userInterested) {
       await axios.delete(`/api/trips`, {
         data: { userId, listingId: listing.id },
       });
-      removeUser(dummyUser.id);
+      removeUser(loggedUser.id);
     } else {
       await axios.post(`/api/trips`, {
         userIds: [userId],
@@ -67,12 +68,12 @@ const SingleListing = (props: any) => {
           listingId: listing.id,
         },
       });
-      addUser(dummyUser);
+      addUser(loggedUser);
     }
   };
 
   const handleBook = async (e: React.MouseEvent) => {
-    const userId = dummyUser.id;
+    const userId = loggedUser.id;
     const res = await axios.get(
       `/api/trips?userId=${userId}&listingId=${listing.id}`
     );
@@ -108,8 +109,19 @@ const SingleListing = (props: any) => {
   );
 
   const submitButtonText = userInterested
-    ? ':/ No longer interested'
-    : "I'm interested!";
+    ? "I'm no longer interested"
+    : "I'm interested in these dates";
+
+  const calendar = userInterested ? (
+    ''
+  ) : (
+    <Calendar
+      checkin={dateFrom}
+      setCheckin={setDateFrom}
+      checkout={dateTo}
+      setCheckout={setDateTo}
+    />
+  );
 
   const bookButton = userInterested ? (
     <button onClick={handleBook}>Book now!</button>
@@ -137,21 +149,26 @@ const SingleListing = (props: any) => {
           <Desc className="content">{listing.description}</Desc>
         </Info>
 
-        {/* <div>
-        <SectionHeader className="title">Interested Users</SectionHeader>
-        <ul className="content">
-          {users.map((user: any) => {
-            return (
-              <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
-            );
-          })}
-        </ul>
-        <form name="set-user-interest" onSubmit={handleInterest}>
-          {interestForm}
-          <button type="submit">{submitButtonText}</button>
-        </form>
-        {bookButton}
-      </div> */}
+        <Booking>
+          <Left>
+            <SectionHeader className="title">Interested Users</SectionHeader>
+          </Left>
+          <div>
+            <ul className="content">
+              {users.map((user: any) => {
+                return (
+                  <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
+                );
+              })}
+            </ul>
+            <form name="set-user-interest" onSubmit={handleInterest}>
+              {interestForm}
+              <button type="submit">{submitButtonText}</button>
+              {/* {calendar} */}
+              {bookButton}
+            </form>
+          </div>
+        </Booking>
 
         <GuestPhotos>
           <Left>
@@ -181,13 +198,13 @@ const SingleListing = (props: any) => {
 };
 
 SingleListing.getInitialProps = async function(context: any) {
-  const users = await axios.get(apiUrl('/api/users'));
-  const user = users.data.find((u: any) => u.firstName === 'Grace');
-  context.store.dispatch(loginUser(user));
-  const dummyUser = context.store.getState().user;
+  // const {token} = cookies(context);
+  // const res = await axios.get(apiUrl(`/api/users/${token}`));
+  // const user = res.data;
+  // context.store.dispatch(loginUser(user));
+  // const dummyUser = context.store.getState().user;
 
   return {
-    dummyUser,
     id: context.query.id,
   };
 };
@@ -195,7 +212,7 @@ SingleListing.getInitialProps = async function(context: any) {
 const mapState = (state: any) => {
   return {
     listing: state.listing,
-    user: state.user,
+    loggedUser: state.user,
     users: state.interestedUsers,
     tripToBook: state.tripToBook,
   };
@@ -291,6 +308,7 @@ const Desc = styled.p`
   width: 85%;
 `;
 
+const Booking = styled(Section)``;
 const GuestPhotos = styled(Section)``;
 const Reviews = styled(Section)``;
 

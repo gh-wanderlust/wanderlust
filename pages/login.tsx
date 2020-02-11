@@ -3,6 +3,7 @@ import axios from 'axios';
 import Router from 'next/router';
 
 import { login } from '../util/auth';
+import { loginUser } from '../store/store';
 
 const Login = (props: any) => {
   const [email, setEmail] = useState('');
@@ -24,13 +25,19 @@ const Login = (props: any) => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await axios.post('/api/login', { email, password });
-    const { data } = res;
+    const loginRes = await axios.post('/api/login', { email, password });
+    const { token } = loginRes.data;
 
-    if (data.token) {
-      login(data.token);
+    if (token) {
+      login(token);
+
+      const userRes = await axios.get(`/api/users/${token}`);
+      const user = userRes.data;
+      loginUser(user);
+
+      Router.push('/listings');
     } else {
-      setError(res.data);
+      setError(loginRes.data);
     }
   };
 

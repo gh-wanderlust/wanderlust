@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-// import Link from 'next/link';
 import cookies from 'next-cookies';
+import * as dateFns from 'date-fns';
+
 import { User } from '../../server/db/models/interfaces';
 import Review from '../../components/Review';
 import Calendar from '../../components/Calendar';
@@ -36,8 +37,9 @@ const SingleListing = (props: any) => {
   const [userInterested, setInterested] = useState(false);
   // const [dateFrom, setDateFrom] = useState(new Date(Date.now()));
   // const [dateTo, setDateTo] = useState(new Date(Date.now()));
-  const [dateFrom, setDateFrom] = useState(null);
-  const [dateTo, setDateTo] = useState(null);
+  const [dateFrom, setDateFrom] = useState(0);
+  const [dateTo, setDateTo] = useState(0);
+  const [bookError, setBookError] = useState('');
 
   useEffect(() => {
     getListing(id);
@@ -53,24 +55,26 @@ const SingleListing = (props: any) => {
   const handleInterest = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const userId = loggedUser.id;
-
     if (userInterested) {
       await axios.delete(`/api/trips`, {
-        data: { userId, listingId: listing.id },
+        data: { userId: loggedUser.id, listingId: listing.id },
       });
       removeUser(loggedUser.id);
-    } else {
+    } else if (dateFrom !== 0 && dateTo !== 0) {
       await axios.post(`/api/trips`, {
-        userIds: [userId],
+        userIds: [loggedUser.id],
         trip: {
-          dateFrom,
-          dateTo,
+          dateFrom: dateFns.format(dateFrom, 'yyyy-MM-dd'),
+          dateTo: dateFns.format(dateTo, 'yyyy-MM-dd'),
           status: 'pending',
           listingId: listing.id,
         },
       });
       addUser(loggedUser);
+    } else {
+      setBookError(
+        "Please make sure you've properly selected a checkin and checkout date"
+      );
     }
   };
 
@@ -119,9 +123,15 @@ const SingleListing = (props: any) => {
   ) : (
     <Calendar
       checkin={dateFrom}
-      setCheckin={setDateFrom}
+      setCheckin={(v: any) => {
+        setDateFrom(v);
+        setBookError('');
+      }}
       checkout={dateTo}
-      setCheckout={setDateTo}
+      setCheckout={(v: any) => {
+        setDateTo(v);
+        setBookError('');
+      }}
     />
   );
 
@@ -168,6 +178,7 @@ const SingleListing = (props: any) => {
               <button type="submit">{submitButtonText}</button>
             </form>
             {bookButton}
+            {bookError}
             {calendar}
           </div>
         </Booking>

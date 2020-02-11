@@ -141,13 +141,13 @@ const Calendar = (props: any) => {
   const onDateClick = (day: any) => {
     if (chooseCheckin) {
       setCheckin(day);
-      if (checkout && dateFns.isAfter(day, checkout)) setCheckout(null);
+      if (checkout !== 0 && dateFns.isAfter(day, checkout)) setCheckout(0);
       else setChooseCheckin(false);
     } else {
       setCheckout(day);
-      if (checkin && dateFns.isBefore(day, checkin)) {
+      if (checkin !== 0 && dateFns.isBefore(day, checkin)) {
         setCheckin(day);
-        setCheckout(null);
+        setCheckout(0);
       }
       setChooseCheckin(true);
     }

@@ -51,16 +51,54 @@ const Calendar = (props: any) => {
     const startDate = dateFns.startOfWeek(monthStart);
     const endDate = dateFns.endOfWeek(monthEnd);
 
+    const dummyTrips = [
+      {
+        id: 222,
+        dateFrom: new Date(2020, 2, 14),
+        dateTo: new Date(2020, 2, 20),
+      },
+      {
+        id: 223,
+        dateFrom: new Date(2020, 2, 22),
+        dateTo: new Date(2020, 2, 28),
+      },
+    ];
+
+    const allIntervals: any = {};
+
+    dummyTrips.forEach((trip) => {
+      let interval = {
+        start: trip.dateFrom,
+        end: trip.dateTo,
+      };
+      let eachDay = dateFns.eachDayOfInterval(interval);
+
+      allIntervals[trip.id] = eachDay;
+    });
+
+    console.log('allIntervals:', allIntervals);
+
+    // dateFns.eachDayOfInterval(
+    //   dummyTrips[0].dateFrom,
+    //   dummyTrips[0].dateTo
+    // );
+
+    // for each trip
+    // in between start and end
+    // render the cells with a grey bg #1
+
     const dateFormat = 'd';
     const rows = [];
-    let days = [];
+    let days: any = {};
     let day = startDate;
     let formattedDate = '';
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
+
         const cloneDay = day;
-        days.push(
+
+        days[dateFns.format(day, 'yyyy MM d')] = (
           <div
             className={`col cell ${
               !dateFns.isSameMonth(day, monthStart)
@@ -74,21 +112,27 @@ const Calendar = (props: any) => {
                 ? 'between'
                 : ''
             }`}
-            key={day.getDate()}
+            key={dateFns.format(day, 'yyyy MM d')}
             onClick={() => onDateClick(cloneDay)}
           >
             <span className="number">{formattedDate}</span>
             <span className="bg">{formattedDate}</span>
           </div>
         );
+
         day = dateFns.addDays(day, 1);
       }
+
+      console.log(days);
+      // days.forEach(day => {
+      //   if(day.key === )
+      // })
       rows.push(
         <div className="row" key={day.getDate()}>
-          {days}
+          {Object.values(days)}
         </div>
       );
-      days = [];
+      days = {};
     }
 
     return <div className="body">{rows}</div>;

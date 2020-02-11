@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
+
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
 
@@ -14,6 +15,7 @@ interface ListingInterface {
   ownerPhotos: Array<string>;
   city: string;
   trips: Array<any>;
+  zipCode: string;
 }
 import { apiUrl } from '../../util';
 
@@ -22,6 +24,11 @@ const Listings = (props: any) => {
   const [filtered, setFiltered] = useState(
     listings.filter((listing: ListingInterface) => {
       return listing.city.toLowerCase() === 'chicago';
+    })
+  );
+  const [markers, setMarkers] = useState(
+    filtered.map((listing: ListingInterface) => {
+      return listing.zipCode;
     })
   );
   const [dropDownVal, setDropDownVal] = useState('Anywhere');
@@ -52,6 +59,11 @@ const Listings = (props: any) => {
       }
 
       setFiltered(filteredListings);
+      setMarkers(
+        filteredListings.map((listing: ListingInterface) => {
+          return listing.zipCode;
+        })
+      );
     }
   };
 
@@ -79,7 +91,7 @@ const Listings = (props: any) => {
       </Header>
 
       <Content>
-        <SimpleMap zipcode={zipCode} />
+        <SimpleMap zipcode={zipCode} markers={markers} />
 
         <List>
           {filtered.map((listing: ListingInterface) => {

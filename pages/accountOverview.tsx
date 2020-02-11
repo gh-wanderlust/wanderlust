@@ -3,6 +3,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import cookies from 'next-cookies';
 import styled from 'styled-components';
+import Navbar from '../components/userNavbar'
 
 const AccountOverview = function(props: any) {
   const { user } = props;
@@ -11,6 +12,7 @@ const AccountOverview = function(props: any) {
     <div>
       {user ? (
         <div>
+        <Navbar />
           <Wrapper>
             <UserImg src={user.imageUrl} />
             <InnerWrapper>

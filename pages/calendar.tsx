@@ -7,7 +7,7 @@ const Calendar = (props: any) => {
   const [current, setCurrent] = useState(today);
   const [checkin, setCheckin] = useState(dateFns.getDate(today));
   const [checkout, setCheckout] = useState(dateFns.getDate(today));
-  const [inOrOut, setInOrOut] = useState('out');
+  const [isCheckedIn, setIsCheckedIn] = useState(false);
 
   const renderHeader = () => {
     const dateFormat = 'MMMM yyyy';
@@ -95,12 +95,13 @@ const Calendar = (props: any) => {
   };
 
   const onDateClick = (day: any) => {
-    if (inOrOut === 'out') {
+    if (!isCheckedIn) {
       setCheckin(day);
-      setInOrOut('in');
-    } else {
+      setIsCheckedIn(true);
+    } else if (isCheckedIn && dateFns.isAfter(day, checkin)) {
       setCheckout(day);
-      setInOrOut('out');
+    } else if (isCheckedIn && dateFns.isBefore(day, checkin)) {
+      setCheckin(day);
     }
   };
 

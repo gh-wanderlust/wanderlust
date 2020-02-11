@@ -19,16 +19,15 @@ const SimpleMap = (props) => {
 
 
     return (
-      // Important! Always set the container height explicitly
-      <div style={{ height: '400px', width: '400px' }}>
+      <Wrapper>
+      <div style={{ height: '100%', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY }}
           center={{
             lat: coords.latitude,
             lng: coords.longitude
           }}
-
-          defaultZoom={11}
+          defaultZoom={16}
         >
           <AnyReactComponent
             lat={coords.latitude}
@@ -36,9 +35,8 @@ const SimpleMap = (props) => {
             text="BETA MARKER"
           />
         </GoogleMapReact>
-
-
       </div>
+      </Wrapper>
     );
 
 }
@@ -53,6 +51,10 @@ export default SimpleMap;
   //   zoom: 11
   // };
 
+  const Wrapper =styled.div`
+  width: 100%;
+  height: 100%;
+  `
   const Marker = styled.div`
     background-image: url('https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=912&q=80');
     background-size: 30px 30px;

@@ -18,9 +18,13 @@ import { apiUrl } from '../../util';
 
 const Listings = (props: any) => {
   const [listings, setListings] = useState(props.listings);
-  const [filtered, setFiltered] = useState(listings);
+  const [filtered, setFiltered] = useState(
+    listings.filter((listing: ListingInterface) => {
+      return listing.city.toLowerCase() === 'chicago';
+    })
+  );
   const [dropDownVal, setDropDownVal] = useState('Anywhere');
-  const [zipCode, setZipCode] = useState('10004');
+  const [zipCode, setZipCode] = useState('60657');
 
   const handleChange = (e: any) => {
     setDropDownVal(e.target.value);
@@ -55,7 +59,6 @@ const Listings = (props: any) => {
             onChange={handleChange}
             value={dropDownVal}
           >
-            <option value="anywhere">Anywhere</option>
             <option value="chicago">Chicago</option>
             <option value="montpelier">Montpelier</option>
             <option value="miami">Miami</option>
@@ -68,13 +71,15 @@ const Listings = (props: any) => {
         </HeaderPrefs>
       </Header>
 
-      <h2>Listings</h2>
+      <Content>
+        <SimpleMap zipcode={zipCode} />
 
-      <SimpleMap zipcode={zipCode} />
-
-      {filtered.map((listing: ListingInterface) => {
-        return <ListingBox listing={listing} key={listing.id} />;
-      })}
+        <List>
+          {filtered.map((listing: ListingInterface) => {
+            return <ListingBox listing={listing} key={listing.id} />;
+          })}
+        </List>
+      </Content>
     </Wrapper>
   );
 };
@@ -88,6 +93,8 @@ export default connect()(Listings);
 
 const Wrapper = styled.div`
   color: var(--black);
+  display: grid;
+  grid-template-rows: 100px auto;
 `;
 
 const Header = styled.div`
@@ -111,5 +118,11 @@ const HeaderPrefs = styled.div`
 
 const Content = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
+  overflow: hidden;
+  height: 90vh;
+`;
+
+const List = styled.div`
+  overflow-y: scroll;
 `;

@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import axios from 'axios'
+import Link from "next/link"
 
 const UserProfile = function(props: any) {
-    const user = props.user
-    console.log("OUR USER:  ", user)
+    const {user} = props
 
     return (
         <div>
@@ -14,7 +14,11 @@ const UserProfile = function(props: any) {
           {user.trips.map((trip:any) => {
               if (trip.status === "pending") {
                   const interestedListing = user.listings.filter((listing:any) => listing.id === trip.listingId)
-                  return <div>{interestedListing[0].name}</div>
+                  return (
+                    <Link href={`/listings/${interestedListing[0].id}`}>
+                        <div>{interestedListing[0].name}</div>
+                    </Link>
+                  )
               }
           })}
         </div>

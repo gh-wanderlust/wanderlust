@@ -140,10 +140,7 @@ const Global = createGlobalStyle`
   width: calc(100% / 7);
 }
 
-.number {
-  ${'' /* this is the number */}
 
-}
 
 .checkin {
   background-color: blue
@@ -158,10 +155,13 @@ const Global = createGlobalStyle`
 }
 
 .trip {
+  position: relative;
   background-color: pink;
-  opacity: .2;
 }
 
-`;
 
-export default Global;
+`
+
+
+
+export default Global

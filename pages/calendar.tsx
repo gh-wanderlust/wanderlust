@@ -54,13 +54,8 @@ const Calendar = (props: any) => {
     const dummyTrips = [
       {
         id: 222,
-        dateFrom: new Date(2020, 1, 14),
-        dateTo: new Date(2020, 1, 20),
-      },
-      {
-        id: 223,
         dateFrom: new Date(2020, 1, 16),
-        dateTo: new Date(2020, 1, 28),
+        dateTo: new Date(2020, 1, 21),
       },
     ];
 
@@ -97,11 +92,15 @@ const Calendar = (props: any) => {
           ? 'between'
           : '';
 
-        for (let trip of dummyTrips) {
-          const interval = { start: trip.dateFrom, end: trip.dateTo };
+        for (let i = 0; i < dummyTrips.length; i++) {
+          const interval = {
+            start: dummyTrips[i].dateFrom,
+            end: dummyTrips[i].dateTo,
+          };
 
           if (dateFns.isWithinInterval(day, interval)) {
-            className += ` trip`;
+            console.log(`${day} is in ${i}`);
+            className += ` trip _${i}`;
           }
         }
 
@@ -120,11 +119,11 @@ const Calendar = (props: any) => {
         day = dateFns.addDays(day, 1);
       }
 
-      if (days['2020 01 26']) {
-        const elem = document.getElementById('2020 01 26');
-        elem?.classList.add('checkin');
-        console.log(elem);
-      }
+      // if (days['2020 01 26']) {
+      //   const elem = document.getElementById('2020 01 26');
+      //   elem?.classList.add('checkin');
+      //   console.log(elem);
+      // }
 
       rows.push(
         <div className="row" key={day.getDate()}>

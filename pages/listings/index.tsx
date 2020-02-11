@@ -13,6 +13,7 @@ interface ListingInterface {
   price: number;
   ownerPhotos: Array<string>;
   city: string;
+  trips: Array<any>;
 }
 import { apiUrl } from '../../util';
 

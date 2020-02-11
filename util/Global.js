@@ -13,6 +13,7 @@ const Global = createGlobalStyle`
   body {
     font-family: 'Work Sans';
     color: #222222;
+    margin:0;
   }
 
 

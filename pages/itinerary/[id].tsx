@@ -3,15 +3,18 @@ import axios from 'axios';
 import Link from 'next/link';
 import { User } from '../../server/db/models/interfaces';
 import styled from 'styled-components';
+import Navbar from '../../components/userNavbar'
 
 const Itinerary = function(props: any) {
   const { trip } = props;
 
   return (
+    <div>
+    <Navbar />
     <Wrapper>
       <Details>
-        <Headline>Trip to {trip.listing.city}</Headline>
-        <ListingName>Staying at {trip.listing.name}</ListingName>
+        <h1>Trip to {trip.listing.city}</h1>
+        <h2>Staying at {trip.listing.name}</h2>
         <ListingImg src={trip.listing.ownerPhotos[0]} />
         <ListingDescription>{trip.listing.description}</ListingDescription>
         {trip.users.map((user: User) => {
@@ -44,6 +47,7 @@ const Itinerary = function(props: any) {
         </Timeline>
       </div>
     </Wrapper>
+    </div>
   );
 };
 
@@ -71,10 +75,6 @@ const Details = styled.div`
   width: 50%;
 `;
 
-const Headline = styled.h1``;
-
-const ListingName = styled.h2``;
-
 const ListingImg = styled.img`
   width: 60%;
 `;
@@ -88,12 +88,11 @@ const UserImage = styled.img`
   border-radius: 50%;
   height: 10vw;
   width: 10vw;
+  padding: 5px;
 `;
 
 const Timeline = styled.div`
   display: flex;
-//   background: lightgrey;
-//   justify-content: space-between;
   align-items: center;
 `
 

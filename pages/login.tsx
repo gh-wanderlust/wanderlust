@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
+import Link from 'next/link';
 
 import { login } from '../util/auth';
 
@@ -29,6 +30,7 @@ const Login = (props: any) => {
 
     if (data.token) {
       login(data.token);
+      window.location.href = '/accountOverview'
     } else {
       setError(res.data);
     }

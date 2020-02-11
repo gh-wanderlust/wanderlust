@@ -48,8 +48,8 @@ class Index extends React.Component<Props> {
           src="https://c0.wallpaperflare.com/preview/732/704/957/mountain-snow-house-hillside.jpg"
         />
         <LoginButtonWrapper>
-          <LoginButton>Log In</LoginButton>
-          <LoginButton>Sign Up</LoginButton>
+          <Link href={'/login'}><LoginButton>Log In</LoginButton></Link>
+          <Link href={'/signup'}><LoginButton>Sign Up</LoginButton></Link>
         </LoginButtonWrapper>
         <ListingImg1 src="https://images.unsplash.com/photo-1511840636560-acee95b3a83f" />
         <ListingImg2 src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017" />

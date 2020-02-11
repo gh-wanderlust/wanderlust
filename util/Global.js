@@ -2,6 +2,13 @@ import { createGlobalStyle } from 'styled-components';
 
 const Global = createGlobalStyle`
 
+  * {
+    --black: #22222;
+    --light-gray: #F2F2F2;
+    --dark-gray: #C0C0C0;
+    --accent-dark: #23565C;
+    --accent-light: #3E8A92;
+  }
 
   body {
     font-family: 'Work Sans';
@@ -85,56 +92,32 @@ const Global = createGlobalStyle`
 .calendar .days {
   text-transform: uppercase;
   font-weight: 400;
-  color: var(--text-color-light);
-  font-size: 70%;
+  color: var(--dark-gray);
+  font-size: 1.2rem;
   padding: 0.75em 0;
-  border-bottom: 1px solid var(--border-color);
 }
 
 .calendar .body .cell {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 5em;
   border-right: 1px solid var(--border-color);
   overflow: hidden;
   cursor: pointer;
-  background: var(--neutral-color);
   transition: 0.25s ease-out;
 }
 
-.calendar .body .cell:hover {
-  background: var(--bg-color);
-  transition: 0.5s ease-out;
-}
-
-.calendar .body .selected {
-  border-left: 10px solid transparent;
-  border-image: linear-gradient(45deg, #1a8fff 0%, #53cbf1 40%);
-  border-image-slice: 1;
-}
-
-.calendar .body .row {
-  border-bottom: 1px solid var(--border-color);
-}
-
-.calendar .body .row:last-child {
-  border-bottom: none;
-}
-
-.calendar .body .cell:last-child {
-  border-right: none;
-}
 
 .calendar .body .cell .number {
-  position: absolute;
-  font-size: 82.5%;
+  font-size: 1.5rem;
   line-height: 1;
-  top: 0.75em;
-  right: 0.75em;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .calendar .body .disabled {
-  color: var(--text-color-light);
+  color: var(--light-gray);
+  text-decoration: line-through;
   pointer-events: none;
 }
 
@@ -151,12 +134,6 @@ const Global = createGlobalStyle`
   letter-spacing: -0.07em;
 }
 
-.calendar .body .cell:hover .bg,
-.calendar .body .selected .bg {
-  opacity: 0.05;
-  transition: 0.5s ease-in;
-}
-
 .calendar .body .col {
   flex-grow: 0;
   flex-basis: calc(100% / 7);
@@ -166,6 +143,18 @@ const Global = createGlobalStyle`
 .number {
   ${'' /* this is the number */}
 
+}
+
+.checkin {
+  background-color: blue
+}
+
+.checkout {
+  background-color: red;
+}
+
+.between {
+  background-color: green;
 }
 
 `;

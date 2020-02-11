@@ -5,10 +5,12 @@ const Calendar = (props: any) => {
   const today = new Date(Date.now());
 
   const [current, setCurrent] = useState(today);
-  const [selectedDate, setSelectedDate] = useState(dateFns.getDate(today));
+  const [checkin, setCheckin] = useState(dateFns.getDate(today));
+  const [checkout, setCheckout] = useState(dateFns.getDate(today));
+  const [inOrOut, setInOrOut] = useState('out');
 
   const renderHeader = () => {
-    const dateFormat = 'MMMM YYYY';
+    const dateFormat = 'MMMM yyyy';
 
     return (
       <div className="header row flex-middle">
@@ -27,7 +29,7 @@ const Calendar = (props: any) => {
     );
   };
   const renderDays = () => {
-    const dateFormat = 'dddd';
+    const dateFormat = 'EEEEE';
     const days = [];
 
     let startDate = dateFns.startOfWeek(current);
@@ -49,7 +51,7 @@ const Calendar = (props: any) => {
     const startDate = dateFns.startOfWeek(monthStart);
     const endDate = dateFns.endOfWeek(monthEnd);
 
-    const dateFormat = 'D';
+    const dateFormat = 'd';
     const rows = [];
     let days = [];
     let day = startDate;
@@ -63,12 +65,17 @@ const Calendar = (props: any) => {
             className={`col cell ${
               !dateFns.isSameMonth(day, monthStart)
                 ? 'disabled'
-                : dateFns.isSameDay(day, selectedDate)
-                ? 'selected'
+                : dateFns.isSameDay(day, checkin)
+                ? 'checkin'
+                : dateFns.isSameDay(day, checkout)
+                ? 'checkout'
+                : dateFns.isAfter(day, checkin) &&
+                  dateFns.isBefore(day, checkout)
+                ? 'between'
                 : ''
             }`}
             key={day.getDate()}
-            onClick={() => onDateClick(dateFns.parse(cloneDay))}
+            onClick={() => onDateClick(cloneDay)}
           >
             <span className="number">{formattedDate}</span>
             <span className="bg">{formattedDate}</span>
@@ -88,7 +95,13 @@ const Calendar = (props: any) => {
   };
 
   const onDateClick = (day: any) => {
-    setSelectedDate(day);
+    if (inOrOut === 'out') {
+      setCheckin(day);
+      setInOrOut('in');
+    } else {
+      setCheckout(day);
+      setInOrOut('out');
+    }
   };
 
   const nextMonth = () => {

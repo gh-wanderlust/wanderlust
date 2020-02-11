@@ -67,30 +67,7 @@ const Listings = (props: any) => {
         const pageUrl = `/listings/${listing.id}`;
         const trips = listing.trips.filter((e) => e.status === 'pending');
 
-        return (
-          <Link href={pageUrl} key={listing.id}>
-            <ListingBox>
-              <div className="text">
-                <h3>{listing.name}</h3>
-                {/* <p id="desc">{listing.description}</p> */}
-                <TrimmedText
-                  text={listing.description}
-                  maxLine="3"
-                  ellipsis="..."
-                  basedOn="letters"
-                />
-                <p>{listing.price || '$0'}/night</p>
-                <p>
-                  {trips.length
-                    ? trips.length + ' other traveler(s) interested!'
-                    : ''}
-                </p>
-              </div>
-
-              <img src={listing.ownerPhotos[0]} alt="" />
-            </ListingBox>
-          </Link>
-        );
+        return <ListingBox listing={listing} />;
       })}
     </div>
   );

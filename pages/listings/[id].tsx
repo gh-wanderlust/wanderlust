@@ -34,8 +34,10 @@ const SingleListing = (props: any) => {
 
   /** STATE **/
   const [userInterested, setInterested] = useState(false);
-  const [dateFrom, setDateFrom] = useState(todayString());
-  const [dateTo, setDateTo] = useState(todayString());
+  // const [dateFrom, setDateFrom] = useState(new Date(Date.now()));
+  // const [dateTo, setDateTo] = useState(new Date(Date.now()));
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
 
   useEffect(() => {
     getListing(id);
@@ -85,28 +87,28 @@ const SingleListing = (props: any) => {
   };
 
   /** CONDITIONAL RENDERING **/
-  const interestForm = userInterested ? (
-    ''
-  ) : (
-    <>
-      <label htmlFor="date-from">Checkin: </label>
-      <input
-        name="date-from"
-        type="date"
-        value={dateFrom}
-        onChange={(e) => setDateFrom(e.target.value)}
-        required
-      ></input>
-      <label htmlFor="date-to">Checkout: </label>
-      <input
-        name="date-to"
-        type="date"
-        value={dateTo}
-        onChange={(e) => setDateTo(e.target.value)}
-        required
-      ></input>
-    </>
-  );
+  // const interestForm = userInterested ? (
+  //   ''
+  // ) : (
+  //   <>
+  //     <label htmlFor="date-from">Checkin: </label>
+  //     <input
+  //       name="date-from"
+  //       type="date"
+  //       value={dateFrom}
+  //       onChange={(e) => setDateFrom(e.target.value)}
+  //       required
+  //     ></input>
+  //     <label htmlFor="date-to">Checkout: </label>
+  //     <input
+  //       name="date-to"
+  //       type="date"
+  //       value={dateTo}
+  //       onChange={(e) => setDateTo(e.target.value)}
+  //       required
+  //     ></input>
+  //   </>
+  // );
 
   const submitButtonText = userInterested
     ? "I'm no longer interested"
@@ -162,11 +164,11 @@ const SingleListing = (props: any) => {
               })}
             </ul>
             <form name="set-user-interest" onSubmit={handleInterest}>
-              {interestForm}
+              {/* {interestForm} */}
               <button type="submit">{submitButtonText}</button>
-              {/* {calendar} */}
-              {bookButton}
             </form>
+            {bookButton}
+            {calendar}
           </div>
         </Booking>
 
@@ -198,13 +200,12 @@ const SingleListing = (props: any) => {
 };
 
 SingleListing.getInitialProps = async function(context: any) {
-  // const {token} = cookies(context);
-  // const res = await axios.get(apiUrl(`/api/users/${token}`));
-  // const user = res.data;
-  // context.store.dispatch(loginUser(user));
-  // const dummyUser = context.store.getState().user;
+  const { token } = cookies(context);
+  const res = await axios.get(apiUrl(`/api/users/${token}`));
+  const loggedUser = res.data;
 
   return {
+    loggedUser,
     id: context.query.id,
   };
 };
@@ -212,7 +213,7 @@ SingleListing.getInitialProps = async function(context: any) {
 const mapState = (state: any) => {
   return {
     listing: state.listing,
-    loggedUser: state.user,
+    // loggedUser: state.user,
     users: state.interestedUsers,
     tripToBook: state.tripToBook,
   };

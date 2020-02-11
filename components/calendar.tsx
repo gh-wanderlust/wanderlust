@@ -9,7 +9,7 @@ const Calendar = (props: any) => {
   const [current, setCurrent] = useState(today);
   // const [checkin, setCheckin] = useState(dateFns.getDate(today));
   // const [checkout, setCheckout] = useState(dateFns.getDate(today));
-  const [isCheckedIn, setIsCheckedIn] = useState(false);
+  const [chooseCheckin, setChooseCheckin] = useState(true);
 
   const renderHeader = () => {
     const dateFormat = 'MMMM yyyy';
@@ -139,13 +139,17 @@ const Calendar = (props: any) => {
   };
 
   const onDateClick = (day: any) => {
-    if (!isCheckedIn) {
+    if (chooseCheckin) {
       setCheckin(day);
-      setIsCheckedIn(true);
-    } else if (isCheckedIn && dateFns.isAfter(day, checkin)) {
+      if (checkout && dateFns.isAfter(day, checkout)) setCheckout(null);
+      else setChooseCheckin(false);
+    } else {
       setCheckout(day);
-    } else if (isCheckedIn && dateFns.isBefore(day, checkin)) {
-      setCheckin(day);
+      if (checkin && dateFns.isBefore(day, checkin)) {
+        setCheckin(day);
+        setCheckout(null);
+      }
+      setChooseCheckin(true);
     }
   };
 
@@ -164,6 +168,15 @@ const Calendar = (props: any) => {
       {renderHeader()}
       {renderDays()}
       {renderCells()}
+      <button
+        onClick={() => {
+          setCheckin(null);
+          setCheckout(null);
+          setChooseCheckin(true);
+        }}
+      >
+        Clear
+      </button>
     </div>
   );
 };

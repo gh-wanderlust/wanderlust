@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { login } from '../util/auth';
 import { loginUser } from '../store/store';
 
 const Login = (props: any) => {
+  const { dispatchLogin } = props;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState();
@@ -31,9 +35,10 @@ const Login = (props: any) => {
     if (token) {
       login(token);
 
-      const userRes = await axios.get(`/api/users/${token}`);
-      const user = userRes.data;
-      loginUser(user);
+      // const userRes = await axios.get(`/api/users/${token}`);
+      // const user = userRes.data;
+
+      // dispatchLogin(user);
 
       Router.push('/listings');
     } else {
@@ -78,4 +83,14 @@ const Login = (props: any) => {
   );
 };
 
-export default Login;
+const mapState = (state: any) => {
+  return { logState: () => console.log(state) };
+};
+
+const mapDispatch = (dispatch: any) => {
+  return {
+    dispatchLogin: bindActionCreators(loginUser, dispatch),
+  };
+};
+
+export default connect(mapState, mapDispatch)(Login);

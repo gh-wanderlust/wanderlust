@@ -157,6 +157,11 @@ const Global = createGlobalStyle`
   background-color: green;
 }
 
+.trip {
+  background-color: pink;
+  opacity: .2;
+}
+
 `;
 
 export default Global;

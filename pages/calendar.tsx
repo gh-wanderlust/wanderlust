@@ -54,13 +54,13 @@ const Calendar = (props: any) => {
     const dummyTrips = [
       {
         id: 222,
-        dateFrom: new Date(2020, 2, 14),
-        dateTo: new Date(2020, 2, 20),
+        dateFrom: new Date(2020, 1, 14),
+        dateTo: new Date(2020, 1, 20),
       },
       {
         id: 223,
-        dateFrom: new Date(2020, 2, 22),
-        dateTo: new Date(2020, 2, 28),
+        dateFrom: new Date(2020, 1, 16),
+        dateTo: new Date(2020, 1, 28),
       },
     ];
 
@@ -76,17 +76,6 @@ const Calendar = (props: any) => {
       allIntervals[trip.id] = eachDay;
     });
 
-    console.log('allIntervals:', allIntervals);
-
-    // dateFns.eachDayOfInterval(
-    //   dummyTrips[0].dateFrom,
-    //   dummyTrips[0].dateTo
-    // );
-
-    // for each trip
-    // in between start and end
-    // render the cells with a grey bg #1
-
     const dateFormat = 'd';
     const rows = [];
     let days: any = {};
@@ -98,20 +87,28 @@ const Calendar = (props: any) => {
 
         const cloneDay = day;
 
+        let className = !dateFns.isSameMonth(day, monthStart)
+          ? 'disabled'
+          : dateFns.isSameDay(day, checkin)
+          ? 'checkin'
+          : dateFns.isSameDay(day, checkout)
+          ? 'checkout'
+          : dateFns.isAfter(day, checkin) && dateFns.isBefore(day, checkout)
+          ? 'between'
+          : '';
+
+        for (let trip of dummyTrips) {
+          const interval = { start: trip.dateFrom, end: trip.dateTo };
+
+          if (dateFns.isWithinInterval(day, interval)) {
+            className += ` trip`;
+          }
+        }
+
         days[dateFns.format(day, 'yyyy MM d')] = (
           <div
-            className={`col cell ${
-              !dateFns.isSameMonth(day, monthStart)
-                ? 'disabled'
-                : dateFns.isSameDay(day, checkin)
-                ? 'checkin'
-                : dateFns.isSameDay(day, checkout)
-                ? 'checkout'
-                : dateFns.isAfter(day, checkin) &&
-                  dateFns.isBefore(day, checkout)
-                ? 'between'
-                : ''
-            }`}
+            id={dateFns.format(day, 'yyyy MM d')}
+            className={`col cell ${className}`}
             key={dateFns.format(day, 'yyyy MM d')}
             onClick={() => onDateClick(cloneDay)}
           >
@@ -123,10 +120,12 @@ const Calendar = (props: any) => {
         day = dateFns.addDays(day, 1);
       }
 
-      console.log(days);
-      // days.forEach(day => {
-      //   if(day.key === )
-      // })
+      if (days['2020 01 26']) {
+        const elem = document.getElementById('2020 01 26');
+        elem?.classList.add('checkin');
+        console.log(elem);
+      }
+
       rows.push(
         <div className="row" key={day.getDate()}>
           {Object.values(days)}

@@ -68,7 +68,7 @@ const listingSeed = [
 		price: 20000
 	},
 	{
-		name: 'Urban Comfort Duplex',
+		name: 'ur Comfort Duplex',
 		description:
 			"Bright duplex with your own entrance, right in the middle of Chicago's vribrant Northside.",
 		address: '550 W Oakdale Ave.',
@@ -100,7 +100,62 @@ const listingSeed = [
 			'https://ssl.cdn-redfin.com/photo/68/mbphoto/675/genMid.09586675_1.jpg'
 		],
 		price: 20000
-	}
+	},
+	{
+		name: 'Heart of Lakeview',
+		description:
+			"Our home is on a quiet tree-lined street in Chicago's Lakeview neighborhood where you will find dozens of restaurants within a short walk, offering food from many lands.",
+		address: '3640 N Halsted St',
+		city: 'Chicago',
+		country: 'United States of America',
+		zipCode: '60613',
+		minOccupants: 2,
+		maxOccupants: 3,
+		ownerPhotos: [
+			'https://a0.muscache.com/im/pictures/pro_photo_tool/Hosting-40221518-unapproved/original/9cb8dad5-3870-43c6-b9ea-57085b6b8887.JPEG?aki_policy=x_large',
+			'https://a0.muscache.com/im/pictures/pro_photo_tool/Hosting-40221518-unapproved/original/2bcafd86-8a67-4506-b407-4d7120efb4dd.JPEG?aki_policy=large',
+			'https://a0.muscache.com/im/pictures/pro_photo_tool/Hosting-40221518-unapproved/original/9dcad402-270a-487a-9a67-26c140d0ca08.JPEG?aki_policy=large',
+			'https://a0.muscache.com/im/pictures/pro_photo_tool/Hosting-40221518-unapproved/original/4dc52681-19c8-47ad-8912-dbe828fe641a.JPEG?aki_policy=xx_large'
+		],
+		price: 6400
+	},
+	{
+		name: 'Urban Comfort in the Heart of Chicago',
+		description:
+			"We are in the middle of Chicago's vibrant Northside while still having the benefit of coming home to a tree lined one lane residential street.",
+		address: '1632 W Wrightwood Ave',
+		city: 'Chicago',
+		country: 'United States of America',
+		zipCode: '60614',
+		minOccupants: 6,
+		maxOccupants: 8,
+		ownerPhotos: [
+			'https://a0.muscache.com/im/pictures/6b1cd161-de4e-461b-a510-def789438b8e.jpg?aki_policy=x_large',
+			'https://a0.muscache.com/im/pictures/df75be99-acf2-43be-acc4-9474b36d8190.jpg?aki_policy=large',
+			'https://a0.muscache.com/im/pictures/03fe7483-9f1b-4b17-9f44-2aa2609a2605.jpg?aki_policy=xx_large',
+			'https://a0.muscache.com/im/pictures/317dd70a-cb0e-4379-8125-6e84941018f5.jpg?aki_policy=xx_large'
+		],
+		price: 6500
+	},
+	{
+		name: 'Cozy Lakeview Loft',
+		description:
+			"The Lakeview Loft is a freshly remodeled loft space with a vintage Chicago theme and modern amenities. ",
+		address: '1632 W Wrightwood Ave',
+		city: 'Chicago',
+		country: 'United States of America',
+		zipCode: '60618',
+		minOccupants: 3,
+		maxOccupants: 6,
+		ownerPhotos: [
+			'https://a0.muscache.com/im/pictures/63ac9caa-c2ba-47ba-9b2e-ac14ad409697.jpg?aki_policy=large',
+			'https://a0.muscache.com/im/pictures/1f88d847-9109-44a7-b7d1-6bb46364ff98.jpg?aki_policy=large',
+			'https://a0.muscache.com/im/pictures/b80546b5-5e79-4e98-b207-0029c38cfc19.jpg?aki_policy=xx_large',
+			'https://a0.muscache.com/im/pictures/be5bd8d0-b801-45ca-99f1-d54567806d21.jpg?aki_policy=poster'
+		],
+		price: 5900
+	},
+
 ];
 
   module.exports = listingSeed

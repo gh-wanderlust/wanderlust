@@ -30,7 +30,7 @@ const SimpleMap = (props) => {
             lat: mapCoords.latitude,
             lng: mapCoords.longitude
           }}
-          defaultZoom={12}
+          defaultZoom={13}
         >
 
 
@@ -59,7 +59,7 @@ export default SimpleMap;
   height: 100%;
   `
   const Marker = styled.div`
-    background-image: url('https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=912&q=80');
+    background-color: var(--accent-dark);
     background-size: 30px 30px;
     height: 30px;
     width: 30px;

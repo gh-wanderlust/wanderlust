@@ -44,6 +44,7 @@ const Wrapper = styled.div`
   align-items: center;
   border-bottom: 1px solid var(--dark-gray);
   height: 15vh;
+  cursor: pointer;
 
   img {
     object-fit: cover;

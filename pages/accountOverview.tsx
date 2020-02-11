@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import cookies from 'next-cookies'
-import Cookies from 'js-cookie'
 
 const AccountOverview = function(props: any){
     const { user } = props;

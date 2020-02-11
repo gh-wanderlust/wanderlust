@@ -85,18 +85,18 @@ const SingleListing = (props: any) => {
     ''
   ) : (
     <>
-      <label htmlFor='date-from'>Checkin: </label>
+      <label htmlFor="date-from">Checkin: </label>
       <input
-        name='date-from'
-        type='date'
+        name="date-from"
+        type="date"
         value={dateFrom}
         onChange={(e) => setDateFrom(e.target.value)}
         required
       ></input>
-      <label htmlFor='date-to'>Checkout: </label>
+      <label htmlFor="date-to">Checkout: </label>
       <input
-        name='date-to'
-        type='date'
+        name="date-to"
+        type="date"
         value={dateTo}
         onChange={(e) => setDateTo(e.target.value)}
         required
@@ -134,9 +134,9 @@ const SingleListing = (props: any) => {
             );
           })}
         </ul>
-        <form name='set-user-interest' onSubmit={handleInterest}>
+        <form name="set-user-interest" onSubmit={handleInterest}>
           {interestForm}
-          <button type='submit'>{submitButtonText}</button>
+          <button type="submit">{submitButtonText}</button>
         </form>
         {bookButton}
       </div>

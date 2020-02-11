@@ -1,10 +1,10 @@
-const { User } = require("../../../server/db/models");
+const { User } = require('../../../server/db/models');
 
 export default async (req: any, res: any) => {
   const { method } = req;
 
   switch (method) {
-    case "GET":
+    case 'GET':
       try {
         let users = await User.findAll();
         res.status(200).send(users);
@@ -12,22 +12,18 @@ export default async (req: any, res: any) => {
         console.error(error);
       }
       break;
-    case "POST":
+    case 'POST':
       try {
-        const newUser = await User.create({
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          email: req.body.email,
-          password: req.body.password,
-          imageUrl: req.body.imageUrl
-        });
+        console.log(req.body);
+        const newUser = await User.create(req.body);
+        console.log(newUser);
         res.status(201).send(newUser);
       } catch (error) {
         console.error(error);
       }
       break;
     default:
-      res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+      res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 };

@@ -15,10 +15,11 @@ const SimpleMap = (props) => {
   }
 
   const mapCoords = zipcodes.lookup(zip)
+  console.log('mapCoords:', mapCoords)
 
   const {markers} = props
   const markerCoords = markers.map(zip => zipcodes.lookup(zip))
-  console.log('markerCoords:', markerCoords)
+  // console.log('markerCoords:', markerCoords)
 
     return (
       <Wrapper>

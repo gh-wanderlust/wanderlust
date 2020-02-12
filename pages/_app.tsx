@@ -13,17 +13,6 @@ interface OurProps extends AppProps {
   store: any;
 }
 
-// const MyApp = (props: OurProps) => {
-//   const { Component, pageProps, store } = props;
-//   console.log("THIS IS PAGE PROPS!!:", pageProps);
-
-//   return (
-//     <Provider store={store}>
-//       <Component {...pageProps} />
-//     </Provider>
-//   );
-// };
-
 class MyApp extends App<OurProps> {
   static async getInitialProps({ Component, ctx }: any) {
     // we can dispatch from here too

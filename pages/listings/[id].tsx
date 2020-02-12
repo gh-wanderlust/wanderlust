@@ -9,7 +9,7 @@ import * as dateFns from 'date-fns';
 
 import { User } from '../../server/db/models/interfaces';
 import Review from '../../components/Review';
-import Calendar from '../../components/Calendar';
+import Calendar from '../../components/calendar';
 import {
   loginUser,
   addInterestedUser,

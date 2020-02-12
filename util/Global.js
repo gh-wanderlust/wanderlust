@@ -98,6 +98,7 @@ const Global = createGlobalStyle`
 }
 
 .calendar .body .cell {
+  position:relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -121,25 +122,12 @@ const Global = createGlobalStyle`
   pointer-events: none;
 }
 
-.calendar .body .cell .bg {
-  font-weight: 700;
-  line-height: 1;
-  color: var(--main-color);
-  opacity: 0;
-  font-size: 8em;
-  position: absolute;
-  top: -0.2em;
-  right: -0.05em;
-  transition: 0.25s ease-out;
-  letter-spacing: -0.07em;
-}
 
 .calendar .body .col {
   flex-grow: 0;
   flex-basis: calc(100% / 7);
   width: calc(100% / 7);
 }
-
 
 
 .checkin {
@@ -155,13 +143,14 @@ const Global = createGlobalStyle`
 }
 
 .trip {
-  position: relative;
-  background-color: pink;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply;
+  opacity: .2;
 }
 
 
-`
+`;
 
-
-
-export default Global
+export default Global;

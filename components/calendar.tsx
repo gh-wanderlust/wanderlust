@@ -52,23 +52,34 @@ const Calendar = (props: any) => {
     const endDate = dateFns.endOfWeek(monthEnd);
 
     const dummyTrips: any[] = [
-      // {
-      //   id: 222,
-      //   dateFrom: new Date(2020, 1, 16),
-      //   dateTo: new Date(2020, 1, 21),
-      // },
+      {
+        id: 222,
+        dateFrom: new Date(2020, 1, 16),
+        dateTo: new Date(2020, 1, 21),
+      },
+      {
+        id: 333,
+        dateFrom: new Date(2020, 1, 18),
+        dateTo: new Date(2020, 1, 26),
+      },
     ];
 
-    const allIntervals: any = {};
-
+    const tripDays: any = {};
     dummyTrips.forEach((trip) => {
-      let interval = {
-        start: trip.dateFrom,
-        end: trip.dateTo,
-      };
+      let interval = { start: trip.dateFrom, end: trip.dateTo };
       let eachDay = dateFns.eachDayOfInterval(interval);
 
-      allIntervals[trip.id] = eachDay;
+      eachDay.forEach((day) => {
+        const date = dateFns.format(day, 'yyyy-MM-dd');
+
+        if (!tripDays[date]) tripDays[date] = [];
+        const node = dateFns.isSameDay(day, trip.dateFrom)
+          ? { id: trip.id, pos: 'head' }
+          : dateFns.isSameDay(day, trip.dateTo)
+          ? { id: trip.id, pos: 'tail' }
+          : { id: trip.id, pos: 'body' };
+        tripDays[date].push(node);
+      });
     });
 
     const dateFormat = 'd';
@@ -92,38 +103,17 @@ const Calendar = (props: any) => {
           ? 'between'
           : '';
 
-        for (let i = 0; i < dummyTrips.length; i++) {
-          const interval = {
-            start: dummyTrips[i].dateFrom,
-            end: dummyTrips[i].dateTo,
-          };
-
-          if (dateFns.isWithinInterval(day, interval)) {
-            console.log(`${day} is in ${i}`);
-            className += ` trip _${i}`;
-          }
-        }
-
         days[dateFns.format(day, 'yyyy MM d')] = (
-          <div
-            id={dateFns.format(day, 'yyyy MM d')}
-            className={`col cell ${className}`}
-            key={dateFns.format(day, 'yyyy MM d')}
-            onClick={() => onDateClick(cloneDay)}
-          >
-            <span className="number">{formattedDate}</span>
-            <span className="bg">{formattedDate}</span>
-          </div>
+          <Cell
+            day={day}
+            className={className}
+            formattedDate={formattedDate}
+            trips={tripDays[dateFns.format(day, 'yyyy-MM-dd')]}
+          />
         );
 
         day = dateFns.addDays(day, 1);
       }
-
-      // if (days['2020 01 26']) {
-      //   const elem = document.getElementById('2020 01 26');
-      //   elem?.classList.add('checkin');
-      //   console.log(elem);
-      // }
 
       rows.push(
         <div className="row" key={day.getDate()}>
@@ -160,6 +150,46 @@ const Calendar = (props: any) => {
   const prevMonth = () => {
     const newMonth = dateFns.subMonths(current, 1);
     setCurrent(newMonth);
+  };
+
+  const colors: any = {};
+
+  const Cell = (props: any) => {
+    const { day, className, formattedDate, trips } = props;
+
+    let children = '';
+    if (trips) {
+      children = trips.map((trip: any) => {
+        const { id, pos } = trip;
+        let style: any = {};
+
+        if (pos === 'head') style.borderRadius = '50% 0 0 50%';
+        else if (pos === 'tail') style.borderRadius = '0 50% 50% 0';
+
+        if (colors[id]) style.backgroundColor = colors[id];
+        else {
+          const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+          const hex = `#${randomColor}`;
+          colors[id] = hex;
+
+          style.backgroundColor = hex;
+        }
+
+        return <div className={`trip ${id}`} style={style} />;
+      });
+    }
+
+    return (
+      <div
+        id={dateFns.format(day, 'yyyy MM d')}
+        className={`col cell ${className}`}
+        key={dateFns.format(day, 'yyyy MM d')}
+        onClick={() => onDateClick(day)}
+      >
+        {children}
+        <span className="number">{formattedDate}</span>
+      </div>
+    );
   };
 
   return (

@@ -4,6 +4,7 @@
     "DEPLOY": "true",
     "SQL_GHP_WANDERLUST_IP": "@db-url",
     "SQL_GHP_WANDERLUST_USERNAME": "@db-username",
-    "SQL_GHP_WANDERLUST_PASSWORD": "@db-password"
+    "SQL_GHP_WANDERLUST_PASSWORD": "@db-password",
+    "GOOGLE_MAPS_API_KEY": "@map-key"
   }
 }

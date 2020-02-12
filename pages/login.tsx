@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
 import Link from 'next/link';
+import styled from 'styled-components';
 
 import { login } from '../util/auth';
 
@@ -38,39 +39,115 @@ const Login = (props: any) => {
 
   return (
     <div>
-      <h2>Login</h2>
-      <form name="login" onSubmit={onSubmit}>
-        {error ? (
-          <div>
-            <p>{error}</p>
-          </div>
-        ) : (
-          ''
-        )}
-
-        <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          name="email"
-          placeholder="Email"
-          onChange={(e) => onChange(e, 'email')}
-          value={email}
-          required
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={(e) => onChange(e, 'password')}
-          value={password}
-          required
-        />
-
-        <button type="submit">Login</button>
-      </form>
+      <Wrapper>
+        <InnerWrapper>
+          <h2>Login</h2>
+          <FormWrapper>
+            <form name="login" onSubmit={onSubmit}>
+              {error ? (
+                <div>
+                  <p>{error}</p>
+                </div>
+              ) : (
+                ''
+              )}
+              <EmailWrapper>
+                <label htmlFor="email">Email</label>
+                <InputWrapper>
+                  <Input
+                    type="text"
+                    name="email"
+                    placeholder="Email"
+                    onChange={(e) => onChange(e, 'email')}
+                    value={email}
+                    required
+                  />
+                </InputWrapper>
+              </EmailWrapper>
+              <PasswordWrapper>
+                <label htmlFor="password">Password</label>
+                <InputWrapper>
+                  <Input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={(e) => onChange(e, 'password')}
+                    value={password}
+                    required
+                  />
+                </InputWrapper>
+              </PasswordWrapper>
+              <SubmitWrapper>
+                <Button type="submit">Login</Button>
+              </SubmitWrapper>
+            </form>
+          </FormWrapper>
+        </InnerWrapper>
+      </Wrapper>
     </div>
   );
 };
 
 export default Login;
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: Helvetica;
+  color: white;
+`;
+
+const InnerWrapper = styled.div`
+  display: flex;
+  width: 20vw;
+  height: 20vw;
+  align-items: center;
+  justify-content: center;
+  background-color: #23565c;
+  box-shadow: 2px 2px 7px #888888;
+  border-radius: 2%;
+  flex-direction: column;
+`;
+
+const FormWrapper = styled.div`
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const EmailWrapper = styled.div`
+padding: 10px;
+`;
+
+const PasswordWrapper = styled.div`
+  padding: 10px;
+`;
+
+const SubmitWrapper = styled.div`
+  padding: 10px;
+`;
+
+const InputWrapper = styled.div`
+  padding: 10px;
+`;
+
+const Input = styled.input`
+  width: 10vw;
+  height: 3vh;
+`
+
+const Button = styled.button`
+  background: white;
+  color: #23565c;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: #FFFFFF;
+  border-radius: 3px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+`;

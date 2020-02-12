@@ -114,7 +114,6 @@ const Dropdown = styled.select`
 const DateInput = styled.input``;
 
 const SearchWrapper = styled.div`
-  font-family: 'Lucida Console', sans-serif;
   padding: 50px;
   background: #ffffff;
   height: 86.5%;

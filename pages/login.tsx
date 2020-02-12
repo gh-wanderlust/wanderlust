@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import Link from 'next/link';
 import styled from 'styled-components';
 
 import { login } from '../util/auth';
+import { loginUser } from '../store/store';
 
 const Login = (props: any) => {
+  const { dispatchLogin } = props;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState();
@@ -26,14 +31,15 @@ const Login = (props: any) => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await axios.post('/api/login', { email, password });
-    const { data } = res;
+    const loginRes = await axios.post('/api/login', { email, password });
+    const { token } = loginRes.data;
 
-    if (data.token) {
-      login(data.token);
-      window.location.href = '/accountOverview'
+    if (token) {
+      login(token);
+
+      Router.push('/accountOverview');
     } else {
-      setError(res.data);
+      setError(loginRes.data);
     }
   };
 
@@ -87,8 +93,18 @@ const Login = (props: any) => {
     </div>
   );
 };
+        
+const mapState = (state: any) => {
+  return { logState: () => console.log(state) };
+};
 
-export default Login;
+const mapDispatch = (dispatch: Dispatch) => {
+  return {
+    dispatchLogin: bindActionCreators(loginUser, dispatch),
+  };
+};
+
+export default connect(mapState, mapDispatch)(Login);
 
 const Wrapper = styled.div`
   width: 100vw;

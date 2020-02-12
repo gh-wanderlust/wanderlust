@@ -1,8 +1,8 @@
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 // @ts-ignore
-import LinesEllipsis from "react-lines-ellipsis";
-import styled from "styled-components";
+import LinesEllipsis from 'react-lines-ellipsis';
+import styled from 'styled-components';
 
 const ListingBox = (props: any) => {
   const { listing } = props;
@@ -12,7 +12,7 @@ const ListingBox = (props: any) => {
     <Link href={pageUrl} key={listing.id}>
       <Wrapper>
         <div className="text">
-          <h3>{listing.name}</h3>
+          <Title>{listing.name}</Title>
 
           <TrimmedText
             text={listing.description}
@@ -20,8 +20,12 @@ const ListingBox = (props: any) => {
             ellipsis="..."
             basedOn="letters"
           />
-          <p>{listing.price || "$0"}/night</p>
-          <p>X other people are interested</p>
+          <Price>${listing.price / 100 || '$0'}/night</Price>
+          <p>
+            {props.trips.length
+              ? props.trips.length + ' other traveler(s) interested!'
+              : ''}
+          </p>
         </div>
 
         <img src={listing.ownerPhotos[0]} alt="" />
@@ -33,28 +37,34 @@ const ListingBox = (props: any) => {
 export default ListingBox;
 
 const Wrapper = styled.div`
-  font-family: Helvetica;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
-  background-color: white;
-  border-radius: 10px;
-  margin-bottom: 30px;
   display: grid;
-  grid-template-columns: 1fr 250px;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 4vw;
+  padding: 4vh 2vw;
+  align-items: center;
+  border-bottom: 1px solid var(--dark-gray);
+  min-height: min-content;
   cursor: pointer;
-  max-height: 300px;
-  max-width: 500px;
-  overflow: hidden;
-
-  .text {
-    padding: 15px 30px;
-  }
 
   img {
-    height: 300px;
-    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: 80%;
   }
 `;
 
 const TrimmedText = styled(LinesEllipsis)`
   padding: 0;
+  color: darkgray;
+`;
+
+const Title = styled.h3`
+  font-weight: 400;
+  font-size: 20px;
+  margin: 0;
+  margin-bottom: 10px;
+`;
+
+const Price = styled.p`
+  font-weight: 500;
 `;

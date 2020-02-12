@@ -15,7 +15,7 @@ interface Action {
 /** INITIAL STATE **/
 const initState = {
   listing: {
-    selectedCity: "",
+    selectedCity: "Chicago",
     ownerPhotos: [],
   },
   user: {},
@@ -99,7 +99,7 @@ export const getSingleListing = (id: number) => {
 const reducer = (state: any = {}, action: Action) => {
   switch (action.type) {
     case SUBMIT_SEARCH:
-      return {...state, listing: action.selectedCity};
+      return {...state, listing: {selectedCity: action.selectedCity}};
     case GOT_SINGLE_LISTING:
       return { ...state, listing: action.listing };
     case LOGIN_USER:

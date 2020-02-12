@@ -7,37 +7,43 @@ import Link from 'next/link';
 import { submitSearch } from '../store/store';
 import { apiUrl } from '../util';
 import { Listing } from '../server/db/models/interfaces';
-import { Select } from 'grommet';
-import Router from 'next/router';
+import { Select } from 'grommet'
+import { useRouter } from 'next/router';
 import cookies from 'next-cookies';
 
 import { logout } from '../util/auth';
 
 const LandingPage = function(props: any) {
-  const { loggedIn, cities, submitSearch } = props;
-  const [dropDownVal, setDropdownVal] = useState('Anywhere');
+  const { loggedIn, cities, submitSearch } = props
+  const [dropDownVal, setDropdownVal] = useState("Chicago");
+  const router = useRouter();
 
   const handleChange = (option: any) => {
     setDropdownVal(option);
   };
 
   const handleSubmit = (e: any) => {
-    submitSearch(dropDownVal);
-  };
+    submitSearch(dropDownVal)
+    router.push('/listings');
+  }
+
+  
 
   return (
     <Wrapper>
-      <SearchWrapper>
-        <SearchForm>
-          <h1>W.</h1>
-          <h1>Find your next adventure.</h1>
-          <Select
-            options={cities}
-            onChange={({ option }) => handleChange(option)}
-            value={dropDownVal}
-          />
-          <Link href={'/listings'}>
-            <SearchButton onClick={handleSubmit}>Search</SearchButton>
+        <SearchWrapper>
+          <SearchForm>
+            <h1>W.</h1>
+            <h1>Find your next adventure.</h1>
+            <Select 
+              options={['Chicago', 'Montpelier', 'Miami']}
+              onChange={({option}) => handleChange(option)}
+              value={dropDownVal}
+            />
+            <Link href={'/listings'}>
+            <SearchButton onClick={handleSubmit}>
+              Search
+            </SearchButton>
           </Link>
         </SearchForm>
       </SearchWrapper>
@@ -50,7 +56,7 @@ const LandingPage = function(props: any) {
           <Button
             onClick={() => {
               logout();
-              Router.push('/');
+              router.push('/');
             }}
           >
             Logout

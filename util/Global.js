@@ -131,15 +131,50 @@ const Global = createGlobalStyle`
 
 
 .checkin {
-  background-color: blue
+  position: relative;
+  background-color: var(--accent-light);
+  border-radius: 50% 0 0 50%;
+  color: white;
+}
+
+.checkin::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--accent-dark);
+  mix-blend-mode: screen;
+}
+
+.checkin.no-checkout {
+  border-radius: 50%;
 }
 
 .checkout {
-  background-color: red;
+  position: relative;
+  background-color: var(--accent-light);
+  border-radius: 0 50% 50% 0;
+  color: white;
+}
+
+.checkout::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--accent-dark);
+  mix-blend-mode: screen;
 }
 
 .between {
-  background-color: green;
+  background-color: var(--accent-light);
+  color:white;
 }
 
 .trip {

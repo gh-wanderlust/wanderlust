@@ -37,7 +37,6 @@ const SingleListing = (props: any) => {
   const [dateTo, setDateTo] = useState(0);
   const [bookError, setBookError] = useState('');
   const [isLoading, setLoading] = useState(true);
-  // const [tripColors, setTripColors] = useState({});
   const tripColors: any = {};
   if (!isLoading) {
     listing.trips.map((trip: any) => {
@@ -57,6 +56,8 @@ const SingleListing = (props: any) => {
   useEffect(() => {
     init();
   }, []);
+
+  useEffect(() => {});
 
   useEffect(() => {
     if (loggedUser) {

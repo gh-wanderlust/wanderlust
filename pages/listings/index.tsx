@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
-// @ts-ignore
-import LinesEllipsis from 'react-lines-ellipsis';
+
 import { connect } from 'react-redux';
 import axios from 'axios';
-import styled from 'styled-components';
+
+import ListingBox from '../../components/ListingBox';
+import SimpleMap from '../../components/Map';
 
 interface ListingInterface {
-	id: number;
-	name: string;
-	description: string;
-	price: number;
-	ownerPhotos: Array<string>;
-	city: string;
-	trips: Array<any>;
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  ownerPhotos: Array<string>;
+  city: string;
+  trips: Array<any>;
 }
 import { apiUrl } from '../../util';
 
@@ -21,6 +21,7 @@ const Listings = (props: any) => {
   const [listings, setListings] = useState(props.listings);
   const [filtered, setFiltered] = useState(listings);
   const [dropDownVal, setDropDownVal] = useState('Anywhere');
+  const [zipCode, setZipCode] = useState('10004');
 
   const handleChange = (e: any) => {
     setDropDownVal(e.target.value);
@@ -31,6 +32,14 @@ const Listings = (props: any) => {
       const filteredListings = listings.filter((listing: ListingInterface) => {
         return listing.city.toLowerCase() === e.target.value.toLowerCase();
       });
+
+      switch (filteredListings[0].city) {
+        case 'Chicago':
+          setZipCode('60657');
+          break;
+        default:
+          setZipCode('10004');
+      }
 
       setFiltered(filteredListings);
     }
@@ -45,40 +54,20 @@ const Listings = (props: any) => {
         value={dropDownVal}
       >
         <option value="anywhere">Anywhere</option>
-        <option value="osaka">Osaka</option>
-        <option value="bora bora">Bora Bora</option>
-        <option value="inverness">Inverness</option>
-        <option value="test">TEST</option>
+        <option value="chicago">Chicago</option>
+        <option value="montpelier">Montpelier</option>
+        <option value="miami">Miami</option>
       </select>
+
       <h2>Listings</h2>
+
+      <SimpleMap zipcode={zipCode} />
+
       {filtered.map((listing: ListingInterface) => {
         const pageUrl = `/listings/${listing.id}`;
         const trips = listing.trips.filter((e) => e.status === 'pending');
 
-        return (
-					<Link href={pageUrl} key={listing.id}>
-						<ListingBox>
-							<div className="text">
-								<h3>{listing.name}</h3>
-								{/* <p id="desc">{listing.description}</p> */}
-								<TrimmedText
-									text={listing.description}
-									maxLine="3"
-									ellipsis="..."
-									basedOn="letters"
-								/>
-								<p>{listing.price || '$0'}/night</p>
-								<p>
-									{trips.length
-										? trips.length + ' other traveler(s) interested!'
-										: ''}
-								</p>
-							</div>
-
-							<img src={listing.ownerPhotos[0]} alt="" />
-						</ListingBox>
-					</Link>
-				);
+        return <ListingBox listing={listing} />;
       })}
     </div>
   );
@@ -98,30 +87,3 @@ Listings.getInitialProps = async function() {
 };
 
 export default connect()(Listings);
-
-const ListingBox = styled.div`
-  font-family: Helvetica;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
-  background-color: white;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  display: grid;
-  grid-template-columns: 1fr 250px;
-  cursor: pointer;
-  max-height: 300px;
-  max-width: 500px;
-  overflow: hidden;
-
-  .text {
-    padding: 15px 30px;
-  }
-
-  img {
-    height: 300px;
-    display: block;
-  }
-`;
-
-const TrimmedText = styled(LinesEllipsis)`
-  padding: 0;
-`;

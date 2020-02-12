@@ -35,8 +35,6 @@ const SingleListing = (props: any) => {
 
   /** STATE **/
   const [userInterested, setInterested] = useState(false);
-  // const [dateFrom, setDateFrom] = useState(new Date(Date.now()));
-  // const [dateTo, setDateTo] = useState(new Date(Date.now()));
   const [dateFrom, setDateFrom] = useState(0);
   const [dateTo, setDateTo] = useState(0);
   const [bookError, setBookError] = useState('');

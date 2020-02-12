@@ -1,12 +1,30 @@
 import React from 'react';
+import Link from 'next/link'
 import styled from 'styled-components';
+import { logout } from '../util/auth';
+import Router from 'next/router';
 
 const Navbar = function(){
 
     return (
       <div>
-      <Wrapper>
-        <HomeLink href='/listings'>W.</HomeLink>
+        <Wrapper>
+          <HomeLink href="/listings">W.</HomeLink>
+          <Links>
+            <NavLink href="/accountOverview">
+              <a>Profile</a>
+            </NavLink>
+            <NavLink href="/">
+              <a
+                onClick={() => {
+                  logout();
+                  Router.push('/');
+                }}
+              >
+                Log Out
+              </a>
+            </NavLink>
+          </Links>
         </Wrapper>
       </div>
     );
@@ -15,17 +33,36 @@ const Navbar = function(){
 export default Navbar
 
 const Wrapper = styled.div`
+display: flex;
   background: #23565c;
-  width: 100%;
+  height: max-content;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  height: 10vw;
-`
+  padding: 2vh 5vw 2vh 5vw;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const HomeLink = styled.a`
-  font-size: 60px;
-  font-family: 'Lucida Console', sans-serif;
+  font-size: 32px;
   text-decoration: none;
   padding: 20px;
-  color: #ffffff;
+  font-weight: bold;
+  color: #22222;
+  :visited{
+    color: #222222;
+  }
 `
+
+const Links = styled.div`
+  a {
+    color: white;
+    margin-right: 10px;
+  }
+
+  a:visited {
+    color: white;
+  }
+`;
+const NavLink = styled(Link)`
+ 
+`;

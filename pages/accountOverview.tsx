@@ -12,44 +12,44 @@ const AccountOverview = function(props: any) {
     <div>
       {user ? (
         <div>
-        <Navbar />
+          <Navbar />
           <Wrapper>
             <UserImg src={user.imageUrl} />
             <InnerWrapper>
-            <h1>{`${user.firstName} ${user.lastName}`}</h1>
-            <h2>Upcoming Trips:</h2>
+              <h1>{`${user.firstName} ${user.lastName}`}</h1>
+              <h2>Upcoming Trips:</h2>
               <PhotoWrapper>
-            {user.trips.map((trip: any) => {
-              if (trip.status === 'booked') {
-                const bookedListing = user.listings.filter(
-                  (listing: any) => listing.id === trip.listingId
-                );
-                return (
-                  <Link href={`/itinerary/${trip.id}`}>
-                    <ListingImg src={bookedListing[0].ownerPhotos[0]} />
-                  </Link>
-                );
-              }
-            })}
-            </PhotoWrapper>
-            <h2>Interested In:</h2>
-            <PhotoWrapper>
-            {user.trips.map((trip: any) => {
-              if (trip.status === 'pending') {
-                const interestedListing = user.listings.filter(
-                  (listing: any) => listing.id === trip.listingId
-                );
-                return (
-                  <Link
-                    key={interestedListing.id}
-                    href={`/listings/${interestedListing[0].id}`}
-                  >
-                    <ListingImg src={interestedListing[0].ownerPhotos[0]} />
-                  </Link>
-                );
-              }
-            })}
-            </PhotoWrapper>
+                {user.trips.map((trip: any) => {
+                  if (trip.status === 'booked') {
+                    const bookedListing = user.listings.filter(
+                      (listing: any) => listing.id === trip.listingId
+                    );
+                    return (
+                      <Link href={`/itinerary/${trip.id}`}>
+                        <ListingImg src={bookedListing[0].ownerPhotos[0]} />
+                      </Link>
+                    );
+                  }
+                })}
+              </PhotoWrapper>
+              <h2>Interested In:</h2>
+              <PhotoWrapper>
+                {user.trips.map((trip: any) => {
+                  if (trip.status === 'pending') {
+                    const interestedListing = user.listings.filter(
+                      (listing: any) => listing.id === trip.listingId
+                    );
+                    return (
+                      <Link
+                        key={interestedListing.id}
+                        href={`/listings/${interestedListing[0].id}`}
+                      >
+                        <ListingImg src={interestedListing[0].ownerPhotos[0]} />
+                      </Link>
+                    );
+                  }
+                })}
+              </PhotoWrapper>
             </InnerWrapper>
           </Wrapper>
         </div>
@@ -76,8 +76,8 @@ export default AccountOverview;
 
 const Wrapper = styled.div`
   display: flex;
-  font-family: 'Lucida Console', sans-serif;
 `;
+
 const InnerWrapper = styled.div`
 display: flex;
 flex-direction: column;
@@ -92,13 +92,13 @@ justify-content: space-between
 const UserImg = styled.img`
   object-fit: cover;
   border-radius: 50%;
-  height: 20vw;
-  width: 20vw;
+  height: 12vw;
+  width: 12vw;
   padding: 100px;
 `;
 
 const ListingImg = styled.img`
   object-fit: cover;
-  height: 20vw;
-  width: 20vw;
+  height: 15vw;
+  width: 15vw;
 `;

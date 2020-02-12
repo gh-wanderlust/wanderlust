@@ -6,6 +6,7 @@ import { Select, Grommet, DropButton, Box } from 'grommet';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 
+import cookies from 'next-cookies';
 
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
@@ -23,7 +24,6 @@ interface ListingInterface {
   zipCode: string;
 }
 import { apiUrl } from '../../util';
-// 
 
 const Listings = (props: any) => {
   const router = useRouter();

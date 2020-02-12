@@ -65,7 +65,6 @@ Itinerary.getInitialProps = async (context: any) => {
 export default Itinerary;
 
 const Wrapper = styled.div`
-  font-family: 'Lucida Console', sans-serif;
   padding: 3em;
   display: flex;
   justify-content: space-between;

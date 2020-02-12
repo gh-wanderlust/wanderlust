@@ -1,77 +1,75 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Dispatch } from 'redux';
 import {connect} from 'react-redux'
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components'
+import axios from 'axios'
 import Link from 'next/link'
-// import { getTest } from "../store/store";
+import { submitSearch } from '../store/store'
+import { apiUrl } from '../util'
+import { Listing } from '../server/db/models/interfaces';
+import { Select } from 'grommet'
 
-interface LinkStateProps {
-  state: Array<string>
-}
+const LandingPage = function(props: any) {
+  const { cities, submitSearch } = props
+  const [dropDownVal, setDropdownVal] = useState("Anywhere");
 
-interface LinkDispatchProps {
-  submitSearch: () => void
-}
+  const handleChange = (option: any) => {
+    setDropdownVal(option);
+  }
 
-type Props = LinkStateProps & LinkDispatchProps
+  const handleSubmit = (e: any) => {
+    submitSearch(dropDownVal)
+  }
 
-class Index extends React.Component<Props> {
-
-  render() {
-    return (
-      <Wrapper>
+  return (
+    <Wrapper>
         <SearchWrapper>
-          <Headline>
+          <SearchForm>
             <h1>W.</h1>
             <h1>Find your next adventure.</h1>
-          </Headline>
-          <SearchForm>
-            Select your destination:
-            <Dropdown name="cities" id="cities">
-              <option value="anywhere">Anywhere</option>
-              <option value="osaka">Osaka</option>
-              <option value="bora bora">Bora Bora</option>
-              <option value="inverness">Inverness</option>
-            </Dropdown>
-            From
-            <DateInput type="date" name="fromDate"></DateInput>
-            To
-            <DateInput type="date" name="toDate"></DateInput>
-          </SearchForm>
-          <Link href={'/listings'}>
-            <SearchButton onClick={() => this.props.submitSearch()}>
+            <Select 
+              options={cities}
+              onChange={({option}) => handleChange(option)}
+              value={dropDownVal}
+            />
+            <Link href={'/listings'}>
+            <SearchButton onClick={handleSubmit}>
               Search
             </SearchButton>
           </Link>
+          </SearchForm>
         </SearchWrapper>
         <HeroImg
           alt="heroImg"
           src="https://c0.wallpaperflare.com/preview/732/704/957/mountain-snow-house-hillside.jpg"
         />
         <LoginButtonWrapper>
-          <Link href={'/login'}><LoginButton>Log In</LoginButton></Link>
-          <Link href={'/signup'}><LoginButton>Sign Up</LoginButton></Link>
+          <Link href={'/login'}><Button>Log In</Button></Link>
+          <Link href={'/signup'}><Button>Sign Up</Button></Link>
         </LoginButtonWrapper>
-        <ListingImg1 src="https://images.unsplash.com/photo-1511840636560-acee95b3a83f" />
-        <ListingImg2 src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017" />
       </Wrapper>
-    )
-  }
+  )
 }
 
-const mapStateToProps = (state: Array<string>) => ({
-  state: state
+const mapDispatch = (dispatch:Dispatch) => ({
+  submitSearch: bindActionCreators(submitSearch, dispatch)
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-  submitSearch: () => {}
-})
+LandingPage.getInitialProps = async () => {
+  const res = await axios.get(apiUrl('/api/listings'))
+  const listings = res.data
+  const cities = listings.map((listing: Listing) => {return listing.city})
+  let uniqueList = [...new Set(cities)]
+  return { cities: uniqueList}
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Index)
+export default connect(null, mapDispatch)(LandingPage);
 
 const Wrapper = styled.div`
   display: grid;
 `
-const Headline = styled.div`
+const SearchForm = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 50%;
@@ -80,41 +78,28 @@ const Headline = styled.div`
   left: 80px;
 `
 
-const Dropdown = styled.select`
-  // box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-`
-
-const DateInput = styled.input``
-
 const SearchWrapper = styled.div`
   font-family: 'Lucida Console', sans-serif;
   padding: 50px;
   background: #ffffff;
   height: 86.5%;
   width: 28%;
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
 `
-const SearchForm = styled.form`
-  display: grid;
-  grid-template-columns: 300px;
-  grid-template-rows: 25px 25px 25px auto;
-  position: absolute;
-  top: 280px;
-  left: 80px;
-`
+
 const SearchButton = styled.button`
   background: #23565c;
-  color: white;
+  font-family: inherit;
+  color: #ffffff;
   font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
+  margin-top: 1.5em;
+  padding: 1em;
   border: 2px solid darkgreen;
   border-radius: 3px;
   position: relative;
-  top: 400px;
-  left: 225px;
+  width: 100%;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 `
 const LoginButtonWrapper = styled.button`
@@ -125,7 +110,8 @@ const LoginButtonWrapper = styled.button`
   right: 50px;
 `
 
-const LoginButton = styled.button`
+const Button = styled.button`
+  font-family: inherit;  
   background: transparent;
   color: white;
   font-size: 15px;
@@ -141,17 +127,4 @@ const HeroImg = styled.img`
   position: absolute;
   top: 0;
   left: 35%;
-`
-const ListingImg1 = styled.img`
-  width: 100%;
-  position: relative;
-  top: 750px;
-  left: 0;
-`
-
-const ListingImg2 = styled.img`
-  width: 100%;
-  position: relative;
-  top: 750px;
-  left: 0;
 `

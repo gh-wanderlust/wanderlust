@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-
 import { connect } from 'react-redux';
 import axios from 'axios';
-
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
 
@@ -17,11 +15,13 @@ interface ListingInterface {
 }
 import { apiUrl } from '../../util';
 
+
 const Listings = (props: any) => {
   const [listings, setListings] = useState(props.listings);
   const [filtered, setFiltered] = useState(listings);
   const [dropDownVal, setDropDownVal] = useState('Anywhere');
   const [zipCode, setZipCode] = useState('10004');
+
 
   const handleChange = (e: any) => {
     setDropDownVal(e.target.value);

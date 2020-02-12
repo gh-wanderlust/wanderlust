@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as dateFns from 'date-fns';
+import styled from 'styled-components';
 
 const Calendar = (props: any) => {
   const today = new Date(Date.now());
@@ -22,7 +23,7 @@ const Calendar = (props: any) => {
     return (
       <div className="header row flex-middle">
         <div className="col col-start">
-          <button onClick={prevMonth}> Prev </button>
+          <MonthButton onClick={prevMonth}> Prev </MonthButton>
         </div>
 
         <div className="col col-center">
@@ -30,7 +31,7 @@ const Calendar = (props: any) => {
         </div>
 
         <div className="col col-end" onClick={nextMonth}>
-          <button onClick={prevMonth}> Next </button>
+          <MonthButton onClick={nextMonth}> Next </MonthButton>
         </div>
       </div>
     );
@@ -188,7 +189,7 @@ const Calendar = (props: any) => {
       {renderHeader()}
       {renderDays()}
       {renderCells()}
-      <button
+      {/* <button
         onClick={() => {
           setCheckin(null);
           setCheckout(null);
@@ -196,9 +197,25 @@ const Calendar = (props: any) => {
         }}
       >
         Clear
-      </button>
+      </button> */}
     </div>
   );
 };
 
 export default Calendar;
+
+const MonthButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  padding: 1em;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  transition: all 0.2s ease;
+
+  :hover {
+    color: var(--accent-light);
+  }
+`;

@@ -57,7 +57,7 @@ const Global = createGlobalStyle`
 .calendar {
   display: block;
   position: relative;
-  width: 100%;
+  width: 80%;
   background: var(--neutral-color);
   border: 1px solid var(--border-color);
 }
@@ -137,6 +137,10 @@ const Global = createGlobalStyle`
   color: white;
 }
 
+.checkin.no-checkout {
+  border-radius: 50%;
+}
+
 .checkin::before {
   position: absolute;
   top: 0;
@@ -147,10 +151,6 @@ const Global = createGlobalStyle`
   border-radius: 50%;
   background-color: var(--accent-dark);
   mix-blend-mode: screen;
-}
-
-.checkin.no-checkout {
-  border-radius: 50%;
 }
 
 .checkout {

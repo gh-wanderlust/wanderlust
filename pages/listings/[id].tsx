@@ -131,7 +131,7 @@ const SingleListing = (props: any) => {
   );
 
   const bookButton = userInterested ? (
-    <button onClick={handleBook}>Book now!</button>
+    <Button onClick={handleBook}>Book now!</Button>
   ) : (
     ''
   );
@@ -164,18 +164,22 @@ const SingleListing = (props: any) => {
           </Left>
           <div>
             <InterestedUsers>
-              {users.map((user: any) => {
-                return <UserThumb key={user.id} user={user} />;
-              })}
+              {users.length > 0 ? (
+                users.map((user: any) => {
+                  return <UserThumb key={user.id} user={user} />;
+                })
+              ) : (
+                <p>No one interested yet! Be the first!</p>
+              )}
             </InterestedUsers>
             {loggedUser ? (
               <>
+                {calendar}
+                {bookError}
                 <form name="set-user-interest" onSubmit={handleInterest}>
-                  <button type="submit">{submitButtonText}</button>
+                  <Button type="submit">{submitButtonText}</Button>
                 </form>
                 {bookButton}
-                {bookError}
-                {calendar}
               </>
             ) : (
               ''
@@ -183,7 +187,7 @@ const SingleListing = (props: any) => {
           </div>
         </Booking>
 
-        <GuestPhotos>
+        {/* <GuestPhotos>
           <Left>
             <SectionHeader>Guest Photos</SectionHeader>
           </Left>
@@ -204,7 +208,7 @@ const SingleListing = (props: any) => {
           <div>
             <Review />
           </div>
-        </Reviews>
+        </Reviews> */}
       </Content>
     </Wrapper>
   );
@@ -364,5 +368,22 @@ const UserThumbnail = styled.li`
     object-fit: cover;
     border-radius: 50%;
     margin-right: 1em;
+  }
+`;
+
+const Button = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  padding: 1em;
+  margin: 0.5em 0 0 0.5em;
+  border-radius: 2px;
+  background-color: var(--accent-dark);
+  color: white;
+  transition: all 0.2s ease;
+
+  :hover {
+    background-color: var(--accent-light);
   }
 `;

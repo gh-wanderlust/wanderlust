@@ -9,7 +9,7 @@ import * as dateFns from 'date-fns';
 
 import { User } from '../../server/db/models/interfaces';
 import Review from '../../components/Review';
-import Calendar from '../../components/Calendar';
+import Calendar from '../../components/calendar';
 import {
   loginUser,
   addInterestedUser,
@@ -40,9 +40,15 @@ const SingleListing = (props: any) => {
   const [dateFrom, setDateFrom] = useState(0);
   const [dateTo, setDateTo] = useState(0);
   const [bookError, setBookError] = useState('');
+  const [isLoading, setLoading] = useState(true);
 
+  const init = async () => {
+    await getListing(id);
+
+    setLoading(false);
+  };
   useEffect(() => {
-    getListing(id);
+    init();
   }, []);
 
   useEffect(() => {
@@ -118,7 +124,9 @@ const SingleListing = (props: any) => {
     ''
   );
 
-  return (
+  return isLoading ? (
+    <p>Loading...</p>
+  ) : (
     <Wrapper>
       <ImageGrid>
         {listing.ownerPhotos.map((imgUrl: string, idx: number) => {

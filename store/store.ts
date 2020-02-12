@@ -15,6 +15,7 @@ interface Action {
 /** INITIAL STATE **/
 const initState = {
   listing: {
+    selectedCity: "",
     ownerPhotos: [],
   },
   user: {},
@@ -24,6 +25,7 @@ const initState = {
 };
 
 /** ACTIONS  **/
+const SUBMIT_SEARCH = 'SUBMIT_SEARCH';
 const GOT_SINGLE_LISTING = 'GOT_SINGLE_LISTING';
 const LOGIN_USER = 'LOGIN_USER';
 const LOGOUT_USER = 'LOGOUT_USER';
@@ -34,6 +36,11 @@ const LOAD_TRIP = 'LOAD_TRIP';
 const BOOK_TRIP = 'BOOK_TRIP';
 
 /** ACTION CREATORS **/
+
+export const submitSearch = (selectedCity: string) => ({
+  type: SUBMIT_SEARCH,
+  selectedCity
+})
 
 export const gotSingleListing = (listing: Listing) => ({
   type: GOT_SINGLE_LISTING,
@@ -91,8 +98,8 @@ export const getSingleListing = (id: number) => {
 
 const reducer = (state: any = {}, action: Action) => {
   switch (action.type) {
-    // case GET_LISTINGS:
-    //   return [...state, action.payload];
+    case SUBMIT_SEARCH:
+      return {...state, listing: action.selectedCity};
     case GOT_SINGLE_LISTING:
       return { ...state, listing: action.listing };
     case LOGIN_USER:

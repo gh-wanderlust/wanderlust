@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router';
 
 import cookies from 'next-cookies';
-
+import { apiUrl } from '../../util';
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
 
@@ -23,7 +23,7 @@ interface ListingInterface {
   trips: Array<any>;
   zipCode: string;
 }
-import { apiUrl } from '../../util';
+
 
 const Listings = (props: any) => {
   const router = useRouter();
@@ -135,7 +135,7 @@ const Listings = (props: any) => {
 };
 
 Listings.getInitialProps = async function() {
-  const res = await axios.get(apiUrl('/api/listings'));
+  const res = await axios.get('https://wanderlust-git-deployment.gh-wanderlust.now.sh/api/listings');
   return { listings: res.data };
 };
 

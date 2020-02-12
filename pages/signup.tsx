@@ -65,7 +65,10 @@ const Signup = () => {
       userInfo.imageUrl = imageUrl;
     }
 
-    const res = await axios.post(apiUrl('/api/users'), userInfo);
+    const res = await axios.post(
+      `${window.location.protocol}//${window.location.host}` + '/api/users',
+      userInfo
+    );
     const newUser = res.data;
 
     login(newUser.id);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
 import { connect } from 'react-redux';
@@ -16,6 +16,9 @@ const Login = (props: any) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState();
 
+  useEffect(() => {
+    console.log(window.location.host);
+  });
   const onChange = (e: React.FormEvent<HTMLInputElement>, input: string) => {
     switch (input) {
       case 'email':
@@ -31,10 +34,13 @@ const Login = (props: any) => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const loginRes = await axios.post(apiUrl('/api/login'), {
-      email,
-      password,
-    });
+    const loginRes = await axios.post(
+      `${window.location.protocol}//${window.location.host}` + '/api/login',
+      {
+        email,
+        password,
+      }
+    );
     const { token } = loginRes.data;
 
     if (token) {

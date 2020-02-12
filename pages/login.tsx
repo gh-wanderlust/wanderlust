@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
 import { connect } from 'react-redux';
@@ -7,14 +7,18 @@ import Link from 'next/link';
 
 import { login } from '../util/auth';
 import { loginUser } from '../store/store';
+import { apiUrl } from '../util';
 
 const Login = (props: any) => {
-  const { dispatchLogin } = props;
+  const { user, loginUser } = props;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState();
 
+  useEffect(() => {
+    console.log(window.location.host);
+  });
   const onChange = (e: React.FormEvent<HTMLInputElement>, input: string) => {
     switch (input) {
       case 'email':
@@ -30,13 +34,18 @@ const Login = (props: any) => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const loginRes = await axios.post('/api/login', { email, password });
+    const loginRes = await axios.post(
+      `${window.location.protocol}//${window.location.host}` + '/api/login',
+      {
+        email,
+        password,
+      }
+    );
     const { token } = loginRes.data;
 
     if (token) {
       login(token);
-
-      Router.push('/accountOverview');
+      Router.push('/listings');
     } else {
       setError(loginRes.data);
     }
@@ -80,12 +89,12 @@ const Login = (props: any) => {
 };
 
 const mapState = (state: any) => {
-  return { logState: () => console.log(state) };
+  return { logState: () => console.log(state), user: state.user };
 };
 
 const mapDispatch = (dispatch: Dispatch) => {
   return {
-    dispatchLogin: bindActionCreators(loginUser, dispatch),
+    loginUser: bindActionCreators(loginUser, dispatch),
   };
 };
 

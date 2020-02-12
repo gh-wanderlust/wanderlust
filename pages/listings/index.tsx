@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { connect } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -20,6 +19,7 @@ interface ListingInterface {
   zipCode: string;
 }
 import { apiUrl } from '../../util';
+
 
 const Listings = (props: any) => {
   const [listings, setListings] = useState(props.listings);

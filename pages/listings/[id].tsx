@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-// import Link from 'next/link';
+import cookies from 'next-cookies';
+import * as dateFns from 'date-fns';
+
 import { User } from '../../server/db/models/interfaces';
 import Review from '../../components/Review';
+import Calendar from '../../components/Calendar';
 import {
   loginUser,
   addInterestedUser,
@@ -20,7 +23,7 @@ const SingleListing = (props: any) => {
   const {
     id,
     listing,
-    dummyUser,
+    loggedUser,
     users,
     getListing,
     addUser,
@@ -32,15 +35,24 @@ const SingleListing = (props: any) => {
 
   /** STATE **/
   const [userInterested, setInterested] = useState(false);
-  const [dateFrom, setDateFrom] = useState(todayString());
-  const [dateTo, setDateTo] = useState(todayString());
+  // const [dateFrom, setDateFrom] = useState(new Date(Date.now()));
+  // const [dateTo, setDateTo] = useState(new Date(Date.now()));
+  const [dateFrom, setDateFrom] = useState(0);
+  const [dateTo, setDateTo] = useState(0);
+  const [bookError, setBookError] = useState('');
+  const [isLoading, setLoading] = useState(true);
 
+  const init = async () => {
+    await getListing(id);
+
+    setLoading(false);
+  };
   useEffect(() => {
-    getListing(id);
+    init();
   }, []);
 
   useEffect(() => {
-    users.find((user: User) => user.id === dummyUser.id)
+    users.find((user: User) => user.id === loggedUser.id)
       ? setInterested(true)
       : setInterested(false);
   }, [users]);
@@ -48,31 +60,32 @@ const SingleListing = (props: any) => {
   /** FORM HANDLING**/
   const handleInterest = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(props);
-
-    const userId = dummyUser.id;
 
     if (userInterested) {
       await axios.delete(`/api/trips`, {
-        data: { userId, listingId: listing.id },
+        data: { userId: loggedUser.id, listingId: listing.id },
       });
-      removeUser(dummyUser.id);
-    } else {
+      removeUser(loggedUser.id);
+    } else if (dateFrom !== 0 && dateTo !== 0) {
       await axios.post(`/api/trips`, {
-        userIds: [userId],
+        userIds: [loggedUser.id],
         trip: {
-          dateFrom,
-          dateTo,
+          dateFrom: dateFns.format(dateFrom, 'yyyy-MM-dd'),
+          dateTo: dateFns.format(dateTo, 'yyyy-MM-dd'),
           status: 'pending',
           listingId: listing.id,
         },
       });
-      addUser(dummyUser);
+      addUser(loggedUser);
+    } else {
+      setBookError(
+        "Please make sure you've properly selected a checkin and checkout date"
+      );
     }
   };
 
   const handleBook = async (e: React.MouseEvent) => {
-    const userId = dummyUser.id;
+    const userId = loggedUser.id;
     const res = await axios.get(
       `/api/trips?userId=${userId}&listingId=${listing.id}`
     );
@@ -84,32 +97,26 @@ const SingleListing = (props: any) => {
   };
 
   /** CONDITIONAL RENDERING **/
-  const interestForm = userInterested ? (
+  const submitButtonText = userInterested
+    ? "I'm no longer interested"
+    : "I'm interested in these dates";
+
+  const calendar = userInterested ? (
     ''
   ) : (
-    <>
-      <label htmlFor="date-from">Checkin: </label>
-      <input
-        name="date-from"
-        type="date"
-        value={dateFrom}
-        onChange={(e) => setDateFrom(e.target.value)}
-        required
-      ></input>
-      <label htmlFor="date-to">Checkout: </label>
-      <input
-        name="date-to"
-        type="date"
-        value={dateTo}
-        onChange={(e) => setDateTo(e.target.value)}
-        required
-      ></input>
-    </>
+    <Calendar
+      checkin={dateFrom}
+      setCheckin={(v: any) => {
+        setDateFrom(v);
+        setBookError('');
+      }}
+      checkout={dateTo}
+      setCheckout={(v: any) => {
+        setDateTo(v);
+        setBookError('');
+      }}
+    />
   );
-
-  const submitButtonText = userInterested
-    ? ':/ No longer interested'
-    : "I'm interested!";
 
   const bookButton = userInterested ? (
     <button onClick={handleBook}>Book now!</button>
@@ -117,7 +124,9 @@ const SingleListing = (props: any) => {
     ''
   );
 
-  return (
+  return isLoading ? (
+    <p>Loading...</p>
+  ) : (
     <Wrapper>
       <ImageGrid>
         {listing.ownerPhotos.map((imgUrl: string, idx: number) => {
@@ -137,21 +146,27 @@ const SingleListing = (props: any) => {
           <Desc className="content">{listing.description}</Desc>
         </Info>
 
-        {/* <div>
-        <SectionHeader className="title">Interested Users</SectionHeader>
-        <ul className="content">
-          {users.map((user: any) => {
-            return (
-              <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
-            );
-          })}
-        </ul>
-        <form name="set-user-interest" onSubmit={handleInterest}>
-          {interestForm}
-          <button type="submit">{submitButtonText}</button>
-        </form>
-        {bookButton}
-      </div> */}
+        <Booking>
+          <Left>
+            <SectionHeader className="title">Interested Users</SectionHeader>
+          </Left>
+          <div>
+            <ul className="content">
+              {users.map((user: any) => {
+                return (
+                  <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
+                );
+              })}
+            </ul>
+            <form name="set-user-interest" onSubmit={handleInterest}>
+              {/* {interestForm} */}
+              <button type="submit">{submitButtonText}</button>
+            </form>
+            {bookButton}
+            {bookError}
+            {calendar}
+          </div>
+        </Booking>
 
         <GuestPhotos>
           <Left>
@@ -181,13 +196,12 @@ const SingleListing = (props: any) => {
 };
 
 SingleListing.getInitialProps = async function(context: any) {
-  const users = await axios.get(apiUrl('/api/users'));
-  const user = users.data.find((u: any) => u.firstName === 'Grace');
-  context.store.dispatch(loginUser(user));
-  const dummyUser = context.store.getState().user;
+  const { token } = cookies(context);
+  const res = await axios.get(apiUrl(`/api/users/${token}`));
+  const loggedUser = res.data;
 
   return {
-    dummyUser,
+    loggedUser,
     id: context.query.id,
   };
 };
@@ -195,13 +209,12 @@ SingleListing.getInitialProps = async function(context: any) {
 const mapState = (state: any) => {
   return {
     listing: state.listing,
-    user: state.user,
     users: state.interestedUsers,
     tripToBook: state.tripToBook,
   };
 };
 
-const mapDispatch = (dispatch: any) => {
+const mapDispatch = (dispatch: Dispatch) => {
   return {
     getListing: bindActionCreators(getSingleListing, dispatch),
     addUser: bindActionCreators(addInterestedUser, dispatch),
@@ -291,6 +304,7 @@ const Desc = styled.p`
   width: 85%;
 `;
 
+const Booking = styled(Section)``;
 const GuestPhotos = styled(Section)``;
 const Reviews = styled(Section)``;
 

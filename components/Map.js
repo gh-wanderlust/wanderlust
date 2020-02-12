@@ -17,6 +17,7 @@ const SimpleMap = (props) => {
 
   const mapCoords = zipcodes.lookup(zip)
 
+  console.log(process.env.GOOGLE_MAPS_API_KEY )
     return (
       <Wrapper>
       <div style={{ height: '100%', width: '100%' }}>

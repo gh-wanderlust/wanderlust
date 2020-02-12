@@ -6,5 +6,10 @@
     "SQL_GHP_WANDERLUST_USERNAME": "@db-username",
     "SQL_GHP_WANDERLUST_PASSWORD": "@db-password",
     "GOOGLE_MAPS_API_KEY": "@map-key"
+  },
+  "build": {
+    "env": {
+      "GOOGLE_MAPS_API_KEY": "@map-key"
+    }
   }
 }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Router from 'next/router';
 
 import { login } from '../util/auth';
+import { apiUrl } from '../util';
 
 interface UserInfo {
   username: string;
@@ -51,7 +52,6 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('here');
 
     const userInfo: UserInfo = {
       username,
@@ -65,10 +65,8 @@ const Signup = () => {
       userInfo.imageUrl = imageUrl;
     }
 
-    console.log(userInfo);
-    const res = await axios.post('/api/users', userInfo);
+    const res = await axios.post(apiUrl('/api/users'), userInfo);
     const newUser = res.data;
-    console.log(res);
 
     login(newUser.id);
     Router.replace('/listings');

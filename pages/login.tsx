@@ -31,7 +31,10 @@ const Login = (props: any) => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const loginRes = await axios.post('/api/login', { email, password });
+    const loginRes = await axios.post(apiUrl('/api/login'), {
+      email,
+      password,
+    });
     const { token } = loginRes.data;
 
     if (token) {

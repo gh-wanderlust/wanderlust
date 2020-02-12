@@ -21,6 +21,7 @@ const Listings = (props: any) => {
   const [dropDownVal, setDropDownVal] = useState('Anywhere');
   const [zipCode, setZipCode] = useState('10004');
 
+  
   const handleChange = (e: any) => {
     setDropDownVal(e.target.value);
 

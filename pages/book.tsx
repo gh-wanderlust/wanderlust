@@ -22,7 +22,6 @@ const Book = (props: any) => {
   const formattedDateFrom: Date = new Date(trip.dateFrom);
   const formattedDateTo: Date = new Date(trip.dateTo);
 
-  // const [renderView, setRender] = useState(false);
   const [tripmates, setTripmates] = useState(initTripmates);
   const [dateFrom, setDateFrom] = useState(formattedDateFrom);
   const [dateTo, setDateTo] = useState(formattedDateTo);
@@ -30,7 +29,6 @@ const Book = (props: any) => {
 
   useEffect(() => {
     if (!listing) router.replace('/listings');
-    // setRender(true);
   }, []);
 
   const handleSelect = (e: React.FormEvent, user: User) => {
@@ -118,18 +116,6 @@ const Book = (props: any) => {
             setBookError('');
           }}
         />
-        {/* <input
-          type='date'
-          name='date-from'
-          defaultValue={dateFrom}
-          onChange={(e) => setDateFrom(e.target.value)}
-        />
-        <input
-          type='date'
-          name='date-to'
-          defaultValue={dateTo}
-          onChange={(e) => setDateTo(e.target.value)}
-        /> */}
         <button type="submit">Confirm Booking</button>
       </form>
       <Link href="/listings">

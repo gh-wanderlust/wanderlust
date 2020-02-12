@@ -3,8 +3,11 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
+import { Select, Grommet, DropButton, Box } from 'grommet';
+
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
+import CitySelect from '../../components/CitySelect';
 
 interface ListingInterface {
   id: number;
@@ -25,70 +28,58 @@ const Listings = (props: any) => {
       return listing.city.toLowerCase() === 'chicago';
     })
   );
-  const [dropDownVal, setDropDownVal] = useState('Anywhere');
+  const [dropDownVal, setDropDownVal] = useState('Chicago');
   const [zipCode, setZipCode] = useState('60657');
 
-  // const listingData: any = {};
 
-  // filtered.forEach((listing: any) => {
-  //   listingData[listing.zipCode] = listing;
-  // });
+  const handleChange = ( option: any) => {
+    setDropDownVal(option);
+  
+    const filteredListings = listings.filter((listing: ListingInterface) => {
+      return listing.city.toLowerCase() === option.toLowerCase();
+    });
 
-  // console.log(listingData);
-
-  const handleChange = (e: any) => {
-    setDropDownVal(e.target.value);
-
-    if (e.target.value.toLowerCase() === 'anywhere') {
-      setFiltered(listings);
-    } else {
-      const filteredListings = listings.filter((listing: ListingInterface) => {
-        return listing.city.toLowerCase() === e.target.value.toLowerCase();
-      });
-
-      switch (filteredListings[0].city) {
-        case 'Chicago':
-          setZipCode('60657');
-          break;
-        case 'Montpelier':
-          setZipCode('05602');
-          break;
-        case 'Miami':
-          setZipCode('33131');
-          break;
-        default:
-          setZipCode('10004');
-      }
-
-      setFiltered(filteredListings);
-      // setMarkers(
-      //   filteredListings.map((listing: ListingInterface) => {
-      //     return listing.zipCode;
-      //   })
-      // );
-    }
+    setZipCode(filteredListings[0].zipCode)
+    setFiltered(filteredListings);
   };
+
+  const selectTheme = {
+    select: {
+        background: 'white',
+        container: {}
+    }
+  }
+
+  
 
   return (
     <Wrapper>
       <Header>
         <HeaderFilter>
           <h1>W.</h1>
-          <select
-            name="cities"
-            id="cities"
-            onChange={handleChange}
-            value={dropDownVal}
-          >
-            <option value="chicago">Chicago</option>
-            <option value="montpelier">Montpelier</option>
-            <option value="miami">Miami</option>
-          </select>
+          <Grommet theme={selectTheme}>
+            <Select options={['Chicago', 'Montpelier', 'Miami']} margin="medium" value={dropDownVal} onChange={({ option }) => handleChange(option)}/>
+          </Grommet>
         </HeaderFilter>
 
         <HeaderPrefs>
-          <button>Type of Place</button>
-          <button>Price</button>
+          
+        <Button
+          label="Price"
+          dropAlign={{ top: 'bottom' }}
+          dropContent={
+            <Box pad="large" background="light-2" />
+          }
+        />
+          
+        <Button
+        label="Type of Place"
+        dropAlign={{ top: 'bottom' }}
+        dropContent={
+          <Box pad="large" background="light-2" />
+        }
+        />
+          
         </HeaderPrefs>
       </Header>
 
@@ -118,12 +109,11 @@ export default connect()(Listings);
 const Wrapper = styled.div`
   color: var(--black);
   display: grid;
-  grid-template-rows: 100px auto;
+  grid-template-rows: max-content auto;
 `;
 
 const Header = styled.div`
   min-height: max-content;
-  box-shadow: rgb(235, 235, 235) 0px 1px 1px;
   padding: 0 5vw 1vh 5vw;
   background-color: var(--accent-dark);
   position: sticky;
@@ -150,3 +140,14 @@ const Content = styled.div`
 const List = styled.div`
   overflow-y: scroll;
 `;
+
+
+const Button  = styled(DropButton)`
+  background: white;
+  font-size: 15px;
+  padding:3px 10px;
+  margin: 8px 10px 0px 0;
+  white-space: nowrap;
+  width: max-content;
+  border: none;
+`

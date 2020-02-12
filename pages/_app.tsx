@@ -6,6 +6,7 @@ import withRedux from 'next-redux-wrapper';
 import { ThemeProvider } from 'styled-components';
 import Head from 'next/head';
 
+
 import initStore from '../store/store';
 import Global from '../util/Global';
 
@@ -13,16 +14,7 @@ interface OurProps extends AppProps {
   store: any;
 }
 
-// const MyApp = (props: OurProps) => {
-//   const { Component, pageProps, store } = props;
-//   console.log("THIS IS PAGE PROPS!!:", pageProps);
 
-//   return (
-//     <Provider store={store}>
-//       <Component {...pageProps} />
-//     </Provider>
-//   );
-// };
 
 class MyApp extends App<OurProps> {
   static async getInitialProps({ Component, ctx }: any) {

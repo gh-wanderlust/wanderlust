@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link'
 import styled from 'styled-components';
+import { logout } from '../util/auth';
+import Router from 'next/router';
 
 const Navbar = function(){
 
@@ -13,7 +15,14 @@ const Navbar = function(){
               <a>Profile</a>
             </NavLink>
             <NavLink href="/">
-              <a>Log Out</a>
+              <a
+                onClick={() => {
+                  logout();
+                  Router.push('/');
+                }}
+              >
+                Log Out
+              </a>
             </NavLink>
           </Links>
         </Wrapper>

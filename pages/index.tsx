@@ -12,43 +12,34 @@ import { Select, Grommet } from 'grommet'
 
 const LandingPage = function(props: any) {
   const { cities, submitSearch } = props
-  // console.log("CITIES: ", cities)
   const [dropDownVal, setDropdownVal] = useState("Anywhere");
 
   const handleChange = (option: any) => {
     setDropdownVal(option);
-    // console.log("SELECTED: ", e.target.value)
   }
 
   const handleSubmit = (e: any) => {
-    console.log("dropDownVal: ", dropDownVal)
     submitSearch(dropDownVal)
   }
 
   return (
     <Wrapper>
         <SearchWrapper>
-          <Headline>
+          <SearchForm>
             <h1>W.</h1>
             <h1>Find your next adventure.</h1>
-          </Headline>
-          <SearchForm>
             <Select 
               options={cities}
               onChange={({option}) => handleChange(option)}
               value={dropDownVal}
+              
             />
-            {/* <Dropdown name="cities" id="cities" onChange={handleChange} value={dropDownVal}>
-              {cities.map((city: string) => {
-                return <option value={city}>{city}</option>
-              })}
-            </Dropdown> */}
-          </SearchForm>
-          <Link href={'/listings'}>
+            <Link href={'/listings'}>
             <SearchButton onClick={handleSubmit}>
               Search
             </SearchButton>
           </Link>
+          </SearchForm>
         </SearchWrapper>
         <HeroImg
           alt="heroImg"
@@ -81,7 +72,7 @@ export default connect(null, mapDispatch)(LandingPage);
 const Wrapper = styled.div`
   display: grid;
 `
-const Headline = styled.div`
+const SearchForm = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 50%;
@@ -100,18 +91,18 @@ const SearchWrapper = styled.div`
   background: #ffffff;
   height: 86.5%;
   width: 28%;
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
 `
-const SearchForm = styled.form`
-  display: grid;
-  grid-template-columns: 300px;
-  grid-template-rows: 25px 25px 25px auto;
-  position: absolute;
-  top: 280px;
-  left: 80px;
-`
+// const SearchForm = styled.form`
+//   display: grid;
+//   grid-template-columns: 300px;
+//   grid-template-rows: 25px 25px 25px auto;
+//   position: relative;
+//   top: 320px;
+//   left: 80px;
+// `
 const SearchButton = styled.button`
   background: #23565c;
   color: white;
@@ -121,8 +112,8 @@ const SearchButton = styled.button`
   border: 2px solid darkgreen;
   border-radius: 3px;
   position: relative;
-  top: 300px;
-  left: 225px;
+  top: 80px;
+  left: 130px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 `
 const LoginButtonWrapper = styled.button`

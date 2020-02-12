@@ -10,7 +10,7 @@ import { apiUrl } from '../util'
 import { Listing } from '../server/db/models/interfaces';
 
 const LandingPage = function(props: any) {
-  const { listings, submitSearch } = props
+  const { cities, submitSearch } = props
   const [dropDownVal, setDropdownVal] = useState("Anywhere");
 
   const handleChange = (e: any) => {
@@ -18,8 +18,6 @@ const LandingPage = function(props: any) {
   }
 
   const handleSubmit = (e: any) => {
-    console.log("SUBMIT button clicked!")
-    console.log("DROP DOWN VALUE: ", dropDownVal)
     submitSearch(dropDownVal)
   }
 
@@ -32,8 +30,8 @@ const LandingPage = function(props: any) {
           </Headline>
           <SearchForm>
             <Dropdown name="cities" id="cities" onChange={handleChange} value={dropDownVal}>
-              {listings.map((listing: Listing) => {
-                return <option value={listing.city}>{listing.city}</option>
+              {cities.map((city: string) => {
+                return <option value={city}>{city}</option>
               })}
             </Dropdown>
           </SearchForm>
@@ -63,7 +61,10 @@ const mapDispatch = (dispatch:Dispatch) => ({
 
 LandingPage.getInitialProps = async () => {
   const res = await axios.get(apiUrl('/api/listings'))
-  return { listings: res.data}
+  const listings = res.data
+  const cities = listings.map((listing: Listing) => {return listing.city})
+  let uniqueList = [...new Set(cities)]
+  return { cities: uniqueList}
 }
 
 export default connect(null, mapDispatch)(LandingPage);

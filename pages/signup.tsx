@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
+import styled from 'styled-components'
 
 import { login } from '../util/auth';
 
@@ -76,54 +77,134 @@ const Signup = () => {
 
   return (
     <div>
-      <h2>Signup</h2>
-      <form name="signup" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Display Name"
-          onChange={(e) => onChange(e, 'username')}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={(e) => onChange(e, 'password')}
-          required
-        />
-        <input
-          type="text"
-          name="first-name"
-          placeholder="First name"
-          onChange={(e) => onChange(e, 'fname')}
-          required
-        />
-        <input
-          type="text"
-          name="last-name"
-          placeholder="Last name"
-          onChange={(e) => onChange(e, 'lname')}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={(e) => onChange(e, 'email')}
-          required
-        />
-        <input
-          type="url"
-          name="image-url"
-          placeholder="Profile picture (Optional)"
-          onChange={(e) => onChange(e, 'imageurl')}
-        />
-
-        <button type="submit">Signup</button>
-      </form>
+      <Wrapper>
+        <InnerWrapper>
+          <h2>Sign Up!</h2>
+          <FormWrapper>
+            <form name="signup" onSubmit={handleSubmit}>
+              <InputWrapper>
+                <Input
+                  type="text"
+                  name="username"
+                  placeholder="Display Name"
+                  onChange={(e: any) => onChange(e, 'username')}
+                  required
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  onChange={(e: any) => onChange(e, 'password')}
+                  required
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Input
+                  type="text"
+                  name="first-name"
+                  placeholder="First name"
+                  onChange={(e: any) => onChange(e, 'fname')}
+                  required
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Input
+                  type="text"
+                  name="last-name"
+                  placeholder="Last name"
+                  onChange={(e: any) => onChange(e, 'lname')}
+                  required
+                />
+              </InputWrapper>
+                <InputWrapper>
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    onChange={(e: any) => onChange(e, 'email')}
+                    required
+                  />
+                </InputWrapper>
+              <InputWrapper>
+                <Input
+                  type="url"
+                  name="image-url"
+                  placeholder="Profile picture (Optional)"
+                  onChange={(e: any) => onChange(e, 'imageurl')}
+                />
+              </InputWrapper>
+              <SubmitWrapper>
+                <Button type="submit">Start travelling!</Button>
+              </SubmitWrapper>
+            </form>
+          </FormWrapper>
+        </InnerWrapper>
+      </Wrapper>
     </div>
   );
 };
 
 export default Signup;
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+`;
+
+const InnerWrapper = styled.div`
+  display: flex;
+  width: 20vw;
+  height: 30vw;
+  align-items: center;
+  justify-content: center;
+  background-color: #23565c;
+  box-shadow: 2px 2px 7px #888888;
+  border-radius: 2%;
+  flex-direction: column;
+`;
+
+const FormWrapper = styled.div`
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const EmailWrapper = styled.div`
+  padding: 10px;
+`;
+
+const PasswordWrapper = styled.div`
+  padding: 10px;
+`;
+
+const SubmitWrapper = styled.div`
+  padding: 10px;
+`;
+
+const InputWrapper = styled.div`
+  padding: 10px;
+`;
+
+const Input = styled.input`
+  width: 10vw;
+  height: 3vh;
+`;
+
+const Button = styled.button`
+  background: white;
+  color: #23565c;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: #ffffff;
+  border-radius: 3px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+`;

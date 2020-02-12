@@ -92,13 +92,13 @@ justify-content: space-between
 const UserImg = styled.img`
   object-fit: cover;
   border-radius: 50%;
-  height: 20vw;
-  width: 20vw;
+  height: 12vw;
+  width: 12vw;
   padding: 100px;
 `;
 
 const ListingImg = styled.img`
   object-fit: cover;
-  height: 20vw;
-  width: 20vw;
+  height: 15vw;
+  width: 15vw;
 `;

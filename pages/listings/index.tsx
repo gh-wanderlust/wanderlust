@@ -33,7 +33,6 @@ const Listings = (props: any) => {
     city = "Chicago"
   }
   
-
   let initialFiltered = props.listings.filter((listing: ListingInterface) => {
       return listing.city.toLowerCase()  === city.toLowerCase() ;
   })

@@ -1,18 +1,17 @@
-const { Trip, User } = require('../../../server/db/models');
+const { Trip, User, Listing } = require('../../../server/db/models');
 
 export default async (req: any, res: any) => {
   if (req.method === 'GET') {
     try {
       const {
-        query: { id, include },
+        query: { id, users, listings },
       } = req;
 
-      const options =
-        include === 'users'
-          ? {
-              include: [{ model: User }],
-            }
-          : {};
+      const include = [];
+      if (users === 'true') include.push({model:User})
+      if (listings === 'true') include.push({model: Listing})
+
+      const options = {include}
       const trip = await Trip.findByPk(id, options);
       res.json(trip);
     } catch (error) {

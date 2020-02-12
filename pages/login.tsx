@@ -3,6 +3,7 @@ import axios from 'axios';
 import Router from 'next/router';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import Link from 'next/link';
 
 import { login } from '../util/auth';
 import { loginUser } from '../store/store';
@@ -35,12 +36,7 @@ const Login = (props: any) => {
     if (token) {
       login(token);
 
-      // const userRes = await axios.get(`/api/users/${token}`);
-      // const user = userRes.data;
-
-      // dispatchLogin(user);
-
-      Router.push('/listings');
+      Router.push('/accountOverview');
     } else {
       setError(loginRes.data);
     }

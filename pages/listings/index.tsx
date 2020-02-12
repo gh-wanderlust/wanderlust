@@ -23,7 +23,7 @@ interface ListingInterface {
   zipCode: string;
 }
 import { apiUrl } from '../../util';
-
+// 
 
 const Listings = (props: any) => {
   const router = useRouter();
@@ -174,7 +174,7 @@ const HeaderFilter = styled.div`
     color: white;
     margin-right: 10px;
     :visited {
-      color: white;
+      color: white; 
     }
   }
 `;

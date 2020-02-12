@@ -113,7 +113,7 @@ const Wrapper = styled.div`
 `;
 
 const Header = styled.div`
-  min-height: max-content;
+  height: max-content;
   padding: 0 5vw 1vh 5vw;
   background-color: var(--accent-dark);
   position: sticky;

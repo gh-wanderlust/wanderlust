@@ -87,7 +87,7 @@ LandingPage.getInitialProps = async (context: any) => {
   if (token) props.loggedIn = token;
   else props.loggedIn = false;
 
-  const res = await axios.get(apiUrl('/api/listings'));
+  const res = await axios.get('/api/listings');
   const listings = res.data;
   const cities = listings.map((listing: Listing) => {
     return listing.city;

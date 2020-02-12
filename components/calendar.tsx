@@ -91,17 +91,16 @@ const Calendar = (props: any) => {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
 
-        const cloneDay = day;
-
-        let className = !dateFns.isSameMonth(day, monthStart)
-          ? 'disabled'
-          : dateFns.isSameDay(day, checkin)
-          ? 'checkin'
-          : dateFns.isSameDay(day, checkout)
-          ? 'checkout'
-          : dateFns.isAfter(day, checkin) && dateFns.isBefore(day, checkout)
-          ? 'between'
-          : '';
+        let className =
+          day < today || !dateFns.isSameMonth(day, monthStart)
+            ? 'disabled'
+            : dateFns.isSameDay(day, checkin)
+            ? 'checkin'
+            : dateFns.isSameDay(day, checkout)
+            ? 'checkout'
+            : dateFns.isAfter(day, checkin) && dateFns.isBefore(day, checkout)
+            ? 'between'
+            : '';
 
         days[dateFns.format(day, 'yyyy MM d')] = (
           <Cell
@@ -132,8 +131,10 @@ const Calendar = (props: any) => {
       if (checkout !== 0 && dateFns.isAfter(day, checkout)) setCheckout(0);
       setChooseCheckin(false);
     } else {
-      setCheckout(day);
-      setChooseCheckin(true);
+      if (!dateFns.isSameDay(day, checkin)) {
+        setCheckout(day);
+        setChooseCheckin(true);
+      }
       if (checkin !== 0 && dateFns.isBefore(day, checkin)) {
         setCheckin(day);
         setCheckout(0);

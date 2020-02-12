@@ -18,18 +18,54 @@ const listingSeed = [
 		price: 20000
 	},
 	{
+		name: 'Cozy Ski Lodge',
+		description:
+			'Come enjoy the tranquil beauty of this Montpelier vacation rental in the mountains! Not far from the Ski Resort, this lodge is ideally located for skiers.',
+		address: '586 Ski Lodge Lane',
+		city: 'Montpelier',
+		country: 'United States of America',
+		zipCode: '05651',
+		minOccupants: 6,
+		maxOccupants: 10,
+		ownerPhotos: [
+			'https://images.unsplash.com/photo-1487975460695-a2e5c4ea12c9',
+			'https://images.unsplash.com/photo-1560890264-4b92305ee66e',
+			'https://images.unsplash.com/photo-1576536423721-d68a48c8ffd8',
+			'https://images.unsplash.com/photo-1563070779-147fe2aa51d3'
+		],
+		price: 15000
+	},
+	{
 		name: "Howl's Moving Castle",
 		description: 'Charming castle on the move with charming prince!',
 		address: '112 Log Rd',
 		city: 'Montpelier',
 		country: 'United States of America',
-		zipCode: '05602',
+		zipCode: '05660',
 		minOccupants: 3,
 		maxOccupants: 6,
 		ownerPhotos: [
 			'https://i.imgur.com/bMpCKQ3.jpeg',
 			'https://i.imgur.com/d8zr5a9.jpeg',
-			'https://img.buzzfeed.com/buzzfeed-static/static/2015-07/15/17/enhanced/webdr05/original-9377-1436995231-3.jpg?downsize=700%3A%2A&output-quality=auto&output-format=auto'
+			'https://img.buzzfeed.com/buzzfeed-static/static/2015-07/15/17/enhanced/webdr05/original-9377-1436995231-3.jpg?downsize=700%3A%2A&output-quality=auto&output-format=auto',
+			'https://images4.alphacoders.com/123/123064.jpg'
+		],
+		price: 2000
+	},
+	{
+		name: "Bag End",
+		description: 'Welcome to chez Bilbo Baggins!',
+		address: '1 Diwedd Bag',
+		city: 'Chicago',
+		country: 'United States of America',
+		zipCode: '60659',
+		minOccupants: 2,
+		maxOccupants: 6,
+		ownerPhotos: [
+			'https://i.pinimg.com/564x/e7/3d/0c/e73d0c66d291f3c2686064bbcf1a7de3.jpg',
+			'https://images.unsplash.com/photo-1575735409309-e0ecb6088fcd',
+			'https://www.hobbitontours.com/media/1174/hobbiton-movie-set-30.jpg',
+			'https://i.pinimg.com/originals/12/71/a8/1271a8929f4025e39f3dda1240a9e8d6.png'
 		],
 		price: 2000
 	},
@@ -49,6 +85,23 @@ const listingSeed = [
 			'https://www.fourseasons.com/alt/img-opt/~70.1530/publish/content/dam/fourseasons/images/web/BOR/BOR_130_aspect16x9.jpg'
 		],
 		price: 20000
+	},
+	{
+		name: 'Eternal Summer Cottage in the Grove',
+		description: 'This cozy private cottage was featured in The Tropical Cottage: At Home in Coconut Grove (2013). Only 10-15 min. from South Beach, South Miami, and Coral Gables, and close to Cocowalk.',
+		address: '50 W 2nd Ave',
+		city: 'Miami',
+		country: 'United States of America',
+		zipCode: '33130',
+		minOccupants: 4,
+		maxOccupants: 8,
+		ownerPhotos: [
+			'https://i.pinimg.com/originals/55/d6/7c/55d67c27b58c8ad2842ae9ca31f00ddc.jpg',
+			'https://images.unsplash.com/photo-1565538810643-b5bdb714032a',
+			'https://images.unsplash.com/photo-1529262365544-55d1707e64e6',
+			'https://images.unsplash.com/photo-1553444836-bc6c8d340ba7'
+		],
+		price: 18000
 	},
 	{
 		name: 'Luxury Condo',

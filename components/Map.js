@@ -10,6 +10,7 @@ const AnyReactComponent = ({ text }) => <Marker>{''}</Marker>;
 const SimpleMap = (props) => {
   const [zip, setZip] = useState(props.zipcode)
 
+  console.log(props.zipcode)
   if (zip !== props.zipcode) {
     setZip(props.zipcode)
   }

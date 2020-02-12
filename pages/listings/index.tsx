@@ -22,14 +22,30 @@ import { apiUrl } from '../../util';
 
 
 const Listings = (props: any) => {
+  
+
+  let initialFiltered = props.listings.filter((listing: ListingInterface) => {
+      return listing.city.toLowerCase()  === props.listing.selectedCity.toLowerCase() ;
+  })
+
+  let initialZip
+  let city = props.listing.selectedCity
+  
+  if (city === 'Chicago') {
+    initialZip='60657'
+  } else if (city === 'Montpelier'){
+    initialZip='05602'
+  } else {
+     initialZip='33131'
+  }
+  
+
+  
+
   const [listings, setListings] = useState(props.listings);
-  const [filtered, setFiltered] = useState(
-    listings.filter((listing: ListingInterface) => {
-      return listing.city.toLowerCase() === 'chicago';
-    })
-  );
-  const [dropDownVal, setDropDownVal] = useState('Chicago');
-  const [zipCode, setZipCode] = useState('60657');
+  const [filtered, setFiltered] = useState(initialFiltered);
+  const [dropDownVal, setDropDownVal] = useState(props.listing.selectedCity);
+  const [zipCode, setZipCode] = useState(initialZip);
 
 
   const handleChange = ( option: any) => {
@@ -50,7 +66,6 @@ const Listings = (props: any) => {
     }
   }
 
-  
 
   return (
     <Wrapper>
@@ -104,7 +119,11 @@ Listings.getInitialProps = async function() {
   return { listings: res.data };
 };
 
-export default connect()(Listings);
+const mapStateToProps =(state:any) => ({
+  listing: state.listing
+})
+
+export default connect(mapStateToProps)(Listings);
 
 const Wrapper = styled.div`
   color: var(--black);

@@ -9,10 +9,12 @@ import { submitSearch } from '../store/store'
 import { apiUrl } from '../util'
 import { Listing } from '../server/db/models/interfaces';
 import { Select } from 'grommet'
+import { useRouter } from 'next/router';
 
 const LandingPage = function(props: any) {
   const { cities, submitSearch } = props
-  const [dropDownVal, setDropdownVal] = useState("Anywhere");
+  const [dropDownVal, setDropdownVal] = useState("Chicago");
+  const router = useRouter();
 
   const handleChange = (option: any) => {
     setDropdownVal(option);
@@ -20,7 +22,10 @@ const LandingPage = function(props: any) {
 
   const handleSubmit = (e: any) => {
     submitSearch(dropDownVal)
+    router.push('/listings');
   }
+
+  
 
   return (
     <Wrapper>
@@ -29,7 +34,7 @@ const LandingPage = function(props: any) {
             <h1>W.</h1>
             <h1>Find your next adventure.</h1>
             <Select 
-              options={cities}
+              options={['Chicago', 'Montpelier', 'Miami']}
               onChange={({option}) => handleChange(option)}
               value={dropDownVal}
             />

@@ -46,7 +46,6 @@ export default UserProfile;
 
 const Wrapper = styled.div`
   display: flex;
-  font-family: 'Lucida Console', sans-serif;
 `;
 const InnerWrapper = styled.div`
   display: flex;

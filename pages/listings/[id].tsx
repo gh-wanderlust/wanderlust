@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import styled from 'styled-components';
 import cookies from 'next-cookies';
 import * as dateFns from 'date-fns';
@@ -31,30 +31,39 @@ const SingleListing = (props: any) => {
     loadTrip,
   } = props;
 
-  const router = useRouter();
-
   /** STATE **/
   const [userInterested, setInterested] = useState(false);
-  // const [dateFrom, setDateFrom] = useState(new Date(Date.now()));
-  // const [dateTo, setDateTo] = useState(new Date(Date.now()));
   const [dateFrom, setDateFrom] = useState(0);
   const [dateTo, setDateTo] = useState(0);
   const [bookError, setBookError] = useState('');
   const [isLoading, setLoading] = useState(true);
+  // const [tripColors, setTripColors] = useState({});
+  const tripColors: any = {};
+  if (!isLoading) {
+    listing.trips.map((trip: any) => {
+      if (trip.status === 'pending') {
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        const hex = `#${randomColor}`;
+        tripColors[trip.id] = hex;
+      }
+    });
+  }
 
   const init = async () => {
     await getListing(id);
-
     setLoading(false);
   };
+
   useEffect(() => {
     init();
   }, []);
 
   useEffect(() => {
-    users.find((user: User) => user.id === loggedUser.id)
-      ? setInterested(true)
-      : setInterested(false);
+    if (loggedUser) {
+      users.find((user: User) => user.id === loggedUser.id)
+        ? setInterested(true)
+        : setInterested(false);
+    }
   }, [users]);
 
   /** FORM HANDLING**/
@@ -93,7 +102,7 @@ const SingleListing = (props: any) => {
 
     await loadTrip(trip);
 
-    router.push('/book');
+    Router.push('/book');
   };
 
   /** CONDITIONAL RENDERING **/
@@ -115,6 +124,8 @@ const SingleListing = (props: any) => {
         setDateTo(v);
         setBookError('');
       }}
+      trips={listing.trips}
+      tripColors={tripColors}
     />
   );
 
@@ -151,20 +162,23 @@ const SingleListing = (props: any) => {
             <SectionHeader className="title">Interested Users</SectionHeader>
           </Left>
           <div>
-            <ul className="content">
+            <InterestedUsers>
               {users.map((user: any) => {
-                return (
-                  <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
-                );
+                return <UserThumb key={user.id} user={user} />;
               })}
-            </ul>
-            <form name="set-user-interest" onSubmit={handleInterest}>
-              {/* {interestForm} */}
-              <button type="submit">{submitButtonText}</button>
-            </form>
-            {bookButton}
-            {bookError}
-            {calendar}
+            </InterestedUsers>
+            {loggedUser ? (
+              <>
+                <form name="set-user-interest" onSubmit={handleInterest}>
+                  <button type="submit">{submitButtonText}</button>
+                </form>
+                {bookButton}
+                {bookError}
+                {calendar}
+              </>
+            ) : (
+              ''
+            )}
           </div>
         </Booking>
 
@@ -197,8 +211,11 @@ const SingleListing = (props: any) => {
 
 SingleListing.getInitialProps = async function(context: any) {
   const { token } = cookies(context);
-  const res = await axios.get(apiUrl(`/api/users/${token}`));
-  const loggedUser = res.data;
+  let loggedUser = null;
+  if (token) {
+    const res = await axios.get(apiUrl(`/api/users/${token}`));
+    loggedUser = res.data;
+  }
 
   return {
     loggedUser,
@@ -227,16 +244,15 @@ export default connect(mapState, mapDispatch)(SingleListing);
 
 /** HELPERS **/
 
-const todayString = () => {
-  const today = new Date(Date.now());
-  const yyyy = today.getFullYear();
-  let mm: string | number = today.getMonth() + 1;
-  let dd: string | number = today.getDate();
-
-  if (mm < 10) mm = '0' + mm;
-  if (dd < 10) dd = '0' + dd;
-
-  return `${yyyy}-${mm}-${dd}`;
+const UserThumb = (props: any) => {
+  const { user } = props;
+  const fullName = `${user.firstName} ${user.lastName}`;
+  return (
+    <UserThumbnail key={user.id}>
+      <img src={user.imageUrl} alt={fullName} />
+      {fullName}
+    </UserThumbnail>
+  );
 };
 
 const Wrapper = styled.div`
@@ -329,5 +345,23 @@ const Left = styled.div`
   p {
     padding: 0;
     margin: 0;
+  }
+`;
+
+const InterestedUsers = styled.ul`
+  list-style-type: none;
+  padding-left: 0;
+`;
+const UserThumbnail = styled.li`
+  display: flex;
+  align-items: center;
+  margin: 1em;
+
+  img {
+    width: 3em;
+    height: 3em;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 1em;
   }
 `;

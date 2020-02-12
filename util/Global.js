@@ -146,7 +146,7 @@ const Global = createGlobalStyle`
   position: absolute;
   width: 100%;
   height: 100%;
-  mix-blend-mode: multiply;
+  mix-blend-mode: overlay;
   opacity: .3;
   box-sizing: border-box;
 }

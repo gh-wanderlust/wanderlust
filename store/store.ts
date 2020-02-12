@@ -26,6 +26,7 @@ const initState = {
 /** ACTIONS  **/
 const GOT_SINGLE_LISTING = 'GOT_SINGLE_LISTING';
 const LOGIN_USER = 'LOGIN_USER';
+const LOGOUT_USER = 'LOGOUT_USER';
 const CLEAR_INTERESTED_USERS = 'CLEAR_INTERESTED_USERS';
 const ADD_INTERESTED_USER = 'ADD_INTERESTED_USER';
 const REMOVE_INTERESTED_USER = 'REMOVE_INTERESTED_USER';
@@ -40,6 +41,7 @@ export const gotSingleListing = (listing: Listing) => ({
 });
 
 export const loginUser = (user: User) => ({ type: LOGIN_USER, user });
+export const logoutUser = () => ({ type: LOGOUT_USER });
 
 export const clearInterestedUsers = () => ({
   type: CLEAR_INTERESTED_USERS,
@@ -95,6 +97,8 @@ const reducer = (state: any = {}, action: Action) => {
       return { ...state, listing: action.listing };
     case LOGIN_USER:
       return { ...state, user: action.user };
+    case LOGOUT_USER:
+      return { ...state, user: null };
     case CLEAR_INTERESTED_USERS:
       return {
         ...state,

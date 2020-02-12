@@ -7,9 +7,10 @@ import Link from 'next/link';
 
 import { login } from '../util/auth';
 import { loginUser } from '../store/store';
+import { apiUrl } from '../util';
 
 const Login = (props: any) => {
-  const { dispatchLogin } = props;
+  const { user, loginUser } = props;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,8 +36,7 @@ const Login = (props: any) => {
 
     if (token) {
       login(token);
-
-      Router.push('/accountOverview');
+      Router.push('/listings');
     } else {
       setError(loginRes.data);
     }
@@ -80,12 +80,12 @@ const Login = (props: any) => {
 };
 
 const mapState = (state: any) => {
-  return { logState: () => console.log(state) };
+  return { logState: () => console.log(state), user: state.user };
 };
 
 const mapDispatch = (dispatch: Dispatch) => {
   return {
-    dispatchLogin: bindActionCreators(loginUser, dispatch),
+    loginUser: bindActionCreators(loginUser, dispatch),
   };
 };
 

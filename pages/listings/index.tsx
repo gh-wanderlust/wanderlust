@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import axios from 'axios';
+import cookies from 'next-cookies';
 
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
@@ -73,17 +74,14 @@ const Listings = (props: any) => {
   );
 };
 
-// const mapStateToProps = (state: any) => {
-//   return {
-//     data: state
-//   };
-// };
-
-Listings.getInitialProps = async function() {
-  // const res = await instance.get("/api/listings");
+Listings.getInitialProps = async function(context: any) {
   const res = await axios.get(apiUrl('/api/listings'));
+  const props = { listings: res.data, loggedIn: '' };
 
-  return { listings: res.data };
+  const { token } = cookies(context);
+  if (token) props.loggedIn = token;
+
+  return props;
 };
 
 export default connect()(Listings);

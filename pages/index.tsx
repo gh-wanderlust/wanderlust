@@ -1,44 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Dispatch } from 'redux';
 import {connect} from 'react-redux'
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components'
+import axios from 'axios'
 import Link from 'next/link'
-// import { getTest } from "../store/store";
+import { submitSearch } from '../store/store'
+import { apiUrl } from '../util'
+import { Listing } from '../server/db/models/interfaces';
 
-interface LinkStateProps {
-  state: Array<string>
-}
+const LandingPage = function(props: any) {
+  const { listings, submitSearch } = props
+  const [dropDownVal, setDropdownVal] = useState("Anywhere");
 
-interface LinkDispatchProps {
-  submitSearch: () => void
-}
+  const handleChange = (e: any) => {
+    setDropdownVal(e.target.value);
+  }
 
-type Props = LinkStateProps & LinkDispatchProps
+  const handleSubmit = (e: any) => {
+    console.log("SUBMIT button clicked!")
+    console.log("DROP DOWN VALUE: ", dropDownVal)
+    submitSearch(dropDownVal)
+  }
 
-class Index extends React.Component<Props> {
-
-  render() {
-    return (
-      <Wrapper>
+  return (
+    <Wrapper>
         <SearchWrapper>
           <Headline>
             <h1>W.</h1>
             <h1>Find your next adventure.</h1>
           </Headline>
           <SearchForm>
-            Select your destination:
-            <Dropdown name="cities" id="cities">
-              <option value="anywhere">Anywhere</option>
-              <option value="osaka">Osaka</option>
-              <option value="bora bora">Bora Bora</option>
-              <option value="inverness">Inverness</option>
+            <Dropdown name="cities" id="cities" onChange={handleChange} value={dropDownVal}>
+              {listings.map((listing: Listing) => {
+                return <option value={listing.city}>{listing.city}</option>
+              })}
             </Dropdown>
-            From
-            <DateInput type="date" name="fromDate"></DateInput>
-            To
-            <DateInput type="date" name="toDate"></DateInput>
           </SearchForm>
           <Link href={'/listings'}>
-            <SearchButton onClick={() => this.props.submitSearch()}>
+            <SearchButton onClick={handleSubmit}>
               Search
             </SearchButton>
           </Link>
@@ -54,19 +54,19 @@ class Index extends React.Component<Props> {
         <ListingImg1 src="https://images.unsplash.com/photo-1511840636560-acee95b3a83f" />
         <ListingImg2 src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017" />
       </Wrapper>
-    )
-  }
+  )
 }
 
-const mapStateToProps = (state: Array<string>) => ({
-  state: state
+const mapDispatch = (dispatch:Dispatch) => ({
+  submitSearch: bindActionCreators(submitSearch, dispatch)
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-  submitSearch: () => {}
-})
+LandingPage.getInitialProps = async () => {
+  const res = await axios.get(apiUrl('/api/listings'))
+  return { listings: res.data}
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Index)
+export default connect(null, mapDispatch)(LandingPage);
 
 const Wrapper = styled.div`
   display: grid;
@@ -83,8 +83,6 @@ const Headline = styled.div`
 const Dropdown = styled.select`
   // box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 `
-
-const DateInput = styled.input``
 
 const SearchWrapper = styled.div`
   font-family: 'Lucida Console', sans-serif;
@@ -113,7 +111,7 @@ const SearchButton = styled.button`
   border: 2px solid darkgreen;
   border-radius: 3px;
   position: relative;
-  top: 400px;
+  top: 300px;
   left: 225px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 `

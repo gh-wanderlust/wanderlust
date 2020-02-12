@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { submitSearch } from '../store/store'
 import { apiUrl } from '../util'
 import { Listing } from '../server/db/models/interfaces';
-import { Select, Grommet } from 'grommet'
+import { Select } from 'grommet'
 
 const LandingPage = function(props: any) {
   const { cities, submitSearch } = props
@@ -32,7 +32,6 @@ const LandingPage = function(props: any) {
               options={cities}
               onChange={({option}) => handleChange(option)}
               value={dropDownVal}
-              
             />
             <Link href={'/listings'}>
             <SearchButton onClick={handleSubmit}>
@@ -46,11 +45,9 @@ const LandingPage = function(props: any) {
           src="https://c0.wallpaperflare.com/preview/732/704/957/mountain-snow-house-hillside.jpg"
         />
         <LoginButtonWrapper>
-          <Link href={'/login'}><LoginButton>Log In</LoginButton></Link>
-          <Link href={'/signup'}><LoginButton>Sign Up</LoginButton></Link>
+          <Link href={'/login'}><Button>Log In</Button></Link>
+          <Link href={'/signup'}><Button>Sign Up</Button></Link>
         </LoginButtonWrapper>
-        {/* <ListingImg1 src="https://images.unsplash.com/photo-1511840636560-acee95b3a83f" />
-        <ListingImg2 src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017" /> */}
       </Wrapper>
   )
 }
@@ -81,10 +78,6 @@ const SearchForm = styled.div`
   left: 80px;
 `
 
-const Dropdown = styled.select`
-  // box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-`
-
 const SearchWrapper = styled.div`
   font-family: 'Lucida Console', sans-serif;
   padding: 50px;
@@ -95,25 +88,18 @@ const SearchWrapper = styled.div`
   top: 0;
   left: 0;
 `
-// const SearchForm = styled.form`
-//   display: grid;
-//   grid-template-columns: 300px;
-//   grid-template-rows: 25px 25px 25px auto;
-//   position: relative;
-//   top: 320px;
-//   left: 80px;
-// `
+
 const SearchButton = styled.button`
   background: #23565c;
-  color: white;
+  font-family: inherit;
+  color: #ffffff;
   font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
+  margin-top: 1.5em;
+  padding: 1em;
   border: 2px solid darkgreen;
   border-radius: 3px;
   position: relative;
-  top: 80px;
-  left: 130px;
+  width: 100%;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 `
 const LoginButtonWrapper = styled.button`
@@ -124,7 +110,8 @@ const LoginButtonWrapper = styled.button`
   right: 50px;
 `
 
-const LoginButton = styled.button`
+const Button = styled.button`
+  font-family: inherit;  
   background: transparent;
   color: white;
   font-size: 15px;
@@ -140,17 +127,4 @@ const HeroImg = styled.img`
   position: absolute;
   top: 0;
   left: 35%;
-`
-const ListingImg1 = styled.img`
-  width: 100%;
-  position: relative;
-  top: 750px;
-  left: 0;
-`
-
-const ListingImg2 = styled.img`
-  width: 100%;
-  position: relative;
-  top: 750px;
-  left: 0;
 `

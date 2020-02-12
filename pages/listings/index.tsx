@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-
 import { connect } from 'react-redux';
 import axios from 'axios';
-
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
 

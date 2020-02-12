@@ -8,16 +8,20 @@ import Link from 'next/link'
 import { submitSearch } from '../store/store'
 import { apiUrl } from '../util'
 import { Listing } from '../server/db/models/interfaces';
+import { Select, Grommet } from 'grommet'
 
 const LandingPage = function(props: any) {
   const { cities, submitSearch } = props
+  // console.log("CITIES: ", cities)
   const [dropDownVal, setDropdownVal] = useState("Anywhere");
 
-  const handleChange = (e: any) => {
-    setDropdownVal(e.target.value);
+  const handleChange = (option: any) => {
+    setDropdownVal(option);
+    // console.log("SELECTED: ", e.target.value)
   }
 
   const handleSubmit = (e: any) => {
+    console.log("dropDownVal: ", dropDownVal)
     submitSearch(dropDownVal)
   }
 
@@ -29,11 +33,16 @@ const LandingPage = function(props: any) {
             <h1>Find your next adventure.</h1>
           </Headline>
           <SearchForm>
-            <Dropdown name="cities" id="cities" onChange={handleChange} value={dropDownVal}>
+            <Select 
+              options={cities}
+              onChange={({option}) => handleChange(option)}
+              value={dropDownVal}
+            />
+            {/* <Dropdown name="cities" id="cities" onChange={handleChange} value={dropDownVal}>
               {cities.map((city: string) => {
                 return <option value={city}>{city}</option>
               })}
-            </Dropdown>
+            </Dropdown> */}
           </SearchForm>
           <Link href={'/listings'}>
             <SearchButton onClick={handleSubmit}>
@@ -49,8 +58,8 @@ const LandingPage = function(props: any) {
           <Link href={'/login'}><LoginButton>Log In</LoginButton></Link>
           <Link href={'/signup'}><LoginButton>Sign Up</LoginButton></Link>
         </LoginButtonWrapper>
-        <ListingImg1 src="https://images.unsplash.com/photo-1511840636560-acee95b3a83f" />
-        <ListingImg2 src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017" />
+        {/* <ListingImg1 src="https://images.unsplash.com/photo-1511840636560-acee95b3a83f" />
+        <ListingImg2 src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017" /> */}
       </Wrapper>
   )
 }

@@ -56,7 +56,7 @@ const LandingPage = function(props: any) {
           <Button
             onClick={() => {
               logout();
-              Router.push('/');
+              router.push('/');
             }}
           >
             Logout

@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Select, Grommet, DropButton, Box } from 'grommet';
+import Link from 'next/link'
+import { useRouter } from 'next/router';
+
 
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
-import CitySelect from '../../components/CitySelect';
+
+import {logout} from '../../util/auth'
 
 interface ListingInterface {
   id: number;
@@ -22,6 +26,7 @@ import { apiUrl } from '../../util';
 
 
 const Listings = (props: any) => {
+  const router = useRouter();
   
 
   let initialFiltered = props.listings.filter((listing: ListingInterface) => {
@@ -71,15 +76,30 @@ const Listings = (props: any) => {
     <Wrapper>
       <Header>
         <HeaderFilter>
-          <h1>W.</h1>
-          <Grommet theme={selectTheme}>
-            <Select options={['Chicago', 'Montpelier', 'Miami']} margin="medium" value={dropDownVal} onChange={({ option }) => handleChange(option)}/>
-          </Grommet>
+          <div>
+            <h1>W.</h1>
+            <Grommet theme={selectTheme}>
+              <Select options={['Chicago', 'Montpelier', 'Miami']} margin="medium" value={dropDownVal} onChange={({ option }) => handleChange(option)}/>
+            </Grommet>
+          </div>
+
+          <div>
+          <Link href='/accountOverview'>
+            <a>Profile</a>
+          </Link>
+
+          <Link href='/'>
+            <a onClick={() => {
+              logout()
+              router.push('/')
+            }}>Log Out</a>
+          </Link>
+          </div>
         </HeaderFilter>
 
         <HeaderPrefs>
           
-        <Button
+        {/* <Button
           label="Price"
           dropAlign={{ top: 'bottom' }}
           dropContent={
@@ -93,7 +113,7 @@ const Listings = (props: any) => {
         dropContent={
           <Box pad="large" background="light-2" />
         }
-        />
+        /> */}
           
         </HeaderPrefs>
       </Header>
@@ -143,10 +163,25 @@ const HeaderFilter = styled.div`
   display: flex;
   align-items: center;
   max-height: 6vh;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  div {
+    display: flex;
+  }
+
+  a {
+    color: white;
+    margin-right: 10px;
+    :visited {
+      color: white;
+    }
+  }
 `;
 
 const HeaderPrefs = styled.div`
-  border-top: 1px solid var(--accent-light);
+  /* border-top: 1px solid var(--accent-light); */
+  height: 10px;
 `;
 
 const Content = styled.div`

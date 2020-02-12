@@ -43,7 +43,7 @@ const Wrapper = styled.div`
   padding: 4vh 2vw;
   align-items: center;
   border-bottom: 1px solid var(--dark-gray);
-  height: 15vh;
+  min-height: min-content;
   cursor: pointer;
 
   img {

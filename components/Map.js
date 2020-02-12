@@ -15,11 +15,6 @@ const SimpleMap = (props) => {
   }
 
   const mapCoords = zipcodes.lookup(zip)
-  console.log('mapCoords:', mapCoords)
-
-  const {markers} = props
-  const markerCoords = markers.map(zip => zipcodes.lookup(zip))
-  // console.log('markerCoords:', markerCoords)
 
     return (
       <Wrapper>
@@ -34,14 +29,15 @@ const SimpleMap = (props) => {
         >
 
 
-          {markerCoords.map(coord => {
+          {props.filteredListings.map(listing => {
+            const coords = zipcodes.lookup(listing.zipCode)
             return (
-              <AnyReactComponent
-                lat={coord.latitude}
-                lng={coord.longitude}
+              <Marker
+                lat={coords.latitude}
+                lng={coords.longitude}
                 text="BETA MARKER"
                 key={uuid()}
-              />
+              >${listing.price / 100}</Marker>
             )
           })}
         </GoogleMapReact>
@@ -59,17 +55,24 @@ export default SimpleMap;
   height: 100%;
   `
   const Marker = styled.div`
+    border: 10px solid var(--accent-dark);
+    box-sizing: border-box;
     background-color: var(--accent-dark);
     background-size: 30px 30px;
     height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    border: 2px solid papayawhip;
+    width: 50px;
+    border-radius: 16px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 12px;
 
-:hover {
-  height: 35px;
-    width: 35px;
-    background-size: 35px 35px;
-    transition: all 0.25s;
-}
+    :hover {
+      transform: scale(1.15);
+      transform-origin: 50% 50% 0;
+      transition: all 0.25s;
+      box-shadow: lightgrey 0px 1px 1px;
+    }
   `

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
-
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
 
@@ -26,13 +25,16 @@ const Listings = (props: any) => {
       return listing.city.toLowerCase() === 'chicago';
     })
   );
-  const [markers, setMarkers] = useState(
-    filtered.map((listing: ListingInterface) => {
-      return listing.zipCode;
-    })
-  );
   const [dropDownVal, setDropDownVal] = useState('Anywhere');
   const [zipCode, setZipCode] = useState('60657');
+
+  // const listingData: any = {};
+
+  // filtered.forEach((listing: any) => {
+  //   listingData[listing.zipCode] = listing;
+  // });
+
+  // console.log(listingData);
 
   const handleChange = (e: any) => {
     setDropDownVal(e.target.value);
@@ -59,11 +61,11 @@ const Listings = (props: any) => {
       }
 
       setFiltered(filteredListings);
-      setMarkers(
-        filteredListings.map((listing: ListingInterface) => {
-          return listing.zipCode;
-        })
-      );
+      // setMarkers(
+      //   filteredListings.map((listing: ListingInterface) => {
+      //     return listing.zipCode;
+      //   })
+      // );
     }
   };
 
@@ -91,7 +93,7 @@ const Listings = (props: any) => {
       </Header>
 
       <Content>
-        <SimpleMap zipcode={zipCode} markers={markers} />
+        <SimpleMap zipcode={zipCode} filteredListings={filtered} />
 
         <List>
           {filtered.map((listing: ListingInterface) => {

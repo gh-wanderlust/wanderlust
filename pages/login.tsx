@@ -93,7 +93,6 @@ const Login = (props: any) => {
     </div>
   );
 };
-
 const mapState = (state: any) => {
   return { logState: () => console.log(state) };
 };

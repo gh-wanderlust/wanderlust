@@ -266,7 +266,7 @@ const Wrapper = styled.div`
 
 const ImageGrid = styled.div`
   display: grid;
-  max-height: 50vh;
+  height: 50vh;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-gap: 8px;

@@ -27,14 +27,19 @@ interface ListingInterface {
 
 const Listings = (props: any) => {
   const router = useRouter();
+  let city = props.listing.selectedCity
+
+  if (!city) {
+    city = "Chicago"
+  }
   
 
   let initialFiltered = props.listings.filter((listing: ListingInterface) => {
-      return listing.city.toLowerCase()  === props.listing.selectedCity.toLowerCase() ;
+      return listing.city.toLowerCase()  === city.toLowerCase() ;
   })
 
   let initialZip
-  let city = props.listing.selectedCity
+  
   
   if (city === 'Chicago') {
     initialZip='60657'
@@ -135,7 +140,7 @@ const Listings = (props: any) => {
 };
 
 Listings.getInitialProps = async function() {
-  const res = await axios.get('https://wanderlust-git-deployment.gh-wanderlust.now.sh/api/listings');
+  const res = await axios.get(apiUrl('/api/listings'));
   return { listings: res.data };
 };
 

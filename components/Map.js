@@ -22,7 +22,7 @@ const SimpleMap = (props) => {
       <Wrapper>
       <div style={{ height: '100%', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY }}
+          bootstrapURLKeys={{ key: "AIzaSyBJKCWmM_cj5A-B0H-sZF51HoSF1QOwLPU" }}
           center={{
             lat: mapCoords.latitude,
             lng: mapCoords.longitude

@@ -115,6 +115,8 @@ const Book = (props: any) => {
             setDateTo(v);
             setBookError('');
           }}
+          trips={[]}
+          tripColors={{}}
         />
         <button type="submit">Confirm Booking</button>
       </form>

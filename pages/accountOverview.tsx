@@ -3,7 +3,6 @@ import axios from 'axios';
 import Link from 'next/link';
 import cookies from 'next-cookies';
 import styled from 'styled-components';
-import Navbar from '../components/userNavbar'
 
 const AccountOverview = function(props: any) {
   const { user } = props;
@@ -12,37 +11,42 @@ const AccountOverview = function(props: any) {
     <div>
       {user ? (
         <div>
-          <Navbar />
           <Wrapper>
             <UserImg src={user.imageUrl} />
             <InnerWrapper>
               <h1>{`${user.firstName} ${user.lastName}`}</h1>
               <h2>Upcoming Trips:</h2>
               <PhotoWrapper>
-                {user.trips.length > 0 ?
-                user.trips.map((trip: any) => {
-                  if (trip.status === 'booked') {
-                    return (
-                      <Link key={trip.id} href={`/itinerary/${trip.id}`}>
-                        <ListingImg src={trip.listing.ownerPhotos[0]} />
-                      </Link>
-                    );
-                  }
-                }) 
-                : <h3>None Yet!</h3>}
+                {user.trips.length > 0 ? (
+                  user.trips.map((trip: any) => {
+                    if (trip.status === 'booked') {
+                      return (
+                        <Link key={trip.id} href={`/itinerary/${trip.id}`}>
+                          <ListingImg src={trip.listing.ownerPhotos[0]} />
+                        </Link>
+                      );
+                    }
+                  })
+                ) : (<div></div>)}
               </PhotoWrapper>
               <h2>Interested In:</h2>
               <PhotoWrapper>
-                {user.trips.length ? 
-                user.trips.map((trip: any) => {
-                  if (trip.status === 'pending') {
-                    return (
-                      <Link key={trip.id} href={`/listings/${trip.listing.id}`}>
-                        <ListingImg src={trip.listing.ownerPhotos[0]} />
-                      </Link>
-                    )
-                  }
-                }) : <div></div>}
+                {user.trips.length ? (
+                  user.trips.map((trip: any) => {
+                    if (trip.status === 'pending') {
+                      return (
+                        <Link
+                          key={trip.id}
+                          href={`/listings/${trip.listing.id}`}
+                        >
+                          <ListingImg src={trip.listing.ownerPhotos[0]} />
+                        </Link>
+                      );
+                    }
+                  })
+                ) : (
+                  <div></div>
+                )}
               </PhotoWrapper>
             </InnerWrapper>
           </Wrapper>
@@ -81,7 +85,6 @@ flex-direction: column;
 const PhotoWrapper = styled.div`
 display: flex; 
 flex-direction: row;
-justify-content: space-between
 `
 
 const UserImg = styled.img`

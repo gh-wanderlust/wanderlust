@@ -4,7 +4,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { Select, Grommet, DropButton, Box } from 'grommet';
 import Link from 'next/link'
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 import cookies from 'next-cookies';
 import { apiUrl } from '../../util';
@@ -47,9 +47,6 @@ const Listings = (props: any) => {
   } else {
      initialZip='33131'
   }
-  
-
-  
 
   const [listings, setListings] = useState(props.listings);
   const [filtered, setFiltered] = useState(initialFiltered);
@@ -83,27 +80,42 @@ const Listings = (props: any) => {
           <div>
             <h1>W.</h1>
             <Grommet theme={selectTheme}>
-              <Select options={['Chicago', 'Montpelier', 'Miami']} margin="medium" value={dropDownVal} onChange={({ option }) => handleChange(option)}/>
+              <Select
+                options={['Chicago', 'Montpelier', 'Miami']}
+                margin="medium"
+                value={dropDownVal}
+                onChange={({ option }) => handleChange(option)}
+              />
             </Grommet>
           </div>
 
-          <div>
-          <Link href='/accountOverview'>
-            <a>Profile</a>
-          </Link>
-
-          <Link href='/'>
-            <a onClick={() => {
-              logout()
-              router.push('/')
-            }}>Log Out</a>
-          </Link>
-          </div>
+            {props.token ? (
+              <div>
+                <Link href="/accountOverview">
+                  <a>Profile</a>
+                </Link>
+                <Link href="/">
+                  <a
+                    onClick={() => {
+                      logout();
+                      Router.push('/');
+                    }}
+                  >
+                    Log Out
+                  </a>
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <Link href={'/login'}>Login</Link>
+                <Link href={'/signup'}>Sign Up</Link>
+              </div>
+            )}
+          {/* </div> */}
         </HeaderFilter>
 
         <HeaderPrefs>
-          
-        {/* <Button
+          {/* <Button
           label="Price"
           dropAlign={{ top: 'bottom' }}
           dropContent={
@@ -118,7 +130,6 @@ const Listings = (props: any) => {
           <Box pad="large" background="light-2" />
         }
         /> */}
-          
         </HeaderPrefs>
       </Header>
 
@@ -138,9 +149,11 @@ const Listings = (props: any) => {
   );
 };
 
-Listings.getInitialProps = async function() {
+Listings.getInitialProps = async function(ctx: any) {
+  let { token } = cookies(ctx);
+
   const res = await axios.get(apiUrl('/api/listings'));
-  return { listings: res.data };
+  return { listings: res.data, token };
 };
 
 const mapStateToProps =(state:any) => ({
@@ -176,7 +189,7 @@ const HeaderFilter = styled.div`
 
   a {
     color: white;
-    margin-right: 10px;
+    margin-right: 30px;
     :visited {
       color: white; 
     }

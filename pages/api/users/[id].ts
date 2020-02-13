@@ -11,7 +11,7 @@ export default async (req: any, res: any) => {
           where: {
             id: id
           },
-          include: [{ model: Listing }, { model: Trip }]
+          include: [{ model: Trip, include: { model: Listing }}]
         });
         res.json(user);
       } catch (error) {

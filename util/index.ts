@@ -3,7 +3,7 @@ export const apiUrl = (slug: string) => {
   if (process.env.NODE_ENV === 'development') {
     console.log("we are in development")
     base = 'http://localhost:3000';
-  } else base = '';
+  } else base = 'https://wanderlust-git-deployment.gh-wanderlust.now.sh/';
 
   return base + slug;
 };

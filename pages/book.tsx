@@ -194,7 +194,7 @@ const Book = (props: any) => {
           <p>{dateFns.format(formattedDateFrom, 'MMMM dd, yyyy')} -> {dateFns.format(formattedDateTo, 'MMMM dd, yyyy')}</p>
         </Details>
 
-        <div>
+        <Breakdown>
           <Line>
             <span>${(listing.price / 100)} x {dateFns.differenceInDays(formattedDateTo, formattedDateFrom)} nights</span>
             <span>${(listing.price / 100) * dateFns.differenceInDays(formattedDateTo, formattedDateFrom)}</span>
@@ -209,9 +209,9 @@ const Book = (props: any) => {
           <Line>
             <p>Total(USD)</p>
             <p>${(((listing.price) * dateFns.differenceInDays(formattedDateTo, formattedDateFrom)) + 2500) /100}</p>
-        </Line>
-        </div>
-        <button>Confirm</button>
+         </Line>
+        </Breakdown>
+        <StyledButton onClick={() => console.log('submitted, will add later -- mika')} >Confirm</StyledButton>
       </Summary>
 
       {/* <form name="tripmate-selection" onSubmit={handleSubmit}>
@@ -343,7 +343,28 @@ const Details = styled.div`
   padding: 3vh 0;
 `
 
-const Line=styled.div`
+const Breakdown = styled.div`
+border-bottom: 1px solid black;
+  padding: 3vh 0;
+`
+const Line = styled.div`
   display: flex;
   justify-content: space-between
+`
+const StyledButton = styled.button`
+ border-radius: initial;
+ background: var(--accent-dark);
+ box-shadow: none;
+ color: white;
+ border:0;
+ font-family: inherit;
+ font-size: 18px;
+ padding: 18px 0;
+ border-radius: 2px;
+ margin-top: 2vh;
+ cursor: pointer;
+
+ :hover {
+  background: var(--accent-light);
+ }
 `

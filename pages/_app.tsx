@@ -6,14 +6,12 @@ import withRedux from 'next-redux-wrapper';
 import { ThemeProvider } from 'styled-components';
 import Head from 'next/head';
 
-
 import initStore from '../store/store';
 import Global from '../util/Global';
 
 interface OurProps extends AppProps {
   store: any;
 }
-
 
 
 class MyApp extends App<OurProps> {

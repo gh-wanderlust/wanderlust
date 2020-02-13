@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as dateFns from 'date-fns';
 
+import Navbar from '../components/userNavbar';
 import { User } from '../server/db/models/interfaces';
 import { bookTrip } from '../store/store';
 import Calendar from '../components/Calendar';
@@ -73,6 +74,7 @@ const Book = (props: any) => {
 
   return (
     <div>
+      <Navbar />
       <h2>Booking Confirmation</h2>
 
       <div>

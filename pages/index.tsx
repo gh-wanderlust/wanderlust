@@ -101,7 +101,12 @@ LandingPage.getInitialProps = async (context: any) => {
 export default connect(null, mapDispatch)(LandingPage);
 
 const Wrapper = styled.div`
-  display: grid;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: 2;
 `;
 
 const SearchForm = styled.div`
@@ -109,7 +114,7 @@ const SearchForm = styled.div`
   flex-wrap: wrap;
   width: 50%;
   position: absolute;
-  top: 80px;
+  top: 200px;
   left: 80px;
 `;
 
@@ -122,7 +127,6 @@ const DateInput = styled.input``;
 const SearchWrapper = styled.div`
   padding: 50px;
   background: #ffffff;
-  height: 86.5%;
   width: 28%;
   position: relative;
   top: 0;

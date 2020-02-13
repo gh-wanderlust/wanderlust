@@ -27,31 +27,27 @@ interface ListingInterface {
 const Listings = (props: any) => {
   const router = useRouter();
   let city = props.selectedCity;
-
+  
   if (!city) {
     city = 'Chicago';
   }
-
-  // let initialListings: any = [];
+  
   const [listings, setListings] = useState([]);
 
-  useEffect( () => {
+  useEffect(() => {
     async function getData() {
       const res = await axios.get(window.location.origin+('/api/listings'));
       let initialListings = res.data
       setListings(initialListings)
+
+      let initialFiltered = initialListings.filter((listing: ListingInterface) => {
+        return listing.city.toLowerCase() === city.toLowerCase();
+      });
+
+      setFiltered(initialFiltered)
     }
     getData()
   }, []);
-
-
-  
-// NEXT THING TO DO AFTER LUNCH, filter listings in state
-  let initialFiltered = listings.filter((listing: ListingInterface) => {
-    return listing.city.toLowerCase() === city.toLowerCase();
-  });
-
-  
 
   let initialZip;
 
@@ -63,19 +59,20 @@ const Listings = (props: any) => {
     initialZip = '33131';
   }
 
-  const [filtered, setFiltered] = useState(initialFiltered);
+  const [filtered, setFiltered] = useState([]);
   const [dropDownVal, setDropDownVal] = useState(props.selectedCity);
   const [zipCode, setZipCode] = useState(initialZip);
 
   const handleChange = (option: any) => {
     setDropDownVal(option);
 
-    const filteredListings = listings.filter((listing: ListingInterface) => {
+    const filteredListings: Array<ListingInterface> = listings.filter((listing: ListingInterface) => {
       return listing.city.toLowerCase() === option.toLowerCase();
     });
 
-    // setZipCode(filteredListings[0].zipCode);
-    // setFiltered(filteredListings);
+    setZipCode(filteredListings[0].zipCode);
+    // @ts-ignore
+    setFiltered(filteredListings);
   };
 
   const selectTheme = {
@@ -144,15 +141,11 @@ const Listings = (props: any) => {
         <SimpleMap zipcode={zipCode} filteredListings={filtered} />
 
         <List>
-          {/* {listings.map((listing: ListingInterface) => {
+          {filtered.map((listing: ListingInterface) => {
             const trips = listing.trips.filter((e) => e.status === 'pending');
-            return (
+             return (
               <ListingBox listing={listing} key={listing.id} trips={trips} />
             );
-          })} */}
-
-          {listings.map((listing: ListingInterface) => {
-            console.log(listing)
           })}
         </List>
       </Content>
@@ -160,10 +153,6 @@ const Listings = (props: any) => {
   );
 };
 
-// Listings.getInitialProps = async function() {
-//   const res = await axios.get(apiUrl('/api/listings'));
-//   return { listings: res.data };
-// };
 
 const mapStateToProps = (state: any) => ({
   selectedCity: state.listing.selectedCity,

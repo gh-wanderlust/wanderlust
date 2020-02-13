@@ -17,12 +17,14 @@ const SimpleMap = (props) => {
 
   const mapCoords = zipcodes.lookup(zip)
 
-  console.log(process.env.GOOGLE_MAPS_API_KEY )
+  console.log("PROCESS.ENV with GOOGLE KEY: ", process.env.GOOGLE_MAPS_API_KEY )
+  console.log("PROCESS.ENV: ", process.env)
+  console.log("PROCESS.ENV.NODE_ENV: ", process.env.NODE_ENV)
     return (
       <Wrapper>
       <div style={{ height: '100%', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyBJKCWmM_cj5A-B0H-sZF51HoSF1QOwLPU" }}
+          bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY }}
           center={{
             lat: mapCoords.latitude,
             lng: mapCoords.longitude

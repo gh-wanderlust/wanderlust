@@ -27,8 +27,6 @@ const LandingPage = function(props: any) {
     router.push('/listings');
   }
 
-  
-
   return (
     <Wrapper>
         <SearchWrapper>

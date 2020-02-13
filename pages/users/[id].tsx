@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import styled from 'styled-components';
-import Navbar from '../../components/userNavbar';
 
 const UserProfile = function(props: any) {
   const { user } = props;
 
   return (
     <div>
-      <Navbar />
       <Wrapper>
         <UserImg src={user.imageUrl} />
         <InnerWrapper>
@@ -17,15 +15,19 @@ const UserProfile = function(props: any) {
           <p>{user.email}</p>
           <h2>Interested Listings:</h2>
           <PhotoWrapper>
-            { user.trips.length ? user.trips.map((trip: any) => {
-              if (trip.status === 'pending') {
-                return (
-                  <Link key={trip.id} href={`/listings/${trip.listing.id}`}>
-                    <ListingImg src={trip.listing.ownerPhotos[0]}/>
-                  </Link>
-                )
-              }
-            }) : <div></div>}
+            {user.trips.length ? (
+              user.trips.map((trip: any) => {
+                if (trip.status === 'pending') {
+                  return (
+                    <Link key={trip.id} href={`/listings/${trip.listing.id}`}>
+                      <ListingImg src={trip.listing.ownerPhotos[0]} />
+                    </Link>
+                  );
+                }
+              })
+            ) : (
+              <div></div>
+            )}
           </PhotoWrapper>
         </InnerWrapper>
       </Wrapper>

@@ -6,7 +6,6 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import cookies from 'next-cookies';
 import * as dateFns from 'date-fns';
-import Navbar from '../../components/userNavbar';
 
 import { User } from '../../server/db/models/interfaces';
 import Review from '../../components/Review';
@@ -141,7 +140,6 @@ const SingleListing = (props: any) => {
     <p>Loading...</p>
   ) : (
     <div>
-      <Navbar />
       <Wrapper>
         <ImageGrid>
           {listing.ownerPhotos.map((imgUrl: string, idx: number) => {

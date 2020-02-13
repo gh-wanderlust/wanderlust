@@ -7,5 +7,3 @@ export const apiUrl = (slug: string) => {
 
   return base + slug;
 };
-
-// 'https://wanderlust-git-deployment.gh-wanderlust.now.sh/'

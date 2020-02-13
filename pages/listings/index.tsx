@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -26,15 +26,29 @@ interface ListingInterface {
 
 const Listings = (props: any) => {
   const router = useRouter();
-  let city = props.listing.selectedCity;
 
+  let city = props.selectedCity;
+  
   if (!city) {
     city = 'Chicago';
   }
+  
+  const [listings, setListings] = useState([]);
 
-  let initialFiltered = props.listings.filter((listing: ListingInterface) => {
-    return listing.city.toLowerCase() === city.toLowerCase();
-  });
+  useEffect(() => {
+    async function getData() {
+      const res = await axios.get(window.location.origin+('/api/listings'));
+      let initialListings = res.data
+      setListings(initialListings)
+
+      let initialFiltered = initialListings.filter((listing: ListingInterface) => {
+        return listing.city.toLowerCase() === city.toLowerCase();
+      });
+
+      setFiltered(initialFiltered)
+    }
+    getData()
+  }, []);
 
   let initialZip;
 
@@ -46,19 +60,21 @@ const Listings = (props: any) => {
     initialZip = '33131';
   }
 
-  const [listings, setListings] = useState(props.listings);
-  const [filtered, setFiltered] = useState(initialFiltered);
-  const [dropDownVal, setDropDownVal] = useState(props.listing.selectedCity);
+  const [filtered, setFiltered] = useState([]);
+  const [dropDownVal, setDropDownVal] = useState(props.selectedCity);
   const [zipCode, setZipCode] = useState(initialZip);
 
   const handleChange = (option: any) => {
     setDropDownVal(option);
 
-    const filteredListings = listings.filter((listing: ListingInterface) => {
+
+    const filteredListings: Array<ListingInterface> = listings.filter((listing: ListingInterface) => {
       return listing.city.toLowerCase() === option.toLowerCase();
     });
 
     setZipCode(filteredListings[0].zipCode);
+
+    // @ts-ignore
     setFiltered(filteredListings);
   };
 
@@ -68,6 +84,7 @@ const Listings = (props: any) => {
       container: {},
     },
   };
+
 
   return (
     <Wrapper>
@@ -128,7 +145,7 @@ const Listings = (props: any) => {
         <List>
           {filtered.map((listing: ListingInterface) => {
             const trips = listing.trips.filter((e) => e.status === 'pending');
-            return (
+             return (
               <ListingBox listing={listing} key={listing.id} trips={trips} />
             );
           })}
@@ -138,13 +155,10 @@ const Listings = (props: any) => {
   );
 };
 
-Listings.getInitialProps = async function() {
-  const res = await axios.get(apiUrl('/api/listings'));
-  return { listings: res.data };
-};
 
 const mapStateToProps = (state: any) => ({
-  listing: state.listing,
+
+  selectedCity: state.listing.selectedCity,
 });
 
 export default connect(mapStateToProps)(Listings);

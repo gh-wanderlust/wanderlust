@@ -10,16 +10,14 @@ const AnyReactComponent = ({ text }) => <Marker>{''}</Marker>;
 const SimpleMap = (props) => {
   const [zip, setZip] = useState(props.zipcode)
 
-  console.log(props.zipcode)
+  
   if (zip !== props.zipcode) {
     setZip(props.zipcode)
   }
 
   const mapCoords = zipcodes.lookup(zip)
 
-  console.log("PROCESS.ENV with GOOGLE KEY: ", process.env.GOOGLE_MAPS_API_KEY )
-  console.log("PROCESS.ENV: ", process.env)
-  console.log("PROCESS.ENV.NODE_ENV: ", process.env.NODE_ENV)
+ 
     return (
       <Wrapper>
       <div style={{ height: '100%', width: '100%' }}>

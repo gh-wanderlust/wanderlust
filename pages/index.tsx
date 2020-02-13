@@ -87,13 +87,14 @@ LandingPage.getInitialProps = async (context: any) => {
   if (token) props.loggedIn = token;
   else props.loggedIn = false;
 
-  const res = await axios.get(apiUrl('/api/listings'));
-  const listings = res.data;
-  const cities = listings.map((listing: Listing) => {
-    return listing.city;
-  });
-  let uniqueList = [...new Set(cities)];
-  props.cities = uniqueList;
+  // const res = await axios.get(apiUrl('/api/listings'));
+  console.log("API in landing: ", apiUrl('/api/listings'))
+  // const listings = res.data;
+  // const cities = listings.map((listing: Listing) => {
+  //   return listing.city;
+  // });
+  // let uniqueList = [...new Set(cities)];
+  // props.cities = uniqueList;
 
   return props;
 };

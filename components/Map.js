@@ -10,14 +10,14 @@ const AnyReactComponent = ({ text }) => <Marker>{''}</Marker>;
 const SimpleMap = (props) => {
   const [zip, setZip] = useState(props.zipcode)
 
-  console.log(props.zipcode)
+  
   if (zip !== props.zipcode) {
     setZip(props.zipcode)
   }
 
   const mapCoords = zipcodes.lookup(zip)
 
-  console.log(process.env.GOOGLE_MAPS_API_KEY )
+ 
     return (
       <Wrapper>
       <div style={{ height: '100%', width: '100%' }}>

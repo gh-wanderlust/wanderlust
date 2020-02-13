@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Select, Grommet, DropButton, Box } from 'grommet';
-import Link from 'next/link'
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import cookies from 'next-cookies';
@@ -11,7 +11,7 @@ import { apiUrl } from '../../util';
 import ListingBox from '../../components/ListingBox';
 import SimpleMap from '../../components/Map';
 
-import {logout} from '../../util/auth'
+import { logout } from '../../util/auth';
 
 interface ListingInterface {
   id: number;
@@ -24,53 +24,65 @@ interface ListingInterface {
   zipCode: string;
 }
 
-
 const Listings = (props: any) => {
   const router = useRouter();
+  let city = props.selectedCity;
   
-
-  let initialFiltered = props.listings.filter((listing: ListingInterface) => {
-      return listing.city.toLowerCase()  === props.listing.selectedCity.toLowerCase() ;
-  })
-
-  let initialZip
-  let city = props.listing.selectedCity
-  
-  if (city === 'Chicago') {
-    initialZip='60657'
-  } else if (city === 'Montpelier'){
-    initialZip='05602'
-  } else {
-     initialZip='33131'
+  if (!city) {
+    city = 'Chicago';
   }
   
+  const [listings, setListings] = useState([]);
 
-  
+  useEffect(() => {
+    async function getData() {
+      const res = await axios.get(window.location.origin+('/api/listings'));
+      let initialListings = res.data
+      setListings(initialListings)
 
-  const [listings, setListings] = useState(props.listings);
-  const [filtered, setFiltered] = useState(initialFiltered);
-  const [dropDownVal, setDropDownVal] = useState(props.listing.selectedCity);
+      let initialFiltered = initialListings.filter((listing: ListingInterface) => {
+        return listing.city.toLowerCase() === city.toLowerCase();
+      });
+
+      setFiltered(initialFiltered)
+    }
+    getData()
+  }, []);
+
+  let initialZip;
+
+  if (city === 'Chicago') {
+    initialZip = '60657';
+  } else if (city === 'Montpelier') {
+    initialZip = '05602';
+  } else {
+    initialZip = '33131';
+  }
+
+  const [filtered, setFiltered] = useState([]);
+  const [dropDownVal, setDropDownVal] = useState(props.selectedCity);
   const [zipCode, setZipCode] = useState(initialZip);
 
-
-  const handleChange = ( option: any) => {
+  const handleChange = (option: any) => {
     setDropDownVal(option);
-  
-    const filteredListings = listings.filter((listing: ListingInterface) => {
+
+    const filteredListings: Array<ListingInterface> = listings.filter((listing: ListingInterface) => {
       return listing.city.toLowerCase() === option.toLowerCase();
     });
 
-    setZipCode(filteredListings[0].zipCode)
+    setZipCode(filteredListings[0].zipCode);
+    // @ts-ignore
     setFiltered(filteredListings);
   };
 
   const selectTheme = {
     select: {
-        background: 'white',
-        container: {}
-    }
-  }
+      background: 'white',
+      container: {},
+    },
+  };
 
+  
 
   return (
     <Wrapper>
@@ -79,27 +91,35 @@ const Listings = (props: any) => {
           <div>
             <h1>W.</h1>
             <Grommet theme={selectTheme}>
-              <Select options={['Chicago', 'Montpelier', 'Miami']} margin="medium" value={dropDownVal} onChange={({ option }) => handleChange(option)}/>
+              <Select
+                options={['Chicago', 'Montpelier', 'Miami']}
+                margin="medium"
+                value={dropDownVal}
+                onChange={({ option }) => handleChange(option)}
+              />
             </Grommet>
           </div>
 
           <div>
-          <Link href='/accountOverview'>
-            <a>Profile</a>
-          </Link>
+            <Link href="/accountOverview">
+              <a>Profile</a>
+            </Link>
 
-          <Link href='/'>
-            <a onClick={() => {
-              logout()
-              router.push('/')
-            }}>Log Out</a>
-          </Link>
+            <Link href="/">
+              <a
+                onClick={() => {
+                  logout();
+                  router.push('/');
+                }}
+              >
+                Log Out
+              </a>
+            </Link>
           </div>
         </HeaderFilter>
 
         <HeaderPrefs>
-          
-        {/* <Button
+          {/* <Button
           label="Price"
           dropAlign={{ top: 'bottom' }}
           dropContent={
@@ -114,7 +134,6 @@ const Listings = (props: any) => {
           <Box pad="large" background="light-2" />
         }
         /> */}
-          
         </HeaderPrefs>
       </Header>
 
@@ -124,7 +143,7 @@ const Listings = (props: any) => {
         <List>
           {filtered.map((listing: ListingInterface) => {
             const trips = listing.trips.filter((e) => e.status === 'pending');
-            return (
+             return (
               <ListingBox listing={listing} key={listing.id} trips={trips} />
             );
           })}
@@ -134,14 +153,10 @@ const Listings = (props: any) => {
   );
 };
 
-Listings.getInitialProps = async function() {
-  const res = await axios.get('https://wanderlust-git-deployment.gh-wanderlust.now.sh/api/listings');
-  return { listings: res.data };
-};
 
-const mapStateToProps =(state:any) => ({
-  listing: state.listing
-})
+const mapStateToProps = (state: any) => ({
+  selectedCity: state.listing.selectedCity,
+});
 
 export default connect(mapStateToProps)(Listings);
 
@@ -174,7 +189,7 @@ const HeaderFilter = styled.div`
     color: white;
     margin-right: 10px;
     :visited {
-      color: white; 
+      color: white;
     }
   }
 `;
@@ -195,13 +210,12 @@ const List = styled.div`
   overflow-y: scroll;
 `;
 
-
-const Button  = styled(DropButton)`
+const Button = styled(DropButton)`
   background: white;
   font-size: 15px;
-  padding:3px 10px;
+  padding: 3px 10px;
   margin: 8px 10px 0px 0;
   white-space: nowrap;
   width: max-content;
   border: none;
-`
+`;

@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { User } from '../server/db/models/interfaces';
 import { bookTrip } from '../store/store';
 import Calendar from '../components/Calendar';
+import Navbar from '../components/userNavbar'
 
 interface Tripmates {
   [key: number]: any;
@@ -80,12 +81,14 @@ const dummyTrip = {
 }
 
 const Book = (props: any) => {
-  // const { router, trip, users, bookTrip } = props; PUT BACK IN
-  const { router, users, bookTrip } = props;
-  // const { listing } = trip;
+  const { router, trip, users, bookTrip } = props; 
+  // const { router, users, bookTrip } = props;
+  const { listing } = trip;
 
-  let trip = dummyTrip
-  let {listing} = trip
+  console.log(trip)
+
+  // let trip = dummyTrip
+  // let {listing} = trip
   
 
   const initTripmates: Tripmates = {};
@@ -144,9 +147,11 @@ const Book = (props: any) => {
 
   return (
     <>
-      <Wrapper>
+      <Navbar/>
+    <Wrapper>
+      <Content>
         <div>
-        <h2>Booking Review</h2>
+        <Header>Booking information</Header>
 
         {/* <div>
           <h4>Listing</h4>
@@ -156,9 +161,9 @@ const Book = (props: any) => {
         </div> */}
 
         <div>
-          <h3>Who's coming?</h3>
+          <Subheader>Who's coming?</Subheader>
           <UserList>
-          {trip.users.map(user => {
+          {trip.users.map((user: any) => {
             return (
             <UserWrapper key={user.id}>
               <ProfilePic src={user.imageUrl} alt={`${user.firstName} ${user.lastName}profile image`}/>
@@ -170,12 +175,30 @@ const Book = (props: any) => {
         </div>
 
         <div>
-          <h3>{dateFns.differenceInDays(formattedDateTo, formattedDateFrom)} nights in {listing.city}</h3>
-          <p>Check in</p>
-          <p>{dateFns.format(formattedDateFrom, 'MMMM dd yyyy')}</p>
+          <Subheader>{dateFns.differenceInDays(formattedDateTo, formattedDateFrom)} nights in {listing.city}</Subheader>
+          <DateLine>
+            <MiniCal>
+              <MiniMonth>{dateFns.format(formattedDateFrom, 'LLL')}</MiniMonth>
+              <span>{Number(dateFns.format(formattedDateFrom, 'd')) + 1}</span>
+            </MiniCal>
 
-          <p>Check out</p>
-          <p>{dateFns.format(formattedDateTo, 'MMMM dd yyyy')}</p>
+            <div>
+              <p>{Number(dateFns.format(formattedDateFrom, 'EEEE')) + 1} check in</p>
+              <p>2:00 PM</p>
+            </div>
+          </DateLine>
+          
+          <DateLine>
+            <MiniCal>
+              <MiniMonth>{dateFns.format(formattedDateTo, 'LLL')}</MiniMonth>
+              <span>{dateFns.format(formattedDateTo, 'd')}</span>
+            </MiniCal>
+
+            <div>
+              <p>{dateFns.format(formattedDateTo, 'EEEE')} check out</p>
+              <p>11:00 AM</p>
+            </div>
+          </DateLine>
         </div>
       </div>
 
@@ -255,7 +278,8 @@ const Book = (props: any) => {
       <Link href="/listings">
         <button>Back to listings</button>
       </Link> */}
-    </Wrapper>
+        </Content>
+      </Wrapper>
     </>
   );
 };
@@ -274,15 +298,30 @@ const mapDispatch = (dispatch: Dispatch) => {
 };
 
 export default connect(mapState, mapDispatch)(withRouter(Book));
-
 const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+const Content = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   padding: 4vh 3vw;
 
   * {
     margin: 0;
   }
+`
+
+const Header = styled.h2`
+  font-size: 32px;
+  font-weight: 500;
+`
+
+const Subheader = styled.h3`
+  font-size: 28px;
+  font-weight: 500;
+  margin: 3vh 0 10px 0;
 `
 
 const UserList = styled.ul`
@@ -309,14 +348,43 @@ const Name = styled.p`
   margin-top: 5px;
 `
 
+const DateLine = styled.div`
+  display: flex; 
+  align-items: center;
+  margin-bottom: 3vh;
+
+  p {
+    font-size: 24px;
+  }
+`
+
+const MiniCal = styled.div`
+  min-width: max-content;
+  min-height: max-content;
+  width: 90px;
+  height: 90px;
+  /* background-color: var(--accent-dark); */
+  border: 1px solid var(--accent-dark);
+  border-radius: 1px;
+  color: var(--accent-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 300;
+  margin-right: 2vw;
+`
+
+const MiniMonth = styled.span`
+  font-size: 20px;
+`
+
 const Summary = styled.div`
   border: 1px solid rgb(228, 228, 228) ;
   width: max-content;
   padding: 3vh 3vw;
   display: grid;
-  
-
-  
 `
 const MainInfo = styled.div`
   display:flex;

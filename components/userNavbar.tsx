@@ -37,7 +37,7 @@ display: flex;
   background: #23565c;
   height: max-content;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 2vh 5vw 2vh 5vw;
+  padding: 5px 5vw 5px 5vw;
   justify-content: space-between;
   align-items: center;
 `;

@@ -17,18 +17,15 @@ const UserProfile = function(props: any) {
           <p>{user.email}</p>
           <h2>Interested Listings:</h2>
           <PhotoWrapper>
-            {user.trips.map((trip: any) => {
+            { user.trips.length ? user.trips.map((trip: any) => {
               if (trip.status === 'pending') {
-                const interestedListing = user.listings.filter(
-                  (listing: any) => listing.id === trip.listingId
-                );
                 return (
-                  <Link href={`/listings/${interestedListing[0].id}`}>
-                    <ListingImg src={interestedListing[0].ownerPhotos[0]}/>
+                  <Link key={trip.id} href={`/listings/${trip.listing.id}`}>
+                    <ListingImg src={trip.listing.ownerPhotos[0]}/>
                   </Link>
-                );
+                )
               }
-            })}
+            }) : <div></div>}
           </PhotoWrapper>
         </InnerWrapper>
       </Wrapper>
@@ -55,6 +52,7 @@ const InnerWrapper = styled.div`
 const PhotoWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const UserImg = styled.img`
@@ -69,5 +67,5 @@ const ListingImg = styled.img`
   object-fit: cover;
   height: 15vw;
   width: 15vw;
-  padding: 5px;
+  padding-right: 10px;
 `;

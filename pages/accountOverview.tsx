@@ -19,36 +19,30 @@ const AccountOverview = function(props: any) {
               <h1>{`${user.firstName} ${user.lastName}`}</h1>
               <h2>Upcoming Trips:</h2>
               <PhotoWrapper>
-                {user.trips.map((trip: any) => {
+                {user.trips.length > 0 ?
+                user.trips.map((trip: any) => {
                   if (trip.status === 'booked') {
-                    const bookedListing = user.listings.filter(
-                      (listing: any) => listing.id === trip.listingId
-                    );
                     return (
-                      <Link href={`/itinerary/${trip.id}`}>
-                        <ListingImg src={bookedListing[0].ownerPhotos[0]} />
+                      <Link key={trip.id} href={`/itinerary/${trip.id}`}>
+                        <ListingImg src={trip.listing.ownerPhotos[0]} />
                       </Link>
                     );
                   }
-                })}
+                }) 
+                : <h3>None Yet!</h3>}
               </PhotoWrapper>
               <h2>Interested In:</h2>
               <PhotoWrapper>
-                {user.trips.map((trip: any) => {
+                {user.trips.length ? 
+                user.trips.map((trip: any) => {
                   if (trip.status === 'pending') {
-                    const interestedListing = user.listings.filter(
-                      (listing: any) => listing.id === trip.listingId
-                    );
                     return (
-                      <Link
-                        key={interestedListing.id}
-                        href={`/listings/${interestedListing[0].id}`}
-                      >
-                        <ListingImg src={interestedListing[0].ownerPhotos[0]} />
+                      <Link key={trip.id} href={`/listings/${trip.listing.id}`}>
+                        <ListingImg src={trip.listing.ownerPhotos[0]} />
                       </Link>
-                    );
+                    )
                   }
-                })}
+                }) : <div></div>}
               </PhotoWrapper>
             </InnerWrapper>
           </Wrapper>
@@ -66,6 +60,7 @@ const AccountOverview = function(props: any) {
 AccountOverview.getInitialProps = async (context: any) => {
   let { token } = cookies(context);
   const id = token;
+
   if (id) {
     const res = await axios.get(`http://localhost:3000/api/users/${id}`);
     return { user: res.data };
@@ -101,4 +96,5 @@ const ListingImg = styled.img`
   object-fit: cover;
   height: 15vw;
   width: 15vw;
+  padding-right: 10px;
 `;

@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import * as dateFns from 'date-fns';
+import styled from 'styled-components';
 
 const Calendar = (props: any) => {
   const today = new Date(Date.now());
 
-  const { checkin, setCheckin, checkout, setCheckout } = props;
+  const {
+    trips,
+    tripColors,
+    checkin,
+    setCheckin,
+    checkout,
+    setCheckout,
+  } = props;
 
   const [current, setCurrent] = useState(today);
   const [chooseCheckin, setChooseCheckin] = useState(true);
@@ -15,7 +23,7 @@ const Calendar = (props: any) => {
     return (
       <div className="header row flex-middle">
         <div className="col col-start">
-          <button onClick={prevMonth}> Prev </button>
+          <MonthButton onClick={prevMonth}> Prev </MonthButton>
         </div>
 
         <div className="col col-center">
@@ -23,7 +31,7 @@ const Calendar = (props: any) => {
         </div>
 
         <div className="col col-end" onClick={nextMonth}>
-          <button onClick={prevMonth}> Next </button>
+          <MonthButton onClick={nextMonth}> Next </MonthButton>
         </div>
       </div>
     );
@@ -51,31 +59,20 @@ const Calendar = (props: any) => {
     const startDate = dateFns.startOfWeek(monthStart);
     const endDate = dateFns.endOfWeek(monthEnd);
 
-    const dummyTrips: any[] = [
-      {
-        id: 222,
-        dateFrom: new Date(2020, 1, 16),
-        dateTo: new Date(2020, 1, 21),
-      },
-      {
-        id: 333,
-        dateFrom: new Date(2020, 1, 18),
-        dateTo: new Date(2020, 1, 26),
-      },
-    ];
-
     const tripDays: any = {};
-    dummyTrips.forEach((trip) => {
-      let interval = { start: trip.dateFrom, end: trip.dateTo };
+    trips.forEach((trip: any) => {
+      const dateFrom = new Date(trip.dateFrom);
+      const dateTo = new Date(trip.dateTo);
+      let interval = { start: dateFrom, end: dateTo };
       let eachDay = dateFns.eachDayOfInterval(interval);
 
       eachDay.forEach((day) => {
         const date = dateFns.format(day, 'yyyy-MM-dd');
 
         if (!tripDays[date]) tripDays[date] = [];
-        const node = dateFns.isSameDay(day, trip.dateFrom)
+        const node = dateFns.isSameDay(day, dateFrom)
           ? { id: trip.id, pos: 'head' }
-          : dateFns.isSameDay(day, trip.dateTo)
+          : dateFns.isSameDay(day, dateTo)
           ? { id: trip.id, pos: 'tail' }
           : { id: trip.id, pos: 'body' };
         tripDays[date].push(node);
@@ -94,6 +91,8 @@ const Calendar = (props: any) => {
         let className =
           day < today || !dateFns.isSameMonth(day, monthStart)
             ? 'disabled'
+            : dateFns.isSameDay(day, checkin) && checkout === 0
+            ? 'checkin no-checkout'
             : dateFns.isSameDay(day, checkin)
             ? 'checkin'
             : dateFns.isSameDay(day, checkout)
@@ -104,10 +103,11 @@ const Calendar = (props: any) => {
 
         days[dateFns.format(day, 'yyyy MM d')] = (
           <Cell
+            key={formattedDate}
             day={day}
             className={className}
             formattedDate={formattedDate}
-            trips={tripDays[dateFns.format(day, 'yyyy-MM-dd')]}
+            tripDays={tripDays[dateFns.format(day, 'yyyy-MM-dd')]}
           />
         );
 
@@ -153,30 +153,21 @@ const Calendar = (props: any) => {
     setCurrent(newMonth);
   };
 
-  const colors: any = {};
-
   const Cell = (props: any) => {
-    const { day, className, formattedDate, trips } = props;
+    const { day, className, formattedDate, tripDays } = props;
 
     let children = '';
-    if (trips) {
-      children = trips.map((trip: any) => {
+    if (tripDays) {
+      children = tripDays.map((trip: any) => {
         const { id, pos } = trip;
         let style: any = {};
 
         if (pos === 'head') style.borderRadius = '50% 0 0 50%';
         else if (pos === 'tail') style.borderRadius = '0 50% 50% 0';
 
-        if (colors[id]) style.backgroundColor = colors[id];
-        else {
-          const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-          const hex = `#${randomColor}`;
-          colors[id] = hex;
+        style.backgroundColor = tripColors[id];
 
-          style.backgroundColor = hex;
-        }
-
-        return <div className={`trip ${id}`} style={style} />;
+        return <div key={id} className={`trip ${id}`} style={style} />;
       });
     }
 
@@ -198,7 +189,7 @@ const Calendar = (props: any) => {
       {renderHeader()}
       {renderDays()}
       {renderCells()}
-      <button
+      {/* <button
         onClick={() => {
           setCheckin(null);
           setCheckout(null);
@@ -206,9 +197,25 @@ const Calendar = (props: any) => {
         }}
       >
         Clear
-      </button>
+      </button> */}
     </div>
   );
 };
 
 export default Calendar;
+
+const MonthButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  padding: 1em;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  transition: all 0.2s ease;
+
+  :hover {
+    color: var(--accent-light);
+  }
+`;

@@ -3,14 +3,12 @@ import axios from 'axios';
 import Link from 'next/link';
 import { User } from '../../server/db/models/interfaces';
 import styled from 'styled-components';
-import Navbar from '../../components/userNavbar'
 
 const Itinerary = function(props: any) {
   const { trip } = props;
 
   return (
     <div>
-    <Navbar />
     <Wrapper>
       <Details>
         <h1>Trip to {trip.listing.city}</h1>

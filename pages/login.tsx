@@ -127,7 +127,7 @@ const Wrapper = styled.div`
 const InnerWrapper = styled.div`
   display: flex;
   width: 20vw;
-  height: 20vw;
+  height: 30vw;
   align-items: center;
   justify-content: center;
   background-color: #23565c;

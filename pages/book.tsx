@@ -44,6 +44,15 @@ const Book = (props: any) => {
       newTripmates[user.id] = false;
     }
     setTripmates(newTripmates);
+
+    const userIds = [loggedId];
+
+    Object.keys(tripmates).forEach((idStr: string) => {
+      const id = parseInt(idStr);
+      if (tripmates[id]) userIds.push(id);
+    });
+
+    console.log(tripmates, userIds);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -68,10 +77,11 @@ const Book = (props: any) => {
       bookTrip(resTrip);
 
       // const deleteUserTrip = axios.delete(`/api/trips/${trip.id}`);
+
       await Promise.all(
-        Object.keys(tripmates).map((idStr: string) => {
+        userIds.map((id: number) => {
           return axios.delete(`/api/trips`, {
-            data: { userId: idStr, listingId: listing.id },
+            data: { userId: id, listingId: listing.id },
           });
         })
       );

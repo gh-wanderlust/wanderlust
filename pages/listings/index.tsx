@@ -100,28 +100,28 @@ const Listings = (props: any) => {
             </Grommet>
           </div>
 
-            {props.token ? (
-              <div>
-                <Link href="/accountOverview">
-                  <a>Profile</a>
-                </Link>
-                <Link href="/">
-                  <a
-                    onClick={() => {
-                      logout();
-                      Router.push('/');
-                    }}
-                  >
-                    Log Out
-                  </a>
-                </Link>
-              </div>
-            ) : (
-              <div>
-                <Link href={'/login'}>Login</Link>
-                <Link href={'/signup'}>Sign Up</Link>
-              </div>
-            )}
+          {props.token ? (
+            <div>
+              <Link href="/accountOverview">
+                <a>Profile</a>
+              </Link>
+              <Link href="/">
+                <a
+                  onClick={() => {
+                    logout();
+                    Router.push('/');
+                  }}
+                >
+                  Log Out
+                </a>
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <Link href={'/login'}>Login</Link>
+              <Link href={'/signup'}>Sign Up</Link>
+            </div>
+          )}
           {/* </div> */}
         </HeaderFilter>
 
@@ -146,25 +146,16 @@ const Listings = (props: any) => {
 
       <Content>
         <SimpleMap zipcode={zipCode} filteredListings={filtered} />
-
         <List>
           {filtered.map((listing: ListingInterface) => {
-            const trips = listing.trips.filter((e) => e.status === 'pending');
-             return (
-              <ListingBox listing={listing} key={listing.id} trips={trips} />
+            return (
+              <ListingBox listing={listing} key={listing.id} />
             );
           })}
         </List>
       </Content>
     </Wrapper>
   );
-};
-
-Listings.getInitialProps = async function(ctx: any) {
-  let { token } = cookies(ctx);
-
-  const res = await axios.get(apiUrl('/api/listings'));
-  return { listings: res.data, token };
 };
 
 const mapStateToProps = (state: any) => ({

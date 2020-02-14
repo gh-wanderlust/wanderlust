@@ -7,12 +7,10 @@ import Navbar from '../../components/userNavbar';
 import GoogleMapReact from 'google-map-react';
 import zipcodes from 'zipcodes';
 import * as dateFns from 'date-fns';
-// import { format } from 'url';
-// import uuid from 'uuid';
 
-// const AnyReactComponent = ({ text }) => <Marker>{''}</Marker>;
+const AnyReactComponent = () => <div>{''}</div>;
 
-const Itinerary = function(props: any) {
+const Itinerary = function(props) {
   const { trip } = props;
   const from = Date.parse(trip.dateFrom);
   const to = Date.parse(trip.dateTo);
@@ -20,10 +18,13 @@ const Itinerary = function(props: any) {
   const tripLengthInDays = Math.floor(tripLength / (1000 * 60 * 60 * 24));
 
   const mapCoords = zipcodes.lookup(trip.listing.zipCode);
+  const mapCenter = { lat: mapCoords?.latitude,
+    lng: mapCoords?.longitude}
+  console.log("MAPCOORDS: ", mapCoords)
 
-  const formattedDateFrom: Date = new Date(trip.dateFrom);
+  const formattedDateFrom = new Date(trip.dateFrom);
   const newDateFrom = dateFns.format(formattedDateFrom, 'MMMM dd, yyyy');
-  const formattedDateTo: Date = new Date(trip.dateTo);
+  const formattedDateTo = new Date(trip.dateTo);
   const newDateTo = dateFns.format(formattedDateTo, 'MMMM dd, yyyy');
 
   return (
@@ -56,7 +57,7 @@ const Itinerary = function(props: any) {
               </Dates>
             </div>
             <Users>
-              {trip.users.map((user: User) => {
+              {trip.users.map((user) => {
                 return (
                   <Individual key={user.id}>
                     <Link href={`/users/${user.id}`}>
@@ -80,22 +81,16 @@ const Itinerary = function(props: any) {
             <div style={{ height: '200px', width: '80%' }}>
               <GoogleMapReact
                 bootstrapURLKeys={{
-                  key: 'AIzaSyBJKCWmM_cj5A-B0H-sZF51HoSF1QOwLPU',
+                  key: process.env.GOOGLE_MAPS_API_KEY,
                 }}
-                center={{
-                  lat: 44.2641,
-                  lng: -72.577,
-                }}
+                center={mapCenter}
                 defaultZoom={13}
               >
-                {/* <Marker
-            lat=44.2641
-            lng=-72.577
-            text="test marker"
-            key={uuid()}
-          >
-
-          </Marker> */}
+                <Marker  
+                  lat={mapCoords.latitude}
+                  lng={mapCoords.longitude}
+                />
+                
               </GoogleMapReact>
             </div>
           </Accommodation>
@@ -116,7 +111,7 @@ const Itinerary = function(props: any) {
   );
 };
 
-Itinerary.getInitialProps = async (context: any) => {
+Itinerary.getInitialProps = async (context) => {
   let tripId = context.query.id;
 
   if (tripId) {
@@ -135,12 +130,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Details = styled.div`
-  // width: 70%;
-  // background: purple;
-  // height: 100%;
-  // align-content: space-between;
-`;
+const Details = styled.div``;
 
 const Accommodation = styled.div`
   display: column;
@@ -186,7 +176,7 @@ const IndividualDate = styled.div`
 
 const PlaneImg = styled.img`
   object-fit: cover;
-  padding: .5em;
+  padding: 0.5em;
   border-radius: 20%;
   height: 3vw;
   width: 3vw;
@@ -211,3 +201,26 @@ const Redirect = styled.div`
   display: column;
   justify-content: space-between;
 `;
+
+const Marker = styled.div`
+    border: 5px solid var(--accent-dark);
+    box-sizing: border-box;
+    background-color: white;
+    background-size: 30px 30px;
+    height: 20px;
+    width: 20px;
+    border-radius: 16px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 12px;
+
+    :hover {
+      transform: scale(1.15);
+      transform-origin: 50% 50% 0;
+      transition: all 0.25s;
+      box-shadow: lightgrey 0px 1px 1px;
+    }
+  `

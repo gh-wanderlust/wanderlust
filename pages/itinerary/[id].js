@@ -18,9 +18,7 @@ const Itinerary = function(props) {
   const tripLengthInDays = Math.floor(tripLength / (1000 * 60 * 60 * 24));
 
   const mapCoords = zipcodes.lookup(trip.listing.zipCode);
-  const mapCenter = { lat: mapCoords?.latitude,
-    lng: mapCoords?.longitude}
-  console.log("MAPCOORDS: ", mapCoords)
+  const mapCenter = { lat: mapCoords?.latitude,lng: mapCoords?.longitude}
 
   const formattedDateFrom = new Date(trip.dateFrom);
   const newDateFrom = dateFns.format(formattedDateFrom, 'MMMM dd, yyyy');

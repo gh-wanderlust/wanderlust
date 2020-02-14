@@ -48,7 +48,7 @@ class MyApp extends App<OurProps> {
             rel="stylesheet"
           />
         </Head>
-        <Component {...pageProps} />
+        <Component {...pageProps} token={this.props.token}/>
       </Provider>
     );
   }

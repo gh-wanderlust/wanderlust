@@ -144,7 +144,7 @@ const FormWrapper = styled.div`
 `;
 
 const EmailWrapper = styled.div`
-padding: 10px;
+  padding: 10px;
 `;
 
 const PasswordWrapper = styled.div`
@@ -162,7 +162,7 @@ const InputWrapper = styled.div`
 const Input = styled.input`
   width: 10vw;
   height: 3vh;
-`
+`;
 
 const Button = styled.button`
   background: white;
@@ -170,7 +170,7 @@ const Button = styled.button`
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
-  border: #FFFFFF;
+  border: #ffffff;
   border-radius: 3px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 `;

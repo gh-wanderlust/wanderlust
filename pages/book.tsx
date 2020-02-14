@@ -11,7 +11,7 @@ import cookies from 'next-cookies';
 import { User } from '../server/db/models/interfaces';
 import { bookTrip } from '../store/store';
 import Calendar from '../components/Calendar';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/navbar'
 import { apiUrl } from '../util';
 
 interface Tripmates {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { User } from '../../server/db/models/interfaces';
 import styled from 'styled-components';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/navbar';
 import GoogleMapReact from 'google-map-react';
 import zipcodes from 'zipcodes';
 import * as dateFns from 'date-fns';

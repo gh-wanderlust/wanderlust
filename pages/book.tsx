@@ -183,7 +183,7 @@ const Book = (props: any) => {
             </MiniCal>
 
             <div>
-              <p>{Number(dateFns.format(formattedDateFrom, 'EEEE')) + 1} check in</p>
+              <p>{(dateFns.format(formattedDateFrom, 'EEEE'))} check in</p>
               <p>2:00 PM</p>
             </div>
           </DateLine>
@@ -191,7 +191,7 @@ const Book = (props: any) => {
           <DateLine>
             <MiniCal>
               <MiniMonth>{dateFns.format(formattedDateTo, 'LLL')}</MiniMonth>
-              <span>{dateFns.format(formattedDateTo, 'd')}</span>
+              <span>{Number(dateFns.format(formattedDateTo, 'd'))}</span>
             </MiniCal>
 
             <div>

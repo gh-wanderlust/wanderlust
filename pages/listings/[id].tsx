@@ -262,6 +262,7 @@ const UserThumb = (props: any) => {
 
 const Wrapper = styled.div`
   margin: 0 1vw;
+  padding-bottom: 15vh;
 `;
 
 const ImageGrid = styled.div`

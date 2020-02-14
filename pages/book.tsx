@@ -239,9 +239,9 @@ const Book = (props: any) => {
         trips={[trip]}
         tripColors={{ [trip.id]: '3E8A92' }}
       />
-      <button onClick={() => setCalendarDisabled(true)}>
+      <StyledSelect onClick={() => setCalendarDisabled(true)}>
         Select these dates
-      </button>
+      </StyledSelect>
     </>
   );
 
@@ -516,4 +516,10 @@ const Redirect = styled.div`
   align-items: center;
 `;
 
-const StyledDate = styled.button``;
+const StyledDate = styled(StyledButton)`
+  padding: 0.6em 1.2em 0.6em 1.2em;
+  margin-top: 0.4em;
+  font-size: 0.8em;
+`;
+
+const StyledSelect = styled(StyledDate)``;

@@ -162,7 +162,7 @@ const Global = createGlobalStyle`
   color: white;
 }
 
-.checkout::after {
+.checkout::before {
   position: absolute;
   top: 0;
   left: 0;

@@ -26,6 +26,7 @@ interface ListingInterface {
 
 const Listings = (props: any) => {
   const router = useRouter();
+
   let city = props.selectedCity;
   
   if (!city) {
@@ -66,11 +67,13 @@ const Listings = (props: any) => {
   const handleChange = (option: any) => {
     setDropDownVal(option);
 
+
     const filteredListings: Array<ListingInterface> = listings.filter((listing: ListingInterface) => {
       return listing.city.toLowerCase() === option.toLowerCase();
     });
 
     setZipCode(filteredListings[0].zipCode);
+
     // @ts-ignore
     setFiltered(filteredListings);
   };
@@ -82,7 +85,6 @@ const Listings = (props: any) => {
     },
   };
 
-  
 
   return (
     <Wrapper>
@@ -126,7 +128,7 @@ const Listings = (props: any) => {
             <Box pad="large" background="light-2" />
           }
         />
-          
+
         <Button
         label="Type of Place"
         dropAlign={{ top: 'bottom' }}
@@ -155,6 +157,7 @@ const Listings = (props: any) => {
 
 
 const mapStateToProps = (state: any) => ({
+
   selectedCity: state.listing.selectedCity,
 });
 

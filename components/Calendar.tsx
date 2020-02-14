@@ -3,9 +3,8 @@ import * as dateFns from 'date-fns';
 import styled from 'styled-components';
 
 const Calendar = (props: any) => {
-  const today = new Date(Date.now());
-
   const {
+    book,
     trips,
     tripColors,
     checkin,
@@ -14,7 +13,10 @@ const Calendar = (props: any) => {
     setCheckout,
   } = props;
 
-  const [current, setCurrent] = useState(today);
+  const today = new Date(Date.now());
+  const defaultDay = book ? new Date(trips[0].dateFrom) : today;
+
+  const [current, setCurrent] = useState(defaultDay);
   const [chooseCheckin, setChooseCheckin] = useState(true);
 
   const renderHeader = () => {
@@ -73,8 +75,8 @@ const Calendar = (props: any) => {
         const node = dateFns.isSameDay(day, dateFrom)
           ? { id: trip.id, pos: 'head' }
           : dateFns.isSameDay(day, dateTo)
-          ? { id: trip.id, pos: 'tail' }
-          : { id: trip.id, pos: 'body' };
+            ? { id: trip.id, pos: 'tail' }
+            : { id: trip.id, pos: 'body' };
         tripDays[date].push(node);
       });
     });
@@ -92,14 +94,15 @@ const Calendar = (props: any) => {
           day < today || !dateFns.isSameMonth(day, monthStart)
             ? 'disabled'
             : dateFns.isSameDay(day, checkin) && checkout === 0
-            ? 'checkin no-checkout'
-            : dateFns.isSameDay(day, checkin)
-            ? 'checkin'
-            : dateFns.isSameDay(day, checkout)
-            ? 'checkout'
-            : dateFns.isAfter(day, checkin) && dateFns.isBefore(day, checkout)
-            ? 'between'
-            : '';
+              ? 'checkin no-checkout'
+              : dateFns.isSameDay(day, checkin)
+                ? 'checkin'
+                : dateFns.isSameDay(day, checkout)
+                  ? 'checkout'
+                  : dateFns.isAfter(day, checkin) && dateFns.isBefore(day, checkout)
+                    ? 'between'
+                    : '';
+
 
         days[dateFns.format(day, 'yyyy MM d')] = (
           <Cell
@@ -176,7 +179,7 @@ const Calendar = (props: any) => {
         id={dateFns.format(day, 'yyyy MM d')}
         className={`col cell ${className}`}
         key={dateFns.format(day, 'yyyy MM d')}
-        onClick={() => onDateClick(day)}
+        onClick={(() => onDateClick(day))}
       >
         {children}
         <span className="number">{formattedDate}</span>

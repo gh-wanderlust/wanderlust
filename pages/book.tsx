@@ -6,100 +6,103 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as dateFns from 'date-fns';
 import styled from 'styled-components';
+import cookies from 'next-cookies';
 
 import { User } from '../server/db/models/interfaces';
 import { bookTrip } from '../store/store';
 import Calendar from '../components/Calendar';
 import Navbar from '../components/Navbar'
+import { apiUrl } from '../util';
 
 interface Tripmates {
   [key: number]: any;
 }
 
 const dummyTrip = {
-  "id": 8,
-  "dateFrom": "2020-02-18",
-  "dateTo": "2020-02-22",
-  "status": "pending",
-  "createdAt": "2020-02-13T20:58:53.086Z",
-  "updatedAt": "2020-02-13T20:58:53.086Z",
-  "listingId": 8,
-  "users": [
+  id: 8,
+  dateFrom: '2020-02-18',
+  dateTo: '2020-02-22',
+  status: 'pending',
+  createdAt: '2020-02-13T20:58:53.086Z',
+  updatedAt: '2020-02-13T20:58:53.086Z',
+  listingId: 8,
+  users: [
     {
-      "id": 8,
-      "firstName": "Mika",
-      "lastName": "B",
-      "username": "mika@dev.com",
-      "email": "mika@dev.com",
-      "imageUrl": "https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-      "createdAt": "2020-02-13T20:58:11.986Z",
-      "updatedAt": "2020-02-13T20:58:11.986Z",
-      "UserTrip": {
-        "createdAt": "2020-02-13T20:58:53.198Z",
-        "updatedAt": "2020-02-13T20:58:53.198Z",
-        "userId": 8,
-        "tripId": 8
-      }
+      id: 8,
+      firstName: 'Mika',
+      lastName: 'B',
+      username: 'mika@dev.com',
+      email: 'mika@dev.com',
+      imageUrl:
+        'https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+      createdAt: '2020-02-13T20:58:11.986Z',
+      updatedAt: '2020-02-13T20:58:11.986Z',
+      UserTrip: {
+        createdAt: '2020-02-13T20:58:53.198Z',
+        updatedAt: '2020-02-13T20:58:53.198Z',
+        userId: 8,
+        tripId: 8,
+      },
     },
     {
-      "id": 9,
-      "firstName": "Joanna",
-      "lastName": "H",
-      "username": "joanna@dev.com",
-      "email": "joanna@dev.com",
-      "imageUrl": "http://placekitten.com/600/400",
-      "createdAt": "2020-02-13T20:58:11.986Z",
-      "updatedAt": "2020-02-13T20:58:11.986Z",
-      "UserTrip": {
-        "createdAt": "2020-02-13T20:58:53.198Z",
-        "updatedAt": "2020-02-13T20:58:53.198Z",
-        "userId": 8,
-        "tripId": 8
-      }
-    }
+      id: 9,
+      firstName: 'Joanna',
+      lastName: 'H',
+      username: 'joanna@dev.com',
+      email: 'joanna@dev.com',
+      imageUrl: 'http://placekitten.com/600/400',
+      createdAt: '2020-02-13T20:58:11.986Z',
+      updatedAt: '2020-02-13T20:58:11.986Z',
+      UserTrip: {
+        createdAt: '2020-02-13T20:58:53.198Z',
+        updatedAt: '2020-02-13T20:58:53.198Z',
+        userId: 8,
+        tripId: 8,
+      },
+    },
   ],
-  "listing": {
-    "id": 8,
-    "name": "Cozy Lakeview Loft",
-    "description": "The Lakeview Loft is a freshly remodeled loft space with a vintage Chicago theme and modern amenities. ",
-    "address": "1632 W Wrightwood Ave",
-    "city": "Chicago",
-    "country": "United States of America",
-    "zipCode": "60618",
-    "minOccupants": 3,
-    "maxOccupants": 6,
-    "ownerPhotos": [
-      "https://a0.muscache.com/im/pictures/63ac9caa-c2ba-47ba-9b2e-ac14ad409697.jpg?aki_policy=large",
-      "https://a0.muscache.com/im/pictures/1f88d847-9109-44a7-b7d1-6bb46364ff98.jpg?aki_policy=large",
-      "https://a0.muscache.com/im/pictures/b80546b5-5e79-4e98-b207-0029c38cfc19.jpg?aki_policy=xx_large",
-      "https://a0.muscache.com/im/pictures/be5bd8d0-b801-45ca-99f1-d54567806d21.jpg?aki_policy=poster"
+  listing: {
+    id: 8,
+    name: 'Cozy Lakeview Loft',
+    description:
+      'The Lakeview Loft is a freshly remodeled loft space with a vintage Chicago theme and modern amenities. ',
+    address: '1632 W Wrightwood Ave',
+    city: 'Chicago',
+    country: 'United States of America',
+    zipCode: '60618',
+    minOccupants: 3,
+    maxOccupants: 6,
+    ownerPhotos: [
+      'https://a0.muscache.com/im/pictures/63ac9caa-c2ba-47ba-9b2e-ac14ad409697.jpg?aki_policy=large',
+      'https://a0.muscache.com/im/pictures/1f88d847-9109-44a7-b7d1-6bb46364ff98.jpg?aki_policy=large',
+      'https://a0.muscache.com/im/pictures/b80546b5-5e79-4e98-b207-0029c38cfc19.jpg?aki_policy=xx_large',
+      'https://a0.muscache.com/im/pictures/be5bd8d0-b801-45ca-99f1-d54567806d21.jpg?aki_policy=poster',
     ],
-    "price": 5900,
-    "createdAt": "2020-02-13T20:49:02.994Z",
-    "updatedAt": "2020-02-13T20:49:02.994Z"
-  }
-}
+    price: 5900,
+    createdAt: '2020-02-13T20:49:02.994Z',
+    updatedAt: '2020-02-13T20:49:02.994Z',
+  },
+};
 
 const Book = (props: any) => {
-  const { router, trip, users, bookTrip } = props; 
-  // const { router, users, bookTrip } = props;
+  const { router, trip, users, bookTrip, token } = props;
   const { listing } = trip;
+  const loggedId = parseInt(token);
 
-  console.log(trip)
+  console.log(trip);
 
   // let trip = dummyTrip
   // let {listing} = trip
-  
 
   const initTripmates: Tripmates = {};
   const formattedDateFrom: Date = new Date(trip.dateFrom);
   const formattedDateTo: Date = new Date(trip.dateTo);
-  
 
   const [tripmates, setTripmates] = useState(initTripmates);
   const [dateFrom, setDateFrom] = useState(formattedDateFrom);
   const [dateTo, setDateTo] = useState(formattedDateTo);
   const [bookError, setBookError] = useState('');
+  const [calendarDisabled, setCalendarDisabled] = useState(true);
 
   useEffect(() => {
     if (!listing) router.replace('/listings');
@@ -113,13 +116,20 @@ const Book = (props: any) => {
       newTripmates[user.id] = false;
     }
     setTripmates(newTripmates);
+
+    const userIds = [loggedId];
+
+    Object.keys(tripmates).forEach((idStr: string) => {
+      const id = parseInt(idStr);
+      if (tripmates[id]) userIds.push(id);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (dateFrom && dateFrom) {
-      const userIds: number[] = [];
+      const userIds = [loggedId];
       const newTrip = {
         dateFrom: dateFns.format(dateFrom, 'yyyy-MM-dd'),
         dateTo: dateFns.format(dateTo, 'yyyy-MM-dd'),
@@ -134,9 +144,16 @@ const Book = (props: any) => {
 
       const res = await axios.post(`/api/trips`, { userIds, trip: newTrip });
       const resTrip = res.data;
-
       bookTrip(resTrip);
-      await axios.delete(`api/trips/${trip.id}`);
+
+      await Promise.all(
+        userIds.map((id: number) => {
+          return axios.delete(`/api/trips`, {
+            data: { userId: id, listingId: listing.id },
+          });
+        })
+      );
+
       router.push('/confirmation');
     } else {
       setBookError(
@@ -145,143 +162,194 @@ const Book = (props: any) => {
     }
   };
 
-  return (
-    <>
-      <Navbar/>
-    <Wrapper>
-      <Content>
-        <div>
-        <Header>Booking information</Header>
-
-        {/* <div>
-          <h4>Listing</h4>
-          <p>{listing.name}</p>
-          <p>{listing.address}</p>
-          <p>{listing.description}</p>
-        </div> */}
-
-        <div>
-          <Subheader>Who's coming?</Subheader>
-          <UserList>
-          {trip.users.map((user: any) => {
-            return (
-            <UserWrapper key={user.id}>
-              <ProfilePic src={user.imageUrl} alt={`${user.firstName} ${user.lastName}profile image`}/>
-              <Name>{user.firstName}</Name>
-            </UserWrapper>
-            )
-          })}
-          </UserList>
-        </div>
-
-        <div>
-          <Subheader>{dateFns.differenceInDays(formattedDateTo, formattedDateFrom)} nights in {listing.city}</Subheader>
-          <DateLine>
-            <MiniCal>
-              <MiniMonth>{dateFns.format(formattedDateFrom, 'LLL')}</MiniMonth>
-              <span>{Number(dateFns.format(formattedDateFrom, 'd')) + 1}</span>
-            </MiniCal>
-
-            <div>
-              <p>{(dateFns.format(formattedDateFrom, 'EEEE'))} check in</p>
-              <p>2:00 PM</p>
-            </div>
-          </DateLine>
-          
-          <DateLine>
-            <MiniCal>
-              <MiniMonth>{dateFns.format(formattedDateTo, 'LLL')}</MiniMonth>
-              <span>{Number(dateFns.format(formattedDateTo, 'd'))}</span>
-            </MiniCal>
-
-            <div>
-              <p>{dateFns.format(formattedDateTo, 'EEEE')} check out</p>
-              <p>11:00 AM</p>
-            </div>
-          </DateLine>
-        </div>
-      </div>
-
-      <Summary>
-        <MainInfo>
-          <div>
-            <ListingName>{listing.name}</ListingName>
-            <p>Rental in {listing.city}</p>
-          </div>
-          <ListingImage src={trip.listing.ownerPhotos[0]} alt={`${listing.name} photo`}/>
-        </MainInfo>
-
-        
-        <Details>
-          <p>{trip.users.length} guests</p>
-          <p>{dateFns.format(formattedDateFrom, 'MMMM dd, yyyy')} -> {dateFns.format(formattedDateTo, 'MMMM dd, yyyy')}</p>
-        </Details>
-
-        <Breakdown>
-          <Line>
-            <span>${(listing.price / 100)} x {dateFns.differenceInDays(formattedDateTo, formattedDateFrom)} nights</span>
-            <span>${(listing.price / 100) * dateFns.differenceInDays(formattedDateTo, formattedDateFrom)}</span>
-          </Line>
-
-
-          <Line>
-            <p>Service Fee</p>
-            <p>$25</p>
-          </Line>
-
-          <Line>
-            <p>Total(USD)</p>
-            <p>${(((listing.price) * dateFns.differenceInDays(formattedDateTo, formattedDateFrom)) + 2500) /100}</p>
-         </Line>
-        </Breakdown>
-        <StyledButton onClick={() => console.log('submitted, will add later -- mika')} >Confirm</StyledButton>
-      </Summary>
-
-      {/* <form name="tripmate-selection" onSubmit={handleSubmit}>
-        <h4>Choose your tripmates!</h4>
-        <ul>
-          {users.map((user: any) => {
-            const fullName = `${user.firstName} ${user.lastName}`;
-            return (
-              <div key={user.id} className="tripmate-option">
-                <input
-                  type="checkbox"
-                  name={user.id}
-                  onChange={(e) => handleSelect(e, user)}
-                />
-                <label htmlFor={user.id}>
-                  <img src={user.imageUrl} alt={fullName} />
-                  {fullName}
-                </label>
-              </div>
-            );
-          })}
-        </ul>
-
-        <h4>Confirm the dates</h4>
-        <Calendar
-          checkin={dateFrom}
-          setCheckin={(v: any) => {
-            setDateFrom(v);
-            setBookError('');
-          }}
-          checkout={dateTo}
-          setCheckout={(v: any) => {
-            setDateTo(v);
-            setBookError('');
-          }}
-          trips={[]}
-          tripColors={{}}
+  const usersList = users.map((user: any) => {
+    const fullName = `${user.firstName} ${user.lastName}`;
+    const input =
+      user.id === loggedId ? (
+        <input type="checkbox" name={user.id} checked disabled />
+      ) : (
+        <input
+          type="checkbox"
+          name={user.id}
+          onChange={(e) => handleSelect(e, user)}
         />
-        <button type="submit">Confirm Booking</button>
-      </form>
-      <Link href="/listings">
-        <button>Back to listings</button>
-      </Link> */}
+      );
+
+    return (
+      <UserWrapper key={user.id}>
+        {input}
+        <ProfilePic
+          src={user.imageUrl}
+          alt={`${user.firstName} ${user.lastName}profile image`}
+        />
+        <Name>{user.firstName}</Name>
+      </UserWrapper>
+    );
+  });
+
+  const DateButton = (props: any) => {
+    const { date } = props;
+    return (
+      <StyledDate onClick={() => setCalendarDisabled(false)}>Edit</StyledDate>
+    );
+  };
+
+  const calendar = calendarDisabled ? (
+    <>
+      <DateLine>
+        <MiniCal>
+          <MiniMonth>{dateFns.format(formattedDateFrom, 'LLL')}</MiniMonth>
+          <span>{Number(dateFns.format(formattedDateFrom, 'd'))}</span>
+        </MiniCal>
+
+        <div>
+          <p>{dateFns.format(formattedDateFrom, 'EEEE')} check in</p>
+          <p>2:00 PM</p>
+          <DateButton date={dateFrom} />
+        </div>
+      </DateLine>
+
+      <DateLine>
+        <MiniCal>
+          <MiniMonth>{dateFns.format(formattedDateTo, 'LLL')}</MiniMonth>
+          <span>{Number(dateFns.format(formattedDateTo, 'd'))}</span>
+        </MiniCal>
+
+        <div>
+          <p>{dateFns.format(formattedDateTo, 'EEEE')} check out</p>
+          <p>11:00 AM</p>
+          <DateButton date={dateTo} />
+        </div>
+      </DateLine>
+    </>
+  ) : (
+    <>
+      {bookError}
+      <Calendar
+        book
+        checkin={dateFrom}
+        setCheckin={(v: any) => {
+          setDateFrom(v);
+          setBookError('');
+        }}
+        checkout={dateTo}
+        setCheckout={(v: any) => {
+          setDateTo(v);
+          setBookError('');
+        }}
+        trips={[trip]}
+        tripColors={{ [trip.id]: '3E8A92' }}
+      />
+      <StyledSelect onClick={() => setCalendarDisabled(true)}>
+        Select these dates
+      </StyledSelect>
+    </>
+  );
+
+  return !listing ? (
+    <Redirect>No trip to book. Redirecting to listings page...</Redirect>
+  ) : (
+    <>
+      <Wrapper>
+        <Content>
+          <div>
+            <Header>Booking information</Header>
+
+            <div>
+              <Subheader>Who's coming?</Subheader>
+              <UserList>
+                {usersList}
+                {/* {trip.users.map((user: any) => {
+                  return (
+                    <UserWrapper key={user.id}>
+                      <ProfilePic
+                        src={user.imageUrl}
+                        alt={`${user.firstName} ${user.lastName}profile image`}
+                      />
+                      <Name>{user.firstName}</Name>
+                    </UserWrapper>
+                  );
+                })} */}
+              </UserList>
+            </div>
+
+            <div>
+              <Subheader>
+                {dateFns.differenceInDays(formattedDateTo, formattedDateFrom)}{' '}
+                nights in {listing.city}
+              </Subheader>
+              {calendar}
+            </div>
+          </div>
+
+          <Summary>
+            <MainInfo>
+              <div>
+                <ListingName>{listing.name}</ListingName>
+                <p>Rental in {listing.city}</p>
+              </div>
+              <ListingImage
+                src={trip.listing.ownerPhotos[0]}
+                alt={`${listing.name} photo`}
+              />
+            </MainInfo>
+
+            <Details>
+              <p>{trip.users.length} guests</p>
+              <p>
+                {dateFns.format(formattedDateFrom, 'MMMM dd, yyyy')} ->{' '}
+                {dateFns.format(formattedDateTo, 'MMMM dd, yyyy')}
+              </p>
+            </Details>
+
+            <Breakdown>
+              <Line>
+                <span>
+                  ${listing.price / 100} x{' '}
+                  {dateFns.differenceInDays(formattedDateTo, formattedDateFrom)}{' '}
+                  nights
+                </span>
+                <span>
+                  $
+                  {(listing.price / 100) *
+                    dateFns.differenceInDays(
+                      formattedDateTo,
+                      formattedDateFrom
+                    )}
+                </span>
+              </Line>
+
+              <Line>
+                <p>Service Fee</p>
+                <p>$25</p>
+              </Line>
+
+              <Line>
+                <p>Total(USD)</p>
+                <p>
+                  $
+                  {(listing.price *
+                    dateFns.differenceInDays(
+                      formattedDateTo,
+                      formattedDateFrom
+                    ) +
+                    2500) /
+                    100}
+                </p>
+              </Line>
+            </Breakdown>
+            <StyledButton onClick={handleSubmit}>Confirm</StyledButton>
+          </Summary>
         </Content>
       </Wrapper>
     </>
   );
+};
+
+Book.getInitialProps = async function(context: any) {
+  const { token } = cookies(context);
+
+  return { token };
 };
 
 const mapState = (state: any) => {
@@ -298,10 +366,11 @@ const mapDispatch = (dispatch: Dispatch) => {
 };
 
 export default connect(mapState, mapDispatch)(withRouter(Book));
+
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-`
+`;
 
 const Content = styled.div`
   display: grid;
@@ -311,23 +380,23 @@ const Content = styled.div`
   * {
     margin: 0;
   }
-`
+`;
 
 const Header = styled.h2`
   font-size: 32px;
   font-weight: 500;
-`
+`;
 
 const Subheader = styled.h3`
   font-size: 28px;
   font-weight: 500;
   margin: 3vh 0 10px 0;
-`
+`;
 
 const UserList = styled.ul`
   padding: 0;
   display: flex;
-`
+`;
 
 const UserWrapper = styled.li`
   list-style: none;
@@ -335,28 +404,31 @@ const UserWrapper = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 const ProfilePic = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-`
+  object-fit: cover;
+`;
 
 const Name = styled.p`
   margin: 0;
   margin-top: 5px;
-`
+  max-width: 7ch;
+  text-align: center;
+`;
 
 const DateLine = styled.div`
-  display: flex; 
+  display: flex;
   align-items: center;
   margin-bottom: 3vh;
 
   p {
     font-size: 24px;
   }
-`
+`;
 
 const MiniCal = styled.div`
   min-width: max-content;
@@ -374,65 +446,81 @@ const MiniCal = styled.div`
   font-size: 25px;
   font-weight: 300;
   margin-right: 2vw;
-`
+`;
 
 const MiniMonth = styled.span`
   font-size: 20px;
-`
+`;
 
 const Summary = styled.div`
-  border: 1px solid rgb(228, 228, 228) ;
+  border: 1px solid rgb(228, 228, 228);
   width: max-content;
   padding: 3vh 3vw;
   display: grid;
-`
+`;
 const MainInfo = styled.div`
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   border-bottom: 1px solid black;
   padding-bottom: 3vh;
 
   div {
     margin-right: 4vw;
   }
-`
+`;
 
 const ListingName = styled.p`
   font-weight: 600;
-`
+`;
 
 const ListingImage = styled.img`
   width: 7vw;
   object-fit: cover;
-`
+`;
 
 const Details = styled.div`
   border-bottom: 1px solid black;
   padding: 3vh 0;
-`
+`;
 
 const Breakdown = styled.div`
-border-bottom: 1px solid black;
+  border-bottom: 1px solid black;
   padding: 3vh 0;
-`
+`;
 const Line = styled.div`
   display: flex;
-  justify-content: space-between
-`
+  justify-content: space-between;
+`;
 const StyledButton = styled.button`
- border-radius: initial;
- background: var(--accent-dark);
- box-shadow: none;
- color: white;
- border:0;
- font-family: inherit;
- font-size: 18px;
- padding: 18px 0;
- border-radius: 2px;
- margin-top: 2vh;
- cursor: pointer;
+  border-radius: initial;
+  background: var(--accent-dark);
+  box-shadow: none;
+  color: white;
+  border: 0;
+  font-family: inherit;
+  font-size: 18px;
+  padding: 18px 0;
+  border-radius: 2px;
+  margin-top: 2vh;
+  cursor: pointer;
 
- :hover {
-  background: var(--accent-light);
- }
-`
+  :hover {
+    background: var(--accent-light);
+  }
+`;
+
+const Redirect = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledDate = styled(StyledButton)`
+  padding: 0.6em 1.2em 0.6em 1.2em;
+  margin-top: 0.4em;
+  font-size: 0.8em;
+`;
+
+const StyledSelect = styled(StyledDate)``;

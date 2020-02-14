@@ -57,9 +57,10 @@ const Global = createGlobalStyle`
 /* Calendar */
 
 .calendar {
-  display: block;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  width: 80%;
+  width: 500px;
   background: var(--neutral-color);
   border: 1px solid var(--border-color);
 }
@@ -100,11 +101,12 @@ const Global = createGlobalStyle`
 }
 
 .calendar .body .cell {
-  position:relative;
+  position: relative;
   display: flex;
+  flex-grow: 0;
   justify-content: center;
   align-items: center;
-  height: 5em;
+  height: 4em;
   border-right: 1px solid var(--border-color);
   overflow: hidden;
   cursor: pointer;
@@ -162,7 +164,7 @@ const Global = createGlobalStyle`
   color: white;
 }
 
-.checkout::after {
+.checkout::before {
   position: absolute;
   top: 0;
   left: 0;

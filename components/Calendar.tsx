@@ -3,9 +3,8 @@ import * as dateFns from 'date-fns';
 import styled from 'styled-components';
 
 const Calendar = (props: any) => {
-  const today = new Date(Date.now());
-
   const {
+    book,
     trips,
     tripColors,
     checkin,
@@ -14,7 +13,10 @@ const Calendar = (props: any) => {
     setCheckout,
   } = props;
 
-  const [current, setCurrent] = useState(today);
+  const today = new Date(Date.now());
+  const defaultDay = book ? new Date(trips[0].dateFrom) : today;
+
+  const [current, setCurrent] = useState(defaultDay);
   const [chooseCheckin, setChooseCheckin] = useState(true);
 
   const renderHeader = () => {

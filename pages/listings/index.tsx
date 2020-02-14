@@ -101,7 +101,6 @@ const Listings = (props: any) => {
               />
             </Grommet>
           </div>
-          {console.log(props)}
           {props.token ? (
             <div>
               <Link href="/accountOverview">

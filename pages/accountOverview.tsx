@@ -3,7 +3,6 @@ import axios from 'axios';
 import Link from 'next/link';
 import cookies from 'next-cookies';
 import styled from 'styled-components';
-import Navbar from '../components/userNavbar'
 
 const AccountOverview = function(props: any) {
   const { user } = props;
@@ -12,43 +11,42 @@ const AccountOverview = function(props: any) {
     <div>
       {user ? (
         <div>
-          <Navbar />
           <Wrapper>
             <UserImg src={user.imageUrl} />
             <InnerWrapper>
               <h1>{`${user.firstName} ${user.lastName}`}</h1>
               <h2>Upcoming Trips:</h2>
               <PhotoWrapper>
-                {user.trips.map((trip: any) => {
-                  if (trip.status === 'booked') {
-                    const bookedListing = user.listings.filter(
-                      (listing: any) => listing.id === trip.listingId
-                    );
-                    return (
-                      <Link href={`/itinerary/${trip.id}`}>
-                        <ListingImg src={bookedListing[0].ownerPhotos[0]} />
-                      </Link>
-                    );
-                  }
-                })}
+                {user.trips.length > 0 ? (
+                  user.trips.map((trip: any) => {
+                    if (trip.status === 'booked') {
+                      return (
+                        <Link key={trip.id} href={`/itinerary/${trip.id}`}>
+                          <ListingImg src={trip.listing.ownerPhotos[0]} />
+                        </Link>
+                      );
+                    }
+                  })
+                ) : (<div></div>)}
               </PhotoWrapper>
               <h2>Interested In:</h2>
               <PhotoWrapper>
-                {user.trips.map((trip: any) => {
-                  if (trip.status === 'pending') {
-                    const interestedListing = user.listings.filter(
-                      (listing: any) => listing.id === trip.listingId
-                    );
-                    return (
-                      <Link
-                        key={interestedListing.id}
-                        href={`/listings/${interestedListing[0].id}`}
-                      >
-                        <ListingImg src={interestedListing[0].ownerPhotos[0]} />
-                      </Link>
-                    );
-                  }
-                })}
+                {user.trips.length ? (
+                  user.trips.map((trip: any) => {
+                    if (trip.status === 'pending') {
+                      return (
+                        <Link
+                          key={trip.id}
+                          href={`/listings/${trip.listing.id}`}
+                        >
+                          <ListingImg src={trip.listing.ownerPhotos[0]} />
+                        </Link>
+                      );
+                    }
+                  })
+                ) : (
+                  <div></div>
+                )}
               </PhotoWrapper>
             </InnerWrapper>
           </Wrapper>
@@ -66,6 +64,7 @@ const AccountOverview = function(props: any) {
 AccountOverview.getInitialProps = async (context: any) => {
   let { token } = cookies(context);
   const id = token;
+
   if (id) {
     const res = await axios.get(`http://localhost:3000/api/users/${id}`);
     return { user: res.data };
@@ -86,7 +85,6 @@ flex-direction: column;
 const PhotoWrapper = styled.div`
 display: flex; 
 flex-direction: row;
-justify-content: space-between
 `
 
 const UserImg = styled.img`
@@ -101,4 +99,5 @@ const ListingImg = styled.img`
   object-fit: cover;
   height: 15vw;
   width: 15vw;
+  padding-right: 10px;
 `;

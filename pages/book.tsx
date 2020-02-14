@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { User } from '../server/db/models/interfaces';
 import { bookTrip } from '../store/store';
 import Calendar from '../components/Calendar';
-import Navbar from '../components/userNavbar'
+import Navbar from '../components/Navbar'
 
 interface Tripmates {
   [key: number]: any;

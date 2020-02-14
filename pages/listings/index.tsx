@@ -27,7 +27,7 @@ interface ListingInterface {
 const Listings = (props: any) => {
   const router = useRouter();
   let city = props.selectedCity;
-  
+
   if (!city) {
     city = 'Chicago';
   }
@@ -99,7 +99,7 @@ const Listings = (props: any) => {
               />
             </Grommet>
           </div>
-
+          {console.log(props)}
           {props.token ? (
             <div>
               <Link href="/accountOverview">
@@ -122,25 +122,9 @@ const Listings = (props: any) => {
               <Link href={'/signup'}>Sign Up</Link>
             </div>
           )}
-          {/* </div> */}
         </HeaderFilter>
 
         <HeaderPrefs>
-          {/* <Button
-          label="Price"
-          dropAlign={{ top: 'bottom' }}
-          dropContent={
-            <Box pad="large" background="light-2" />
-          }
-        />
-          
-        <Button
-        label="Type of Place"
-        dropAlign={{ top: 'bottom' }}
-        dropContent={
-          <Box pad="large" background="light-2" />
-        }
-        /> */}
         </HeaderPrefs>
       </Header>
 

@@ -2,69 +2,79 @@ import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import styled from 'styled-components'
 import zipcodes from 'zipcodes'
+import uuid from 'uuid';
 // require('dotenv').config()
 
 const AnyReactComponent = ({ text }) => <Marker>{''}</Marker>;
 
 const SimpleMap = (props) => {
   const [zip, setZip] = useState(props.zipcode)
-  // console.log('ZIP',zip)
 
+  
   if (zip !== props.zipcode) {
     setZip(props.zipcode)
   }
 
-  const coords = zipcodes.lookup(zip)
-  // console.log('coords:', coords)
+  const mapCoords = zipcodes.lookup(zip)
 
-
+ 
     return (
-      // Important! Always set the container height explicitly
-      <div style={{ height: '400px', width: '400px' }}>
+      <Wrapper>
+      <div style={{ height: '100%', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY }}
           center={{
-            lat: coords.latitude,
-            lng: coords.longitude
+            lat: mapCoords.latitude,
+            lng: mapCoords.longitude
           }}
-
-          defaultZoom={11}
+          defaultZoom={13}
         >
-          <AnyReactComponent
-            lat={coords.latitude}
-            lng={coords.longitude}
-            text="BETA MARKER"
-          />
+
+
+          {props.filteredListings.map(listing => {
+            const coords = zipcodes.lookup(listing.zipCode)
+            return (
+              <Marker
+                lat={coords.latitude}
+                lng={coords.longitude}
+                text="BETA MARKER"
+                key={uuid()}
+              >${listing.price / 100}</Marker>
+            )
+          })}
         </GoogleMapReact>
-
-
       </div>
+      </Wrapper>
     );
 
 }
 
 export default SimpleMap;
 
-// static defaultProps = {
-  //   center: {
-  //     lat: 59.95,
-  //     lng: 30.33
-  //   },
-  //   zoom: 11
-  // };
 
+  const Wrapper =styled.div`
+  width: 100%;
+  height: 100%;
+  `
   const Marker = styled.div`
-    background-image: url('https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=912&q=80');
+    border: 10px solid var(--accent-dark);
+    box-sizing: border-box;
+    background-color: var(--accent-dark);
     background-size: 30px 30px;
     height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    border: 2px solid papayawhip;
+    width: 50px;
+    border-radius: 16px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 12px;
 
-:hover {
-  height: 35px;
-    width: 35px;
-    background-size: 35px 35px;
-    transition: all 0.25s;
-}
+    :hover {
+      transform: scale(1.15);
+      transform-origin: 50% 50% 0;
+      transition: all 0.25s;
+      box-shadow: lightgrey 0px 1px 1px;
+    }
   `

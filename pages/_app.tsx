@@ -5,24 +5,29 @@ import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { ThemeProvider } from 'styled-components';
 import Head from 'next/head';
+import Navbar from '../components/navbar'
+import cookies from 'next-cookies';
 
 import initStore from '../store/store';
 import Global from '../util/Global';
 
 interface OurProps extends AppProps {
   store: any;
+  token: any;
 }
 
 class MyApp extends App<OurProps> {
+
   static async getInitialProps({ Component, ctx }: any) {
     // we can dispatch from here too
     // ctx.store.dispatch({ type: "FOO", payload: "foo" });
+    let { token } = cookies(ctx);
 
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
 
-    return { pageProps };
+    return { pageProps, token };
   }
 
   render() {
@@ -30,6 +35,7 @@ class MyApp extends App<OurProps> {
     return (
       <Provider store={store}>
         <Global />
+        <Navbar token={this.props.token} />
         <Head>
           <title>Wanderlust</title>
           <meta charSet="utf-8" />
@@ -46,6 +52,7 @@ class MyApp extends App<OurProps> {
       </Provider>
     );
   }
+
 }
 
 export default withRedux(initStore)(MyApp);

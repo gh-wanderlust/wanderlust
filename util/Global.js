@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 const Global = createGlobalStyle`
 
+
   * {
     --black: #22222;
     --light-gray: #F2F2F2;
@@ -13,6 +14,7 @@ const Global = createGlobalStyle`
   body {
     font-family: 'Work Sans';
     color: #222222;
+    margin:0;
   }
 
 
@@ -57,7 +59,7 @@ const Global = createGlobalStyle`
 .calendar {
   display: block;
   position: relative;
-  width: 100%;
+  width: 80%;
   background: var(--neutral-color);
   border: 1px solid var(--border-color);
 }
@@ -131,22 +133,57 @@ const Global = createGlobalStyle`
 
 
 .checkin {
-  background-color: blue
+  position: relative;
+  background-color: var(--accent-light);
+  border-radius: 50% 0 0 50%;
+  color: white;
+}
+
+.checkin.no-checkout {
+  border-radius: 50%;
+}
+
+.checkin::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--accent-dark);
+  mix-blend-mode: screen;
 }
 
 .checkout {
-  background-color: red;
+  position: relative;
+  background-color: var(--accent-light);
+  border-radius: 0 50% 50% 0;
+  color: white;
+}
+
+.checkout::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--accent-dark);
+  mix-blend-mode: screen;
 }
 
 .between {
-  background-color: green;
+  background-color: var(--accent-light);
+  color:white;
 }
 
 .trip {
   position: absolute;
   width: 100%;
   height: 100%;
-  mix-blend-mode: multiply;
+  mix-blend-mode: overlay;
   opacity: .3;
   box-sizing: border-box;
 }

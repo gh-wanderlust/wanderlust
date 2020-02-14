@@ -21,7 +21,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "__tests__"
+    "__tests__", "pages/itinerary/[id].js"
     // "pages/listings/index.tsx"
   ]
 }

@@ -3,4 +3,8 @@ node_modules
 .next
 package-lock.json
 
+<<<<<<< HEAD
 .now
+=======
+.now
+>>>>>>> c25094a70312193cd8a1813b8506ef6ba61d48fe

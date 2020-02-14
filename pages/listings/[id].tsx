@@ -139,55 +139,56 @@ const SingleListing = (props: any) => {
   return isLoading ? (
     <p>Loading...</p>
   ) : (
-    <Wrapper>
-      <ImageGrid>
-        {listing.ownerPhotos.map((imgUrl: string, idx: number) => {
-          return <img key={idx} src={imgUrl} />;
-        })}
-      </ImageGrid>
+    <div>
+      <Wrapper>
+        <ImageGrid>
+          {listing.ownerPhotos.map((imgUrl: string, idx: number) => {
+            return <img key={idx} src={imgUrl} />;
+          })}
+        </ImageGrid>
 
-      <Content>
-        <Info>
-          <Left>
-            <SectionHeader className="title">{listing.name}</SectionHeader>
-            <p>4.9 ★ (407)</p>
-            <p>$200 a night</p>
-            <p>4 beds</p>
-            <p>2 baths</p>
-          </Left>
-          <Desc className="content">{listing.description}</Desc>
-        </Info>
+        <Content>
+          <Info>
+            <Left>
+              <SectionHeader className="title">{listing.name}</SectionHeader>
+              <p>4.9 ★ (407)</p>
+              <p>$200 a night</p>
+              <p>4 beds</p>
+              <p>2 baths</p>
+            </Left>
+            <Desc className="content">{listing.description}</Desc>
+          </Info>
 
-        <Booking>
-          <Left>
-            <SectionHeader className="title">Interested Users</SectionHeader>
-          </Left>
-          <div>
-            <InterestedUsers>
-              {users.length > 0 ? (
-                users.map((user: any) => {
-                  return <UserThumb key={user.id} user={user} />;
-                })
+          <Booking>
+            <Left>
+              <SectionHeader className="title">Interested Users</SectionHeader>
+            </Left>
+            <div>
+              <InterestedUsers>
+                {users.length > 0 ? (
+                  users.map((user: any) => {
+                    return <UserThumb key={user.id} user={user} />;
+                  })
+                ) : (
+                  <p>No one interested yet! Be the first!</p>
+                )}
+              </InterestedUsers>
+              {loggedUser ? (
+                <>
+                  {calendar}
+                  {bookError}
+                  <form name="set-user-interest" onSubmit={handleInterest}>
+                    <Button type="submit">{submitButtonText}</Button>
+                  </form>
+                  {bookButton}
+                </>
               ) : (
-                <p>No one interested yet! Be the first!</p>
+                ''
               )}
-            </InterestedUsers>
-            {loggedUser ? (
-              <>
-                {calendar}
-                {bookError}
-                <form name="set-user-interest" onSubmit={handleInterest}>
-                  <Button type="submit">{submitButtonText}</Button>
-                </form>
-                {bookButton}
-              </>
-            ) : (
-              ''
-            )}
-          </div>
-        </Booking>
+            </div>
+          </Booking>
 
-        {/* <GuestPhotos>
+          {/* <GuestPhotos>
           <Left>
             <SectionHeader>Guest Photos</SectionHeader>
           </Left>
@@ -209,8 +210,9 @@ const SingleListing = (props: any) => {
             <Review />
           </div>
         </Reviews> */}
-      </Content>
-    </Wrapper>
+        </Content>
+      </Wrapper>
+    </div>
   );
 };
 

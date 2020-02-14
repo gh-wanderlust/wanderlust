@@ -4,8 +4,8 @@ export default async (req: any, res: any) => {
   if (req.method === 'GET') {
      try {
 				const listings = await Listing.findAll({
-					include: [{ model: User }, { model: Trip }]
-				});
+          include: [{ model: Trip, include: [{ model: User }]}],
+        });
 				res.json(listings);
 			} catch (err) {
 				console.error(err);

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import Router from 'next/router';
+import Link from 'next/link';
 import styled from 'styled-components';
 import cookies from 'next-cookies';
 import * as dateFns from 'date-fns';
@@ -255,10 +256,16 @@ const UserThumb = (props: any) => {
   const { user } = props;
   const fullName = `${user.firstName} ${user.lastName}`;
   return (
-    <UserThumbnail key={user.id}>
-      <img src={user.imageUrl} alt={fullName} />
-      {fullName}
-    </UserThumbnail>
+    <Link href={`/users/${user.id}`} key={user.id}>
+      <UserThumbnail>
+        <img src={user.imageUrl} alt={fullName} />
+
+        <div className="user-info">
+          <p className="user-name">{fullName}</p>
+          <p className="user-email">{user.email}</p>
+        </div>
+      </UserThumbnail>
+    </Link>
   );
 };
 
@@ -364,13 +371,37 @@ const UserThumbnail = styled.li`
   display: flex;
   align-items: center;
   margin: 1em;
+  transition: all 0.3s ease;
 
   img {
-    width: 3em;
-    height: 3em;
+    width: 3.4em;
+    height: 3.4em;
     object-fit: cover;
     border-radius: 50%;
+    border: 2px solid white;
     margin-right: 1em;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+
+  .user-email {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  :hover {
+    cursor: pointer;
+    color: var(--accent-dark);
+
+    img {
+      border: 2px solid var(--accent-light);
+    }
+
+    .user-email {
+      max-height: 2em;
+      color: var(--accent-light);
+    }
   }
 `;
 

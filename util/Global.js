@@ -134,47 +134,36 @@ const Global = createGlobalStyle`
 }
 
 
-.checkin {
+.checkin, .checkout {
   position: relative;
-  background-color: var(--accent-light);
-  border-radius: 50% 0 0 50%;
   color: white;
 }
 
-.checkin.no-checkout {
-  border-radius: 50%;
+
+.checkin::before, .checkout::before, .checkin.no-checkout::before{
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent-dark);
+  mix-blend-mode: screen;
 }
 
 .checkin::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  content: '';
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: var(--accent-dark);
-  mix-blend-mode: screen;
-}
-
-.checkout {
-  position: relative;
-  background-color: var(--accent-light);
-  border-radius: 0 50% 50% 0;
-  color: white;
+  border-radius: 50% 0 0 50%;
 }
 
 .checkout::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  content: '';
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: var(--accent-dark);
-  mix-blend-mode: screen;
+border-radius: 0 50% 50% 0;;
 }
+
+.checkin.no-checkout::before {
+  border-radius: 50%;
+}
+
+
 
 .between {
   background-color: var(--accent-light);

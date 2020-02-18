@@ -7,7 +7,7 @@ import Navbar from '../../components/navbar';
 import GoogleMapReact from 'google-map-react';
 import zipcodes from 'zipcodes';
 import * as dateFns from 'date-fns';
-import { apiUrl } from '../util';
+import { apiUrl } from '../../util';
 
 const AnyReactComponent = () => <div>{''}</div>;
 

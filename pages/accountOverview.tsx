@@ -7,6 +7,7 @@ import { apiUrl } from '../util';
 
 const AccountOverview = function(props: any) {
   const { user } = props;
+  // console.log('USER: ', user);
 
   return (
     <div>
@@ -69,7 +70,7 @@ AccountOverview.getInitialProps = async (context: any) => {
   const id = token;
 
   if (id) {
-    const res = await axios.get(apiUrl(`/users/${id}`));
+    const res = await axios.get(apiUrl(`/api/users/${id}`));
     return { user: res.data };
   }
 };

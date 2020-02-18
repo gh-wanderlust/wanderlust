@@ -28,7 +28,6 @@ const Itinerary = function(props) {
 
   return (
     <div>
-      <Navbar />
       {trip.status === 'booked' ? (
         <Wrapper>
           <Details>

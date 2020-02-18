@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { apiUrl } from '../../util';
 
 const UserProfile = function(props: any) {
   const { user } = props;
@@ -37,7 +38,7 @@ const UserProfile = function(props: any) {
 
 UserProfile.getInitialProps = async (context: any) => {
   const id = context.query.id;
-  const res = await axios.get(`http://localhost:3000/api/users/${id}`);
+  const res = await axios.get(apiUrl(`/api/users/${id}`));
   return { user: res.data };
 };
 

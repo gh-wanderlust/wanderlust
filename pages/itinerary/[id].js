@@ -7,6 +7,7 @@ import Navbar from '../../components/navbar';
 import GoogleMapReact from 'google-map-react';
 import zipcodes from 'zipcodes';
 import * as dateFns from 'date-fns';
+import { apiUrl } from '../../util';
 
 const AnyReactComponent = () => <div>{''}</div>;
 
@@ -18,7 +19,7 @@ const Itinerary = function(props) {
   const tripLengthInDays = Math.floor(tripLength / (1000 * 60 * 60 * 24));
 
   const mapCoords = zipcodes.lookup(trip.listing.zipCode);
-  const mapCenter = { lat: mapCoords?.latitude,lng: mapCoords?.longitude}
+  const mapCenter = { lat: mapCoords?.latitude, lng: mapCoords?.longitude };
 
   const formattedDateFrom = new Date(trip.dateFrom);
   const newDateFrom = dateFns.format(formattedDateFrom, 'MMMM dd, yyyy');
@@ -84,11 +85,7 @@ const Itinerary = function(props) {
                 center={mapCenter}
                 defaultZoom={13}
               >
-                <Marker  
-                  lat={mapCoords.latitude}
-                  lng={mapCoords.longitude}
-                />
-                
+                <Marker lat={mapCoords.latitude} lng={mapCoords.longitude} />
               </GoogleMapReact>
             </div>
           </Accommodation>
@@ -114,7 +111,7 @@ Itinerary.getInitialProps = async (context) => {
 
   if (tripId) {
     const res = await axios.get(
-      `http://localhost:3000/api/trips/${tripId}?users=true&listings=true`
+      apiUrl(`/api/trips/${tripId}?users=true&listings=true`)
     );
     return { trip: res.data };
   }
@@ -201,24 +198,24 @@ const Redirect = styled.div`
 `;
 
 const Marker = styled.div`
-    border: 5px solid var(--accent-dark);
-    box-sizing: border-box;
-    background-color: white;
-    background-size: 30px 30px;
-    height: 20px;
-    width: 20px;
-    border-radius: 16px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    font-size: 12px;
+  border: 5px solid var(--accent-dark);
+  box-sizing: border-box;
+  background-color: white;
+  background-size: 30px 30px;
+  height: 20px;
+  width: 20px;
+  border-radius: 16px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 12px;
 
-    :hover {
-      transform: scale(1.15);
-      transform-origin: 50% 50% 0;
-      transition: all 0.25s;
-      box-shadow: lightgrey 0px 1px 1px;
-    }
-  `
+  :hover {
+    transform: scale(1.15);
+    transform-origin: 50% 50% 0;
+    transition: all 0.25s;
+    box-shadow: lightgrey 0px 1px 1px;
+  }
+`;

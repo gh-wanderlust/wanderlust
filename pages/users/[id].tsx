@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import styled from 'styled-components';
-import Navbar from '../../components/userNavbar';
 
 const UserProfile = function(props: any) {
   const { user } = props;
 
   return (
     <div>
-      <Navbar />
       <Wrapper>
         <UserImg src={user.imageUrl} />
         <InnerWrapper>
@@ -17,18 +15,19 @@ const UserProfile = function(props: any) {
           <p>{user.email}</p>
           <h2>Interested Listings:</h2>
           <PhotoWrapper>
-            {user.trips.map((trip: any) => {
-              if (trip.status === 'pending') {
-                const interestedListing = user.listings.filter(
-                  (listing: any) => listing.id === trip.listingId
-                );
-                return (
-                  <Link href={`/listings/${interestedListing[0].id}`}>
-                    <ListingImg src={interestedListing[0].ownerPhotos[0]}/>
-                  </Link>
-                );
-              }
-            })}
+            {user.trips.length ? (
+              user.trips.map((trip: any) => {
+                if (trip.status === 'pending') {
+                  return (
+                    <Link key={trip.id} href={`/listings/${trip.listing.id}`}>
+                      <ListingImg src={trip.listing.ownerPhotos[0]} />
+                    </Link>
+                  );
+                }
+              })
+            ) : (
+              <div></div>
+            )}
           </PhotoWrapper>
         </InnerWrapper>
       </Wrapper>
@@ -46,7 +45,6 @@ export default UserProfile;
 
 const Wrapper = styled.div`
   display: flex;
-  font-family: 'Lucida Console', sans-serif;
 `;
 const InnerWrapper = styled.div`
   display: flex;
@@ -56,19 +54,20 @@ const InnerWrapper = styled.div`
 const PhotoWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const UserImg = styled.img`
   object-fit: cover;
   border-radius: 50%;
-  height: 20vw;
-  width: 20vw;
+  height: 12vw;
+  width: 12vw;
   padding: 100px;
 `;
 
 const ListingImg = styled.img`
   object-fit: cover;
-  height: 20vw;
-  width: 20vw;
-  padding: 5px;
+  height: 15vw;
+  width: 15vw;
+  padding-right: 10px;
 `;

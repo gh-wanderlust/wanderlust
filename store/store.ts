@@ -15,6 +15,7 @@ interface Action {
 /** INITIAL STATE **/
 const initState = {
   listing: {
+    selectedCity: "Chicago",
     ownerPhotos: [],
   },
   user: {},
@@ -24,8 +25,10 @@ const initState = {
 };
 
 /** ACTIONS  **/
+const SUBMIT_SEARCH = 'SUBMIT_SEARCH';
 const GOT_SINGLE_LISTING = 'GOT_SINGLE_LISTING';
 const LOGIN_USER = 'LOGIN_USER';
+const LOGOUT_USER = 'LOGOUT_USER';
 const CLEAR_INTERESTED_USERS = 'CLEAR_INTERESTED_USERS';
 const ADD_INTERESTED_USER = 'ADD_INTERESTED_USER';
 const REMOVE_INTERESTED_USER = 'REMOVE_INTERESTED_USER';
@@ -34,12 +37,18 @@ const BOOK_TRIP = 'BOOK_TRIP';
 
 /** ACTION CREATORS **/
 
+export const submitSearch = (selectedCity: string) => ({
+  type: SUBMIT_SEARCH,
+  selectedCity
+})
+
 export const gotSingleListing = (listing: Listing) => ({
   type: GOT_SINGLE_LISTING,
   listing,
 });
 
 export const loginUser = (user: User) => ({ type: LOGIN_USER, user });
+export const logoutUser = () => ({ type: LOGOUT_USER });
 
 export const clearInterestedUsers = () => ({
   type: CLEAR_INTERESTED_USERS,
@@ -89,12 +98,14 @@ export const getSingleListing = (id: number) => {
 
 const reducer = (state: any = {}, action: Action) => {
   switch (action.type) {
-    // case GET_LISTINGS:
-    //   return [...state, action.payload];
+    case SUBMIT_SEARCH:
+      return {...state, listing: {selectedCity: action.selectedCity}};
     case GOT_SINGLE_LISTING:
       return { ...state, listing: action.listing };
     case LOGIN_USER:
       return { ...state, user: action.user };
+    case LOGOUT_USER:
+      return { ...state, user: null };
     case CLEAR_INTERESTED_USERS:
       return {
         ...state,

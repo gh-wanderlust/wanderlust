@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
+import Link from 'next/link';
 import styled from 'styled-components';
 import cookies from 'next-cookies';
 import * as dateFns from 'date-fns';
@@ -31,30 +32,40 @@ const SingleListing = (props: any) => {
     loadTrip,
   } = props;
 
-  const router = useRouter();
-
   /** STATE **/
   const [userInterested, setInterested] = useState(false);
-  // const [dateFrom, setDateFrom] = useState(new Date(Date.now()));
-  // const [dateTo, setDateTo] = useState(new Date(Date.now()));
   const [dateFrom, setDateFrom] = useState(0);
   const [dateTo, setDateTo] = useState(0);
   const [bookError, setBookError] = useState('');
   const [isLoading, setLoading] = useState(true);
+  const tripColors: any = {};
+  if (!isLoading) {
+    listing.trips.map((trip: any) => {
+      if (trip.status === 'pending') {
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        const hex = `#${randomColor}`;
+        tripColors[trip.id] = hex;
+      }
+    });
+  }
 
   const init = async () => {
     await getListing(id);
-
     setLoading(false);
   };
+
   useEffect(() => {
     init();
   }, []);
 
+  useEffect(() => {});
+
   useEffect(() => {
-    users.find((user: User) => user.id === loggedUser.id)
-      ? setInterested(true)
-      : setInterested(false);
+    if (loggedUser) {
+      users.find((user: User) => user.id === loggedUser.id)
+        ? setInterested(true)
+        : setInterested(false);
+    }
   }, [users]);
 
   /** FORM HANDLING**/
@@ -93,7 +104,7 @@ const SingleListing = (props: any) => {
 
     await loadTrip(trip);
 
-    router.push('/book');
+    Router.push('/book');
   };
 
   /** CONDITIONAL RENDERING **/
@@ -115,11 +126,13 @@ const SingleListing = (props: any) => {
         setDateTo(v);
         setBookError('');
       }}
+      trips={listing.trips}
+      tripColors={tripColors}
     />
   );
 
   const bookButton = userInterested ? (
-    <button onClick={handleBook}>Book now!</button>
+    <Button onClick={handleBook}>Book now!</Button>
   ) : (
     ''
   );
@@ -127,48 +140,56 @@ const SingleListing = (props: any) => {
   return isLoading ? (
     <p>Loading...</p>
   ) : (
-    <Wrapper>
-      <ImageGrid>
-        {listing.ownerPhotos.map((imgUrl: string, idx: number) => {
-          return <img key={idx} src={imgUrl} />;
-        })}
-      </ImageGrid>
+    <div>
+      <Wrapper>
+        <ImageGrid>
+          {listing.ownerPhotos.map((imgUrl: string, idx: number) => {
+            return <img key={idx} src={imgUrl} />;
+          })}
+        </ImageGrid>
 
-      <Content>
-        <Info>
-          <Left>
-            <SectionHeader className="title">{listing.name}</SectionHeader>
-            <p>4.9 ★ (407)</p>
-            <p>$200 a night</p>
-            <p>4 beds</p>
-            <p>2 baths</p>
-          </Left>
-          <Desc className="content">{listing.description}</Desc>
-        </Info>
+        <Content>
+          <Info>
+            <Left>
+              <SectionHeader className="title">{listing.name}</SectionHeader>
+              <p>4.9 ★ (407)</p>
+              <p>$200 a night</p>
+              <p>4 beds</p>
+              <p>2 baths</p>
+            </Left>
+            <Desc className="content">{listing.description}</Desc>
+          </Info>
 
-        <Booking>
-          <Left>
-            <SectionHeader className="title">Interested Users</SectionHeader>
-          </Left>
-          <div>
-            <ul className="content">
-              {users.map((user: any) => {
-                return (
-                  <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>
-                );
-              })}
-            </ul>
-            <form name="set-user-interest" onSubmit={handleInterest}>
-              {/* {interestForm} */}
-              <button type="submit">{submitButtonText}</button>
-            </form>
-            {bookButton}
-            {bookError}
-            {calendar}
-          </div>
-        </Booking>
+          <Booking>
+            <Left>
+              <SectionHeader className="title">Interested Users</SectionHeader>
+            </Left>
+            <div>
+              <InterestedUsers>
+                {users.length > 0 ? (
+                  users.map((user: any) => {
+                    return <UserThumb key={user.id} user={user} />;
+                  })
+                ) : (
+                  <p>No one interested yet! Be the first!</p>
+                )}
+              </InterestedUsers>
+              {loggedUser ? (
+                <>
+                  {calendar}
+                  {bookError}
+                  <form name="set-user-interest" onSubmit={handleInterest}>
+                    <Button type="submit">{submitButtonText}</Button>
+                  </form>
+                  {bookButton}
+                </>
+              ) : (
+                ''
+              )}
+            </div>
+          </Booking>
 
-        <GuestPhotos>
+          {/* <GuestPhotos>
           <Left>
             <SectionHeader>Guest Photos</SectionHeader>
           </Left>
@@ -189,16 +210,20 @@ const SingleListing = (props: any) => {
           <div>
             <Review />
           </div>
-        </Reviews>
-      </Content>
-    </Wrapper>
+        </Reviews> */}
+        </Content>
+      </Wrapper>
+    </div>
   );
 };
 
 SingleListing.getInitialProps = async function(context: any) {
   const { token } = cookies(context);
-  const res = await axios.get(apiUrl(`/api/users/${token}`));
-  const loggedUser = res.data;
+  let loggedUser = null;
+  if (token) {
+    const res = await axios.get(apiUrl(`/api/users/${token}`));
+    loggedUser = res.data;
+  }
 
   return {
     loggedUser,
@@ -227,25 +252,31 @@ export default connect(mapState, mapDispatch)(SingleListing);
 
 /** HELPERS **/
 
-const todayString = () => {
-  const today = new Date(Date.now());
-  const yyyy = today.getFullYear();
-  let mm: string | number = today.getMonth() + 1;
-  let dd: string | number = today.getDate();
+const UserThumb = (props: any) => {
+  const { user } = props;
+  const fullName = `${user.firstName} ${user.lastName}`;
+  return (
+    <Link href={`/users/${user.id}`} key={user.id}>
+      <UserThumbnail>
+        <img src={user.imageUrl} alt={fullName} />
 
-  if (mm < 10) mm = '0' + mm;
-  if (dd < 10) dd = '0' + dd;
-
-  return `${yyyy}-${mm}-${dd}`;
+        <div className="user-info">
+          <p className="user-name">{fullName}</p>
+          <p className="user-email">{user.email}</p>
+        </div>
+      </UserThumbnail>
+    </Link>
+  );
 };
 
 const Wrapper = styled.div`
   margin: 0 1vw;
+  padding-bottom: 15vh;
 `;
 
 const ImageGrid = styled.div`
   display: grid;
-  max-height: 50vh;
+  height: 50vh;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-gap: 8px;
@@ -329,5 +360,64 @@ const Left = styled.div`
   p {
     padding: 0;
     margin: 0;
+  }
+`;
+
+const InterestedUsers = styled.ul`
+  list-style-type: none;
+  padding-left: 0;
+`;
+const UserThumbnail = styled.li`
+  display: flex;
+  align-items: center;
+  margin: 1em;
+  transition: all 0.3s ease;
+
+  img {
+    width: 3.4em;
+    height: 3.4em;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-right: 1em;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+
+  .user-email {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  :hover {
+    cursor: pointer;
+    color: var(--accent-dark);
+
+    img {
+      border: 2px solid var(--accent-light);
+    }
+
+    .user-email {
+      max-height: 2em;
+      color: var(--accent-light);
+    }
+  }
+`;
+
+const Button = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  padding: 1em;
+  margin: 0.5em 0 0 0.5em;
+  border-radius: 2px;
+  background-color: var(--accent-dark);
+  color: white;
+  transition: all 0.2s ease;
+
+  :hover {
+    background-color: var(--accent-light);
   }
 `;

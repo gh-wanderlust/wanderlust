@@ -46,6 +46,7 @@ const seed = async () => {
       email: 'alwaysbe@coding.com',
       username: 'gracehopper',
       password: 'coding',
+      imageUrl: 'https://amhistory.si.edu/ogmt/images/upload/women-mathematicians/AHB2012q06025.jpg'
     }),
   ]);
 

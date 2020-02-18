@@ -13,10 +13,10 @@ As a user, I can browse rentals, look at an individual one, and mark that I’m 
 - [Laura Nemeth](https://github.com/laurxnemeth)
 
 **Technologies Used**
-Written in Typescript
-Frontend: NextJS, React, Redux
-Backend: Sequelize, PostreSQL, Google Cloud SQL
-Deployment: Zeit Now
+- Written in Typescript
+- Frontend: NextJS, React, Redux
+- Backend: Sequelize, PostreSQL, Google Cloud SQL
+- Deployment: Zeit Now
 
 ```🔐 Getting Started
 - [ ] Fork and clone this repo

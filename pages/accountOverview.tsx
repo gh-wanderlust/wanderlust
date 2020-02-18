@@ -3,6 +3,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import cookies from 'next-cookies';
 import styled from 'styled-components';
+import {apiUrl} from '../util'
 
 const AccountOverview = function(props: any) {
   const { user } = props;
@@ -66,7 +67,7 @@ AccountOverview.getInitialProps = async (context: any) => {
   const id = token;
 
   if (id) {
-    const res = await axios.get(`http://localhost:3000/api/users/${id}`);
+    const res = await axios.get(apiUrl`/users/${id}`);
     return { user: res.data };
   }
 };
@@ -83,7 +84,7 @@ flex-direction: column;
 `
 
 const PhotoWrapper = styled.div`
-display: flex; 
+display: flex;
 flex-direction: row;
 `
 

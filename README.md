@@ -18,9 +18,9 @@ Frontend: NextJS, React, Redux
 Backend: Sequelize, PostreSQL, Google Cloud SQL
 Deployment: Zeit Now
 
-`🔐 Getting Started
+```🔐 Getting Started
 - [ ] Fork and clone this repo
 - [ ] npm install
 - [ ] npm run start-dev
   ➤ Windows: npm run start-server and npm run build-watch
-- [ ] npm run seed`
+- [ ] npm run seed```
